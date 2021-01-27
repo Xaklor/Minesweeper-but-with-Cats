@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Minesweeper
+namespace MinesweeperModel
 {
     /// <summary>
     /// This class represents a single cell in Minesweeper. 
