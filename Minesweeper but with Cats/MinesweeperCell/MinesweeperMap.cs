@@ -8,7 +8,7 @@ namespace MinesweeperModel
     /// this class represents an entire board of cells in a minesweeper game. 
     /// a board keeps track of all cells, and has functions for affecting an individual cell's state.
     /// </summary>
-    class MinesweeperMap
+    public class MinesweeperMap
     {
         /// <summary>
         /// this is a 1D array representing a 2D plane of cells. each row's cells come right after the previous row's cells.
@@ -99,49 +99,34 @@ namespace MinesweeperModel
         }
 
         /// <summary>
-        /// reveals a given cell if it hasn't been revealed already. if it has been flagged, nothing happens.
-        /// if it has been revealed already, this reveals the cell's neighbors if there are enough neighboring flagged cells.
+        /// reveals a given cell if it hasn't been revealed already. if it has been flagged or already revealed, nothing happens.
         /// throws GameOverException if the revealed cell is a mine.
         /// </summary>
         /// <param name="x">the x coordinate of the targeted cell.</param>
         /// <param name="y">the y coordinate of the targeted cell.</param>
-        /// <param name="cell">if this parameter is given, this method will reveal this cell instead of the one at (x, y)</param>
-        public void RevealCell(int x, int y, MinesweeperCell cell = null)
+        public void RevealCell(int x, int y)
         {
-            // if cell is null we were not given a cell directly and will instead look it up using x and y
-            if (cell == null) 
-                cell = cells[x + (y * rowLength)];
+
+            MinesweeperCell cell = cells[x + (y * rowLength)];
 
             // flagged cells cannot be revealed, need to check if the cell is flagged first and do nothing else if it is.
-            if (!cell.isFlagged)
+            // revealed cells don't need to be revealed again either, so we skip those too.
+            if (!cell.isFlagged && !cell.isVisible)
             {
+                cell.isVisible = true;
+                revealedCells++;
+
                 // if the cell is a mine, the player has lost.
                 if (cell.hasMine)
                 {
                     throw new GameOverException();
-                // if the cell is not a mine and has not been revealed, reveal it.
-                } else if (!cell.isVisible)
-                {
-                    cell.isVisible = true;
-                    // if this cell has no neighboring mines, we can safely reveal all neighboring cells for the player automatically.
-                    if (cell.neighboringMines == 0)
-                        RevealNeighbors(x, y);
-
-                // if the cell has been revealed, check its neighbors to see how many have been flagged.
-                } else 
-                {
-                    int count = 0;
-                    foreach (MinesweeperCell neighbor in GetCellNeighbors(x, y))
-                    {
-                        if (neighbor.isFlagged)
-                            count++;
-                    }
-                    // if there are exactly as many flagged neighbors as there are neighboring mines, we can automatically reveal all neighbors
-                    // this is not guaranteed safe though as the player may have flagged an incorrect cell.
-                    if (count == cell.neighboringMines)
-                        RevealNeighbors(x, y);
-
                 }
+
+                // if this cell has no neighboring mines, we can safely reveal all neighboring cells for the player automatically.
+                else if (cell.neighboringMines == 0)
+                {                    
+                    RevealNeighbors(x, y);
+                } 
             }
         }
 
@@ -153,10 +138,9 @@ namespace MinesweeperModel
         /// <param name="y">the y coordinate of the targeted cell.</param>
         private void RevealNeighbors(int x, int y)
         {
-            foreach (MinesweeperCell neighbor in GetCellNeighbors(x, y))
+            foreach ((int x,  int y) position in GetCellNeighborPositions(x, y))
             {
-                // x and y don't matter here because we are providing the desired cell directly.
-                RevealCell(x, y, neighbor);
+                RevealCell(position.x, position.y);
             }
 
         }
@@ -181,7 +165,7 @@ namespace MinesweeperModel
         {
             // because we're using a 1D array, X has the ability to wrap around to later rows, (20, 1) would successful on a 10x10 map.
             // we need to check if X is valid before proceeding.
-            if (x < 0 || x > rowLength)
+            if (x < 0 || x > rowLength - 1)
             {
                 throw new IndexOutOfRangeException("The desired coordinates are outside of the map's dimensions.");
             }
@@ -248,9 +232,9 @@ namespace MinesweeperModel
             if (!target.hasMine)
             {
                 target.hasMine = true;
-                foreach (MinesweeperCell neighbor in GetCellNeighbors(x, y))
+                foreach ((int x, int y) position in GetCellNeighborPositions(x, y))
                 {
-                    neighbor.neighboringMines++;
+                    GetCell(position.x, position.y).neighboringMines++;
                 }
             }
 
@@ -258,69 +242,153 @@ namespace MinesweeperModel
 
         /// <summary>
         /// private helper method. this gets all neighbors of the targeted cell.
+        /// 
+        /// TODO: MAKE THIS RETURN INDICES OF NEIGHBORS NOT THE NEIGHBORS THEMSELVES.
+        /// 
         /// </summary>
         /// <param name="x">the x coordinate of the targeted cell.</param>
         /// <param name="y">the y coordinate of the targeted cell.</param>
         /// <returns>an collection containing all of the cell's neighbors.</returns>
-        private IEnumerable<MinesweeperCell> GetCellNeighbors(int x,  int y)
+        public IEnumerable<(int, int)> GetCellNeighborPositions(int x,  int y)
         {
             // double check the targeted cell is in a valid range:
             GetCell(x, y);
 
-            List<MinesweeperCell> cells = new List<MinesweeperCell>();
+            List<(int, int)> cellPositions = new List<(int, int)>();
 
-            // each neighbor is in an individual try/catch because we will assume any failures are from the target being an edge cell,
-            // in which case we want to keep going even if the get() failed.
+            // get() verifies that the targeted cell is in a valid range, then we add the coordinates to the list if it didn't throw.
+            // each get() is in its own try/catch block because we want to try all of them even if some throw, any get()'s that fail 
+            // will fail because the cell is an edge cell and doesn't have neighbors there.
             try
             {
-                cells.Add(GetCell(x - 1, y - 1));
-
+                GetCell(x - 1, y - 1);
+                cellPositions.Add((x - 1, y - 1));   
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x    , y - 1));
-
+                GetCell(x, y - 1);
+                cellPositions.Add((x, y - 1));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x + 1, y - 1));
-
+                GetCell(x + 1, y - 1);
+                cellPositions.Add((x + 1, y - 1));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x + 1, y    ));
-
+                GetCell(x + 1, y);
+                cellPositions.Add((x + 1, y));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x + 1, y + 1));
-
+                GetCell(x + 1, y + 1);
+                cellPositions.Add((x + 1, y + 1));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x    , y + 1));
-
+                GetCell(x, y + 1);
+                cellPositions.Add((x, y + 1));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x - 1, y + 1));
-
+                GetCell(x - 1, y + 1);
+                cellPositions.Add((x - 1, y + 1));
             }
             catch (IndexOutOfRangeException) { }
             try
             {
-                cells.Add(GetCell(x - 1, y    ));
-
+                GetCell(x - 1, y);
+                cellPositions.Add((x - 1, y));
             }
             catch (IndexOutOfRangeException) { }
 
-            return cells;
+            return cellPositions;
+        }
+
+        /// <summary>
+        /// the string representation of a map is a space-separated list of numbers 0-8 and the letter m representing mines.
+        /// for example, a string for a 5x5 grid with 7 mines on it might look like this:
+        /// 1 1 1 0 0
+        /// 2 m 3 2 1
+        /// 2 m m 3 m
+        /// 2 4 3 4 m
+        /// m 2 m 2 1
+        /// </summary>
+        /// <returns></returns>
+        override public string ToString()
+        {
+            StringBuilder mapString = new StringBuilder();
+            for (int idx = 0; idx < cells.Length; idx++)
+            {
+                // if this is a mine, add "m", otherwise add the neighboring mine count
+                if (cells[idx].hasMine)
+                {
+                    mapString.Append("m");
+                }
+                else
+                {
+                    mapString.Append($"{cells[idx].neighboringMines}");
+                }
+
+                // if this is the end of a row, add "\n", otherwise add " "
+                if (idx % rowLength == rowLength - 1)
+                {
+                    mapString.Append("\n");
+                }
+                else
+                {
+                    mapString.Append(" ");
+                }
+            }
+            return mapString.ToString();
+        }
+
+        /// <summary>
+        /// behaves exactly like ToString(), but replaces all unrevealed cells with * and 0's with " ".
+        /// </summary>
+        /// <returns></returns>
+        public string ToGameString()
+        {
+            StringBuilder mapString = new StringBuilder();
+            for (int idx = 0; idx < cells.Length; idx++)
+            {
+                if (!cells[idx].isVisible)
+                {
+                    mapString.Append("*");
+                }
+                else if (cells[idx].hasMine)
+                {
+                    mapString.Append("m");
+                }
+                else
+                {
+                    if (cells[idx].neighboringMines == 0)
+                    {
+                        mapString.Append(" ");
+                    }
+                    else
+                    {
+                        mapString.Append($"{cells[idx].neighboringMines}");
+                    }
+                }
+
+                // if this is the end of a row, add "\n", otherwise add " "
+                if (idx % rowLength == rowLength - 1)
+                {
+                    mapString.Append("\n");
+                }
+                else
+                {
+                    mapString.Append(" ");
+                }
+            }
+            return mapString.ToString();
         }
 
     }

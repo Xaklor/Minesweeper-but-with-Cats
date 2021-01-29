@@ -258,3 +258,5 @@ NuGetBuild
 WiX.Toolset.DummyFile.txt
 GitHubVS.sln.DotSettings
 /Minesweeper but with Cats/MinesweeperModelTests
+/Minesweeper but with Cats/MinesweeperModelConsoleTests/MinesweeperModelConsoleTests.csproj
+/Minesweeper but with Cats/MinesweeperModelConsoleTests/MinesweeperModelConsoleTests.cs
