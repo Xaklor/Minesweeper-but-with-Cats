@@ -76,8 +76,6 @@ namespace MinesweeperModel
             }
 
             GenerateMines();
-
-
         }
 
         /// <summary>
@@ -100,7 +98,7 @@ namespace MinesweeperModel
 
         /// <summary>
         /// reveals a given cell if it hasn't been revealed already. if it has been flagged or already revealed, nothing happens.
-        /// throws GameOverException if the revealed cell is a mine.
+        /// throws GameOverException if the revealed cell is a mine or if the game has been won, with a message of either "won" or "lost".
         /// </summary>
         /// <param name="x">the x coordinate of the targeted cell.</param>
         /// <param name="y">the y coordinate of the targeted cell.</param>
@@ -119,7 +117,13 @@ namespace MinesweeperModel
                 // if the cell is a mine, the player has lost.
                 if (cell.hasMine)
                 {
-                    throw new GameOverException();
+                    throw new GameOverException("lost");
+                }
+
+                // if the cell was the last non-mine cell, the player has won.
+                if (revealedCells == numCells - numMines)
+                {
+                    throw new GameOverException("won");
                 }
 
                 // if this cell has no neighboring mines, we can safely reveal all neighboring cells for the player automatically.
@@ -128,21 +132,6 @@ namespace MinesweeperModel
                     RevealNeighbors(x, y);
                 } 
             }
-        }
-
-        /// <summary>
-        /// reveals all non-flagged cells neighboring a given cell. this method is called whenever a trivial cell has been clicked 
-        /// (either the cell has 0 neighboring mines or is has flagged neighbors equal to the number of neighboring mines)
-        /// </summary>
-        /// <param name="x">the x coordinate of the targeted cell.</param>
-        /// <param name="y">the y coordinate of the targeted cell.</param>
-        private void RevealNeighbors(int x, int y)
-        {
-            foreach ((int x,  int y) position in GetCellNeighborPositions(x, y))
-            {
-                RevealCell(position.x, position.y);
-            }
-
         }
 
         /// <summary>
@@ -163,21 +152,93 @@ namespace MinesweeperModel
         /// <returns>the targeted cell</returns>
         public MinesweeperCell GetCell(int x, int y)
         {
-            // because we're using a 1D array, X has the ability to wrap around to later rows, (20, 1) would successful on a 10x10 map.
-            // we need to check if X is valid before proceeding.
-            if (x < 0 || x > rowLength - 1)
+            if (IsValidPosition(x, y))
+            {
+                return cells[x + (y * rowLength)];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("The desired coordinates are outside of the map's dimensions.");
+            }
+        }
+
+        /// <summary>
+        /// this gets all neighbor positions of the targeted cell.
+        /// </summary>
+        /// <param name="x">the x coordinate of the targeted cell.</param>
+        /// <param name="y">the y coordinatgete of the targeted cell.</param>
+        /// <returns>an collection containing all of the cell's neighbor's positions.</returns>
+        public IEnumerable<(int, int)> GetCellNeighborPositions(int x, int y)
+        {
+            // double check the targeted cell is in a valid range:
+            if (!IsValidPosition(x, y))
             {
                 throw new IndexOutOfRangeException("The desired coordinates are outside of the map's dimensions.");
             }
 
-            try
+            List<(int, int)> cellPositions = new List<(int, int)>();
+
+            // check each position before adding it to the list since this cell might be an edge cell and have fewer neighbors.
+            if (IsValidPosition(x - 1, y - 1))
+                cellPositions.Add((x - 1, y - 1));
+
+            if (IsValidPosition(x, y - 1))
+                cellPositions.Add((x, y - 1));
+
+            if (IsValidPosition(x + 1, y - 1))
+                cellPositions.Add((x + 1, y - 1));
+
+            if (IsValidPosition(x + 1, y))
+                cellPositions.Add((x + 1, y));
+
+            if (IsValidPosition(x + 1, y + 1))
+                cellPositions.Add((x + 1, y + 1));
+
+            if (IsValidPosition(x, y + 1))
+                cellPositions.Add((x, y + 1));
+
+            if (IsValidPosition(x - 1, y + 1))
+                cellPositions.Add((x - 1, y + 1));
+
+            if (IsValidPosition(x - 1, y))
+                cellPositions.Add((x - 1, y));
+
+            return cellPositions;
+        }
+
+        /// <summary>
+        /// reveals all non-flagged cells neighboring a given cell. 
+        /// </summary>
+        /// <param name="x">the x coordinate of the targeted cell.</param>
+        /// <param name="y">the y coordinate of the targeted cell.</param>
+        public void RevealNeighbors(int x, int y)
+        {
+            foreach ((int x, int y) position in GetCellNeighborPositions(x, y))
             {
-                return cells[x + (y * rowLength)];
+                RevealCell(position.x, position.y);
             }
-            catch (IndexOutOfRangeException)
+        }
+
+        /// <summary>
+        /// determines if the given coordinates are valid on this map.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>true if the coordinates are valid on this map, false otherwise.</returns>
+        private bool IsValidPosition(int x, int y)
+        {
+            // check X
+            if (x < 0 || x > rowLength - 1)
             {
-                throw new IndexOutOfRangeException("The desired coordinates are outside of the map's dimensions.");
+                return false;
             }
+            // check Y
+            if (y < 0 || y > (numCells / rowLength) - 1)
+            {
+                return false;
+            }
+            // return true if both pass
+            return true;
         }
 
         /// <summary>
@@ -185,10 +246,11 @@ namespace MinesweeperModel
         /// </summary>
         private void GenerateMines()
         {
-            // create a list of positions corresponding to every cell in the map. 
-            // then we'll shuffle the list and pick the first X cells to be mines where X is the number of mines in the map.
+            // to determine the mine locations, put all the possible locations into a list, shuffle it, 
+            // and take the first X entries, where X is the number of mines. 
+            Random rand = new Random();
             List<int> minePositions = new List<int>();
-            for (int pos = 0; pos < numCells; pos ++)
+            for (int pos = 0; pos < numCells; pos++)
             {
                 minePositions.Add(pos);
             }
@@ -196,7 +258,6 @@ namespace MinesweeperModel
             // fisher yates shuffle, see: https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
             // essentially randomly move a random number after idx to idx, then increment idx
             // repeat until no positions are left
-            Random rand = new Random();
             int randPos = 0;
             int temp = 0;
             for (int idx = 0; idx < minePositions.Count; idx++)
@@ -212,10 +273,9 @@ namespace MinesweeperModel
             {
                 minePos = minePositions[idx];
                 // because setMine needs the position in (x, y) format to properly set up the neighboring cells, we need to convert.
-                // x = minePos % rowLength, minePos = idx / rowLength
+                // x = idx % rowLength, y = idx / rowLength
                 SetMine(minePos % rowLength, minePos / rowLength);
-            }
-
+            }           
         }
 
         /// <summary>
@@ -238,77 +298,6 @@ namespace MinesweeperModel
                 }
             }
 
-        }
-
-        /// <summary>
-        /// private helper method. this gets all neighbors of the targeted cell.
-        /// 
-        /// TODO: MAKE THIS RETURN INDICES OF NEIGHBORS NOT THE NEIGHBORS THEMSELVES.
-        /// 
-        /// </summary>
-        /// <param name="x">the x coordinate of the targeted cell.</param>
-        /// <param name="y">the y coordinate of the targeted cell.</param>
-        /// <returns>an collection containing all of the cell's neighbors.</returns>
-        public IEnumerable<(int, int)> GetCellNeighborPositions(int x,  int y)
-        {
-            // double check the targeted cell is in a valid range:
-            GetCell(x, y);
-
-            List<(int, int)> cellPositions = new List<(int, int)>();
-
-            // get() verifies that the targeted cell is in a valid range, then we add the coordinates to the list if it didn't throw.
-            // each get() is in its own try/catch block because we want to try all of them even if some throw, any get()'s that fail 
-            // will fail because the cell is an edge cell and doesn't have neighbors there.
-            try
-            {
-                GetCell(x - 1, y - 1);
-                cellPositions.Add((x - 1, y - 1));   
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x, y - 1);
-                cellPositions.Add((x, y - 1));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x + 1, y - 1);
-                cellPositions.Add((x + 1, y - 1));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x + 1, y);
-                cellPositions.Add((x + 1, y));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x + 1, y + 1);
-                cellPositions.Add((x + 1, y + 1));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x, y + 1);
-                cellPositions.Add((x, y + 1));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x - 1, y + 1);
-                cellPositions.Add((x - 1, y + 1));
-            }
-            catch (IndexOutOfRangeException) { }
-            try
-            {
-                GetCell(x - 1, y);
-                cellPositions.Add((x - 1, y));
-            }
-            catch (IndexOutOfRangeException) { }
-
-            return cellPositions;
         }
 
         /// <summary>
@@ -394,10 +383,13 @@ namespace MinesweeperModel
     }
 
     /// <summary>
-    /// thrown to indicate the game has been lost. this happens a mine cell is revealed.
+    /// thrown to indicate the game has ended. the message should either be "won" or "lost" depending on how it was thrown.
     /// </summary>
     public class GameOverException : Exception
     {
-
+        public GameOverException(String message)
+            : base(message)
+        {
+        }
     }
 }
