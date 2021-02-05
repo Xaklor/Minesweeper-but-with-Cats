@@ -74,8 +74,6 @@ namespace MinesweeperModel
             {
                 numMines = mines;
             }
-
-            GenerateMines();
         }
 
         /// <summary>
@@ -242,9 +240,13 @@ namespace MinesweeperModel
         }
 
         /// <summary>
-        /// used during construction, this populates the map with the number of mines provided to the constructor.
+        /// this populates the map with the number of mines provided to the constructor. 
+        /// this also ensures that the given coordinates are a safe reveal, so that the game can be
+        /// generated after the first click to prevent turn 1 failure. 
         /// </summary>
-        private void GenerateMines()
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void GenerateMines(int x, int y)
         {
             // to determine the mine locations, put all the possible locations into a list, shuffle it, 
             // and take the first X entries, where X is the number of mines. 
@@ -267,6 +269,19 @@ namespace MinesweeperModel
                 minePositions[randPos] = minePositions[idx];
                 minePositions[idx] = temp;
             }
+
+            // after shuffling, remove the targeted cell and its neighbors, then add them to the back of the list.
+            // this makes them the lowest priority for being assigned as mines, so the targeted cell will have 0 mine
+            // neighbors if possible, but won't break generation if there isn't enough space for the first cell to be a 0.
+            foreach ((int x, int y) neighborPosition in GetCellNeighborPositions(x, y))
+            {
+                int neighborIdx = neighborPosition.x + (neighborPosition.y * rowLength);
+                minePositions.Remove(neighborIdx);
+                minePositions.Add(neighborIdx);
+            }
+
+            minePositions.Remove(x + (y * rowLength));
+            minePositions.Add(x + (y * rowLength));
 
             int minePos = 0;
             for (int idx = 0; idx < numMines; idx++)
