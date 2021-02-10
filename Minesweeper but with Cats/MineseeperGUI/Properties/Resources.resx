@@ -154,6 +154,18 @@
   <data name="bubble mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="button help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bwuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button newgame" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cateyes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button options" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blobglare.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button stats" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blobsweats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="cat 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cat 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
