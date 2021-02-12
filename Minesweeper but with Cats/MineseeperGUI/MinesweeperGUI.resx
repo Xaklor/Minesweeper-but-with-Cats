@@ -224,7 +224,7 @@
   <data name="optionsButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAHAAAABpCAYAAADiOacYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1
-        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACw8AAAsPAZL5A6UAAB1ZSURBVHhe7V0JfFTV1b9ZCEnI
+        MAAA6mAAADqYAAAXb5JfxUYAAAAJcEhZcwAACwwAAAsMAT9AIsgAAB1ZSURBVHhe7V0JfFTV1b9ZCEnI
         vs97s2QBxIAICshShFoUq2jVWhVaqdoP69rWWpeqQCt+6lcsoqItiggCooC4sWedTPYNSFgUEVwbUKFR
         IEDmzfy/c+6bCUN4hESSkOCcX/55b968effe83/n3HPufYsA4Ec3huFGP7oPDDf60X1guNGP7gPDjX50
         Hxhu9KP7QP/XhUWvowe95DLAA7ntK/G4cP5ltIAjQ6DGJlA2RGBRjDhYaqbvIVxrggVKlUBUpAlUpBqj
@@ -356,7 +356,7 @@
   <data name="statsButton.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        vgAADr4B6kKxwAAAAAd0SU1FB+IGHQMZLv/7cEUAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEu
+        vAAADrwBlbxySQAAAAd0SU1FB+IGHQMZLv/7cEUAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEu
         MWMqnEsAADF2SURBVHhe7X0HeBNn1vVm99t/n//b/ffb3W83G9sQOrg3TAsEiAkdQu8JhE4InQTTEkJL
         aKlACJCE9ADBXbYl27IkVzqYFkI1HQOmg7ElzfnvfWfGlu2RW2w2iX2f5zDSeEYz855bzn1nJH4HoBY1
         GJora1FzoLmyFjUHmitrUXOgubIWNQeaK2tRc6C5shY1B5ora1FzoLmyFjUHmitrUXOgubIWNQeaK2tR
@@ -618,7 +618,7 @@
         RudN65tdA8sHzg46DF645Xrr8m2v29fvrLwzMBQydHc4cnjkLvvu5L2key/vZ9yff7DpIfph4SOpR+WP
         lR7X/aj3Y+uI5ciZUdfRvidBTx6Mscae/5T+04fx/Kfkp+UTqhONk2aTp6fcp24+W/1s/Hnq8/npgp+l
         f65+ofviu18cf+mbWTUz/pL/cuHX4lfyr468Xva6e9Z/9vGb5Dfzc4Vv5d8efcd41/s+7P3EfOYH7IeK
-        j3ofuz55f3q4kLyw8Bv3hPP74uYdwgAAAAlwSFlzAAALDwAACw8BkvkDpQAANJ1JREFUeF7tXQd4FNXa
+        j3ofuz55f3q4kLyw8Bv3hPP74uYdwgAAAAlwSFlzAAALDAAACwwBP0AiyAAANJ1JREFUeF7tXQd4FNXa
         XstV6aTvbhK6VEEU/e2K13at134vKtferr2jqAiKvaEiVYqUdEJ63Z3ZNBIIEEgglJDeezZbZmaXfP/3
         nS3ZJAvZJCTANed53md3Z2fm7Jz3PV8558ysDAAG0QfMnDXLhusQixDJiCYEWEHvads3iHsQjsf0Fqes
         LqcXNQjXgA04HbERUYiwkdAdshE/IxSILoScBP1Sl9MLG0T3wMajHmhGsMb+17//DT/9/DPs2LEDWlpa

@@ -18,10 +18,16 @@ namespace MinesweeperGUI
         private readonly int ANCHOR_POINT_X = 200;
         private readonly int ANCHOR_POINT_Y = 0;
         private List<PictureBox> GUICells;
+        private int mapWidth;
+        private int mapHeight;
+        private int numMines;
 
         public MinesweeperGUI()
         {
             GUICells = new List<PictureBox>();
+            mapWidth = 9;
+            mapHeight = 9;
+            numMines = 10;
             InitializeComponent();
         }
 
@@ -30,9 +36,9 @@ namespace MinesweeperGUI
 
             wipe_GUICells();
 
-            for (int y = 0; y < 5; y++)
+            for (int y = 0; y < mapHeight; y++)
             {
-                for (int x = 0; x < 5; x++)
+                for (int x = 0; x < mapWidth; x++)
                 {
                     PictureBox GUICell = new PictureBox();
                     GUICell.Image = Properties.Resources.cat_blank;
@@ -61,7 +67,7 @@ namespace MinesweeperGUI
         {
             // GUICells are in an array just like MinesweeperCells
             // index = x + y * rowlength
-            // rowlength is 5
+            // rowlength is mapWidth
             // x = mouse.x - anchor_x / 25
             // y = mouse.y - anchor_y / 25
             // MousePosition is relative to the screen, to get it relative to the form we convert 
@@ -71,11 +77,11 @@ namespace MinesweeperGUI
 
             if (e.Button == MouseButtons.Left)
             {
-                GUICells[cellx + (celly * 5)].Image = Properties.Resources._0;
+                GUICells[cellx + (celly * mapWidth)].Image = Properties.Resources._0;
             }
             else if (e.Button == MouseButtons.Right)
             {
-                GUICells[cellx + (celly * 5)].Image = Properties.Resources.cat_flagged;
+                GUICells[cellx + (celly * mapWidth)].Image = Properties.Resources.cat_flagged;
             }
 
 
@@ -83,7 +89,13 @@ namespace MinesweeperGUI
 
         private void optionsButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("this needs to open up a new dialog that lets you change settings.", "options");
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog();
+            settingsDialog.ShowDialog();
+            mapWidth = settingsDialog.mapWidth;
+            mapHeight = settingsDialog.mapHeight;
+            numMines = settingsDialog.numMines;
+
+            newgameButton_Click(null, null);
         }
 
         private void statsButton_Click(object sender, EventArgs e)
