@@ -323,6 +323,16 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cat_loading_animation_test {
+            get {
+                object obj = ResourceManager.GetObject("cat loading animation test", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cat_mine {
             get {
                 object obj = ResourceManager.GetObject("cat mine", resourceCulture);

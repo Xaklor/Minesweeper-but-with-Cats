@@ -15,12 +15,14 @@ namespace MinesweeperGUI
         public int mapWidth;
         public int mapHeight;
         public int numMines;
+        public bool confirmed;
 
         public MinesweeperSettingsDialog()
         {
-            mapWidth = 30;
-            mapHeight = 16;
-            numMines = 99;
+            mapWidth = 9;
+            mapHeight = 9;
+            numMines = 10;
+            confirmed = false;
             InitializeComponent();
         }
 
@@ -47,6 +49,7 @@ namespace MinesweeperGUI
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
+            confirmed = true;
             this.Close();
         }
     }

@@ -118,151 +118,154 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="0" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bubble 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button help" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bwuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button newgame" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cateyes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button options" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blobglare.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="dark 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="button stats" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blobsweats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cat 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="bubble mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="cat 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="classic flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="button options" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\blobglare.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="classic mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\classic mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dark 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="classic 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="dark 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="bubble 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dark flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="cat 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="dark mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble flagged" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble flagged.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="button help" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bwuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat 7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat blank" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat blank.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic 8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat loading animation test" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat loading animation test.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

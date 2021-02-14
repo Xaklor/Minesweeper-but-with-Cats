@@ -1,4 +1,6 @@
 ﻿using MinesweeperModel;
+using System;
+using System.ComponentModel;
 
 namespace MinesweeperGUI
 {
@@ -36,11 +38,14 @@ namespace MinesweeperGUI
             this.optionsButton = new System.Windows.Forms.PictureBox();
             this.statsButton = new System.Windows.Forms.PictureBox();
             this.helpButton = new System.Windows.Forms.PictureBox();
+            this.GUICellsLoader = new System.ComponentModel.BackgroundWorker();
+            this.loadingImage = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.newgameButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.optionsButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).BeginInit();
             this.SuspendLayout();
             // 
             // flowLayoutPanel1
@@ -98,11 +103,27 @@ namespace MinesweeperGUI
             this.helpButton.TabStop = false;
             this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
+            // GUICellsLoader
+            // 
+            this.GUICellsLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loadGUICells);
+            this.GUICellsLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.endLoadingAnimation);
+            // 
+            // loadingImage
+            // 
+            this.loadingImage.Image = ((System.Drawing.Image)(resources.GetObject("loadingImage.Image")));
+            this.loadingImage.Location = new System.Drawing.Point(200, 0);
+            this.loadingImage.Name = "loadingImage";
+            this.loadingImage.Size = new System.Drawing.Size(225, 225);
+            this.loadingImage.TabIndex = 1;
+            this.loadingImage.TabStop = false;
+            this.loadingImage.Visible = false;
+            // 
             // MinesweeperGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1000, 548);
+            this.Controls.Add(this.loadingImage);
             this.Controls.Add(this.flowLayoutPanel1);
             this.DoubleBuffered = true;
             this.Name = "MinesweeperGUI";
@@ -113,6 +134,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.optionsButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -124,6 +146,8 @@ namespace MinesweeperGUI
         private System.Windows.Forms.PictureBox optionsButton;
         private System.Windows.Forms.PictureBox statsButton;
         private System.Windows.Forms.PictureBox helpButton;
+        private System.ComponentModel.BackgroundWorker GUICellsLoader;
+        private System.Windows.Forms.PictureBox loadingImage;
     }
 }
 
