@@ -165,6 +165,16 @@ namespace MinesweeperGUI
                 mapHeight = settingsDialog.mapHeight;
                 numMines = settingsDialog.numMines;
 
+                // change our own dimensions accordingly
+                // we need to ensure the map has enough space to contain everything, so we pick whichever is 
+                // the larger of our starting dimensions and the new dimensions based on the new map.
+                // the +1 and +2 on mapWidth and mapHeight are necessary and I have no idea why.
+                this.Width  = Math.Max(500, loadingImage.Location.X + (mapWidth + 1) * 25);
+                this.Height = Math.Max(600, loadingImage.Location.Y + (mapHeight + 2) * 25);
+
+                // min and max need to be updated as well so the user can't hide the map.
+                this.MinimumSize = new Size(this.Width, this.Height);
+
                 newgameButton_Click(null, null);
             }
         }
@@ -186,7 +196,16 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void helpButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("This box explains how to play minesweeper.", "help");
+            string helpContents = "" +
+                "How to play Minesweeper:\n\n" +
+                "Left-click a cell to reveal it, right-click a cell to flag it." +
+                "A revealed cell might have a number on it equal to the number of mines around it." +
+                "Flag cells you know are mines, and reveal cells you know to be safe." +
+                "Clicking and holding a revealed cell highlights every hidden cell around it." +
+                "If all mines surrounding it have been flagged already, left-clicking reveals the others.\n\n" +
+                "The goal of the game is to uncover every safe cell to reveal the image underneath!";
+
+            MessageBox.Show(helpContents, "Help");
         }
 
         

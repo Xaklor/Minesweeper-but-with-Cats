@@ -56,7 +56,7 @@ namespace MinesweeperGUI
             this.flowLayoutPanel1.Controls.Add(this.helpButton);
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(180, 576);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(145, 517);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
             // newgameButton
@@ -111,7 +111,7 @@ namespace MinesweeperGUI
             // loadingImage
             // 
             this.loadingImage.Image = ((System.Drawing.Image)(resources.GetObject("loadingImage.Image")));
-            this.loadingImage.Location = new System.Drawing.Point(200, 0);
+            this.loadingImage.Location = new System.Drawing.Point(200, 10);
             this.loadingImage.Name = "loadingImage";
             this.loadingImage.Size = new System.Drawing.Size(225, 225);
             this.loadingImage.TabIndex = 1;
@@ -122,10 +122,12 @@ namespace MinesweeperGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1000, 548);
+            this.BackColor = System.Drawing.Color.DarkGreen;
+            this.ClientSize = new System.Drawing.Size(482, 553);
             this.Controls.Add(this.loadingImage);
             this.Controls.Add(this.flowLayoutPanel1);
             this.DoubleBuffered = true;
+            this.MinimumSize = new System.Drawing.Size(500, 600);
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
             this.flowLayoutPanel1.ResumeLayout(false);

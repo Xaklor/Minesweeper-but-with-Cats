@@ -12,44 +12,44 @@ namespace MinesweeperGUI
 {
     public partial class MinesweeperSettingsDialog : Form
     {
-        public int mapWidth;
-        public int mapHeight;
-        public int numMines;
+        public int mapWidth = 9;
+        public int mapHeight = 9;
+        public int numMines = 10;
         public bool confirmed;
 
         public MinesweeperSettingsDialog()
         {
-            mapWidth = 9;
-            mapHeight = 9;
-            numMines = 10;
             confirmed = false;
             InitializeComponent();
         }
 
         private void pictureBox3_Click(object sender, EventArgs e)
         {
-            mapWidth = 9;
-            mapHeight = 9;
-            numMines = 10;
+            customWidthBox.Value = 9;
+            customHeightBox.Value = 9;
+            customMinesBox.Value = 10;
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-            mapWidth = 16;
-            mapHeight = 16;
-            numMines = 40;
+            customWidthBox.Value = 16;
+            customHeightBox.Value = 16;
+            customMinesBox.Value = 40;
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            mapWidth = 30;
-            mapHeight = 16;
-            numMines = 99;
+            customWidthBox.Value = 30;
+            customHeightBox.Value = 16;
+            customMinesBox.Value = 99;
         }
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
             confirmed = true;
+            mapWidth = (int)customWidthBox.Value;
+            mapHeight = (int)customHeightBox.Value;
+            numMines = (int)customMinesBox.Value;
             this.Close();
         }
     }

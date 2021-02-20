@@ -34,10 +34,16 @@ namespace MinesweeperGUI
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.customWidthBox = new System.Windows.Forms.NumericUpDown();
+            this.customHeightBox = new System.Windows.Forms.NumericUpDown();
+            this.customMinesBox = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -84,11 +90,81 @@ namespace MinesweeperGUI
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
+            // customWidthBox
+            // 
+            this.customWidthBox.Location = new System.Drawing.Point(354, 168);
+            this.customWidthBox.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.customWidthBox.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.customWidthBox.Name = "customWidthBox";
+            this.customWidthBox.Size = new System.Drawing.Size(150, 27);
+            this.customWidthBox.TabIndex = 5;
+            this.customWidthBox.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // customHeightBox
+            // 
+            this.customHeightBox.Location = new System.Drawing.Point(354, 201);
+            this.customHeightBox.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this.customHeightBox.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.customHeightBox.Name = "customHeightBox";
+            this.customHeightBox.Size = new System.Drawing.Size(150, 27);
+            this.customHeightBox.TabIndex = 6;
+            this.customHeightBox.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // customMinesBox
+            // 
+            this.customMinesBox.Location = new System.Drawing.Point(354, 234);
+            this.customMinesBox.Maximum = new decimal(new int[] {
+            1599,
+            0,
+            0,
+            0});
+            this.customMinesBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.customMinesBox.Name = "customMinesBox";
+            this.customMinesBox.Size = new System.Drawing.Size(150, 27);
+            this.customMinesBox.TabIndex = 7;
+            this.customMinesBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
             // MinesweeperSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 403);
+            this.BackColor = System.Drawing.Color.DarkGreen;
+            this.Controls.Add(this.customMinesBox);
+            this.Controls.Add(this.customHeightBox);
+            this.Controls.Add(this.customWidthBox);
             this.Controls.Add(this.pictureBox4);
             this.Controls.Add(this.pictureBox3);
             this.Controls.Add(this.pictureBox2);
@@ -105,6 +181,9 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -115,6 +194,9 @@ namespace MinesweeperGUI
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.NumericUpDown customWidthBox;
+        private System.Windows.Forms.NumericUpDown customHeightBox;
+        private System.Windows.Forms.NumericUpDown customMinesBox;
     }
 }
 
