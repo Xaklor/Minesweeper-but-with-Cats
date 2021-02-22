@@ -37,6 +37,10 @@ namespace MinesweeperGUI
             this.customWidthBox = new System.Windows.Forms.NumericUpDown();
             this.customHeightBox = new System.Windows.Forms.NumericUpDown();
             this.customMinesBox = new System.Windows.Forms.NumericUpDown();
+            this.catsThemeButton = new System.Windows.Forms.PictureBox();
+            this.bubbleThemeButton = new System.Windows.Forms.PictureBox();
+            this.darkThemeButton = new System.Windows.Forms.PictureBox();
+            this.classicThemeButton = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -44,6 +48,10 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.catsThemeButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bubbleThemeButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.darkThemeButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.classicThemeButton)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -156,12 +164,60 @@ namespace MinesweeperGUI
             0,
             0});
             // 
+            // catsThemeButton
+            // 
+            this.catsThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("catsThemeButton.Image")));
+            this.catsThemeButton.Location = new System.Drawing.Point(47, 201);
+            this.catsThemeButton.Name = "catsThemeButton";
+            this.catsThemeButton.Size = new System.Drawing.Size(25, 25);
+            this.catsThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.catsThemeButton.TabIndex = 8;
+            this.catsThemeButton.TabStop = false;
+            this.catsThemeButton.Click += new System.EventHandler(this.setCatTheme);
+            // 
+            // bubbleThemeButton
+            // 
+            this.bubbleThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("bubbleThemeButton.Image")));
+            this.bubbleThemeButton.Location = new System.Drawing.Point(47, 234);
+            this.bubbleThemeButton.Name = "bubbleThemeButton";
+            this.bubbleThemeButton.Size = new System.Drawing.Size(25, 25);
+            this.bubbleThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.bubbleThemeButton.TabIndex = 9;
+            this.bubbleThemeButton.TabStop = false;
+            this.bubbleThemeButton.Click += new System.EventHandler(this.setBubbleTheme);
+            // 
+            // darkThemeButton
+            // 
+            this.darkThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("darkThemeButton.Image")));
+            this.darkThemeButton.Location = new System.Drawing.Point(78, 234);
+            this.darkThemeButton.Name = "darkThemeButton";
+            this.darkThemeButton.Size = new System.Drawing.Size(25, 25);
+            this.darkThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.darkThemeButton.TabIndex = 10;
+            this.darkThemeButton.TabStop = false;
+            this.darkThemeButton.Click += new System.EventHandler(this.setDarkTheme);
+            // 
+            // classicThemeButton
+            // 
+            this.classicThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("classicThemeButton.Image")));
+            this.classicThemeButton.Location = new System.Drawing.Point(78, 201);
+            this.classicThemeButton.Name = "classicThemeButton";
+            this.classicThemeButton.Size = new System.Drawing.Size(25, 25);
+            this.classicThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.classicThemeButton.TabIndex = 11;
+            this.classicThemeButton.TabStop = false;
+            this.classicThemeButton.Click += new System.EventHandler(this.setClassicTheme);
+            // 
             // MinesweeperSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(545, 403);
             this.BackColor = System.Drawing.Color.DarkGreen;
+            this.ClientSize = new System.Drawing.Size(545, 403);
+            this.Controls.Add(this.classicThemeButton);
+            this.Controls.Add(this.darkThemeButton);
+            this.Controls.Add(this.bubbleThemeButton);
+            this.Controls.Add(this.catsThemeButton);
             this.Controls.Add(this.customMinesBox);
             this.Controls.Add(this.customHeightBox);
             this.Controls.Add(this.customWidthBox);
@@ -184,7 +240,12 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.catsThemeButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bubbleThemeButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.darkThemeButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.classicThemeButton)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -197,6 +258,10 @@ namespace MinesweeperGUI
         private System.Windows.Forms.NumericUpDown customWidthBox;
         private System.Windows.Forms.NumericUpDown customHeightBox;
         private System.Windows.Forms.NumericUpDown customMinesBox;
+        private System.Windows.Forms.PictureBox catsThemeButton;
+        private System.Windows.Forms.PictureBox bubbleThemeButton;
+        private System.Windows.Forms.PictureBox darkThemeButton;
+        private System.Windows.Forms.PictureBox classicThemeButton;
     }
 }
 

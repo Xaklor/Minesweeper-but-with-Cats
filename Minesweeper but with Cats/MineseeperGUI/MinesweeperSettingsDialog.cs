@@ -16,6 +16,7 @@ namespace MinesweeperGUI
         public int mapHeight = 9;
         public int numMines = 10;
         public bool confirmed;
+        public theme selectedTheme;
 
         public MinesweeperSettingsDialog()
         {
@@ -51,6 +52,26 @@ namespace MinesweeperGUI
             mapHeight = (int)customHeightBox.Value;
             numMines = (int)customMinesBox.Value;
             this.Close();
+        }
+
+        private void setCatTheme(object sender, EventArgs e)
+        {
+            selectedTheme = theme.cats;
+        }
+
+        private void setClassicTheme(object sender, EventArgs e)
+        {
+            selectedTheme = theme.classic;
+        }
+
+        private void setBubbleTheme(object sender, EventArgs e)
+        {
+            selectedTheme = theme.bubble;
+        }
+
+        private void setDarkTheme(object sender, EventArgs e)
+        {
+            selectedTheme = theme.dark;
         }
     }
 }
