@@ -268,4 +268,232 @@
   <data name="cat loading animation test" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cat loading animation test.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="bubble_cancel_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble cancel button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_cancel_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble cancel button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_confirm_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble confirm button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_confirm_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble confirm button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_easy_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble easy button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_easy_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble easy button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_hard_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble hard button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_hard_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble hard button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_help_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble help button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_newgame_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble newgame button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_normal_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble normal button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_normal_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble normal button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_options_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble options button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_options_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble options button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_stats_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble stats button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_stats_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble stats button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_cancel_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat cancel button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_cancel_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat cancel button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_confirm_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat confirm button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_confirm_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat confirm button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_easy_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat easy button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_easy_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat easy button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_hard_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat hard button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_hard_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat hard button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_help_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat help button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_newgame_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat newgame button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_normal_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat normal button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_normal_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat normal button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_options_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat options button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_options_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat options button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_stats_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat stats button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_stats_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat stats button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_cancel_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic cancel button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_cancel_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic cancel button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_confirm_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic confirm button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_confirm_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic confirm button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_easy_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic easy button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_easy_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic easy button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_hard_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic hard button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_hard_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic hard button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_help_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic help button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_newgame_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic newgame button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_normal_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic normal button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_normal_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic normal button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_options_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic options button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_options_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic options button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_stats_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic stats button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="classic_stats_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\classic stats button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_cancel_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark cancel button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_cancel_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark cancel button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_confirm_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark confirm button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_confirm_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark confirm button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_easy_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark easy button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_easy_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark easy button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_hard_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark hard button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_hard_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark hard button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_help_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark help button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_newgame_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark newgame button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_normal_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark normal button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_normal_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark normal button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_options_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark options button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_options_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark options button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_stats_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark stats button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_stats_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark stats button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

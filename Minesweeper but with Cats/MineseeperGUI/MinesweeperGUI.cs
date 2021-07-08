@@ -115,7 +115,7 @@ namespace MinesweeperGUI
 
             // wait until the loading animation has finished playing, once this method finishes the animation will be 
             // removed and we don't want that to happen in the middle of the animation.
-            while (workTimer.ElapsedMilliseconds < 1500) { }
+            while (workTimer.ElapsedMilliseconds < 1800) { }
         }
 
         /// <summary>
