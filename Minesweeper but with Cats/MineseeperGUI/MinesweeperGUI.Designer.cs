@@ -122,7 +122,7 @@ namespace MinesweeperGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(17, 64, 24);
+            this.BackColor = System.Drawing.Color.FromArgb(34, 128, 58);
             this.ClientSize = new System.Drawing.Size(482, 553);
             this.Controls.Add(this.loadingImage);
             this.Controls.Add(this.flowLayoutPanel1);

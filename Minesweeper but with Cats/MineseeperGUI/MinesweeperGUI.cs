@@ -182,9 +182,7 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void optionsButton_Click(object sender, EventArgs e)
         {
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog();
-            // set the settings dialog's theme to match ours before showing to maintain consistency.
-            settingsDialog.selectedTheme = this.currentTheme;
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme);
             settingsDialog.ShowDialog();
 
             // update the theme if a new one was chosen inside the dialog.
