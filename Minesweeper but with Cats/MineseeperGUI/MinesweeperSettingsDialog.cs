@@ -70,7 +70,7 @@ namespace MinesweeperGUI
         private void setClassicTheme(object sender, EventArgs e)
         {
             selectedTheme = theme.classic;
-            this.BackColor = Color.FromArgb(189, 189, 189);
+            this.BackColor = Color.FromArgb(160, 160, 160);
             easyDifficultyButton.Image   = Properties.Resources.classic_easy_button;
             normalDifficultyButton.Image = Properties.Resources.classic_normal_button;
             hardDifficultyButton.Image   = Properties.Resources.classic_hard_button;

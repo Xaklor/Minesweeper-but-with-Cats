@@ -121,20 +121,11 @@
   <data name="bubble 3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button newgame" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cateyes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="dark 6" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button stats" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blobsweats.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bubble mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="button options" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\blobglare.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="classic mine" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\classic mine.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -220,9 +211,6 @@
   <data name="bubble 1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="button help" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bwuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="cat 5" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cat 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -264,9 +252,6 @@
   </data>
   <data name="dark 2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat loading animation test" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat loading animation test.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="bubble_cancel_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble cancel button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

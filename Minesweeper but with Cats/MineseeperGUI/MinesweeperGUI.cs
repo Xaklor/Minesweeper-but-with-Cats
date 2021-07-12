@@ -223,6 +223,7 @@ namespace MinesweeperGUI
             this.currentTheme = newTheme;
 
             // update buttons
+            updateSidebarButtons(newTheme);
 
             // update cells
             foreach (GUICell cell in GUICells)
@@ -234,8 +235,131 @@ namespace MinesweeperGUI
             updateBGColor(newTheme);
 
             // update loading animation
+            updateLoadingAnimation(newTheme);
         }
 
+        /// <summary>
+        /// changes the sidebar buttons to match the given theme.
+        /// </summary>
+        /// <param name="newTheme"></param>
+        private void updateSidebarButtons(theme newTheme)
+        {
+            // new game button
+            switch (newTheme)
+            {
+                case theme.cats:
+                    this.newgameButton.Image = Properties.Resources.cat_newgame_button;
+                    break;
+
+                case theme.classic:
+                    this.newgameButton.Image = Properties.Resources.classic_newgame_button; 
+                    break;
+
+                case theme.bubble:
+                    this.newgameButton.Image = Properties.Resources.bubble_newgame_button; 
+                    break;
+
+                case theme.dark:
+                    this.newgameButton.Image = Properties.Resources.dark_newgame_button; 
+                    break;
+
+            }
+
+            // options button
+            switch (newTheme)
+            {
+                case theme.cats:
+                    this.optionsButton.Image = Properties.Resources.cat_options_button;
+                    break;
+
+                case theme.classic:
+                    this.optionsButton.Image = Properties.Resources.classic_options_button;
+                    break;
+
+                case theme.bubble:
+                    this.optionsButton.Image = Properties.Resources.bubble_options_button;
+                    break;
+
+                case theme.dark:
+                    this.optionsButton.Image = Properties.Resources.dark_options_button;
+                    break;
+
+            }
+
+            // stats button
+            switch (newTheme)
+            {
+                case theme.cats:
+                    this.statsButton.Image = Properties.Resources.cat_stats_button;
+                    break;
+
+                case theme.classic:
+                    this.statsButton.Image = Properties.Resources.classic_stats_button;
+                    break;
+
+                case theme.bubble:
+                    this.statsButton.Image = Properties.Resources.bubble_stats_button;
+                    break;
+
+                case theme.dark:
+                    this.statsButton.Image = Properties.Resources.dark_stats_button;
+                    break;
+
+            }
+
+            // help button
+            switch (newTheme)
+            {
+                case theme.cats:
+                    this.helpButton.Image = Properties.Resources.cat_help_button;
+                    break;
+
+                case theme.classic:
+                    this.helpButton.Image = Properties.Resources.classic_help_button;
+                    break;
+
+                case theme.bubble:
+                    this.helpButton.Image = Properties.Resources.bubble_help_button;
+                    break;
+
+                case theme.dark:
+                    this.helpButton.Image = Properties.Resources.dark_help_button;
+                    break;
+
+            }
+        }
+
+        /// <summary>
+        /// changes the loading animation to match the given theme.
+        /// </summary>
+        /// <param name="newTheme"></param>
+        private void updateLoadingAnimation(theme newTheme)
+        {
+            switch (newTheme)
+            {
+                case theme.cats:
+                    this.loadingImage.Image = Properties.Resources.cat_loading_animation;
+                    break;
+
+                case theme.classic:
+                    this.loadingImage.Image = Properties.Resources.classic_loading_animation;
+                    break;
+
+                case theme.bubble:
+                    this.loadingImage.Image = Properties.Resources.bubble_loading_animation;
+                    break;
+
+                case theme.dark:
+                    this.loadingImage.Image = Properties.Resources.dark_loading_animation;
+                    break;
+
+            }
+        }
+
+        /// <summary>
+        /// changes the background color to match the given theme.
+        /// </summary>
+        /// <param name="newTheme"></param>
         private void updateBGColor(theme newTheme)
         {
             switch (newTheme)
@@ -245,7 +369,7 @@ namespace MinesweeperGUI
                     break;
 
                 case theme.classic:
-                    this.BackColor = Color.FromArgb(189, 189, 189);
+                    this.BackColor = Color.FromArgb(160, 160, 160);
                     break;
 
                 case theme.bubble:
