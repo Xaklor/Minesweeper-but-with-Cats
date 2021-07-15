@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MinesweeperModel;
 
@@ -38,7 +33,6 @@ namespace MinesweeperGUI
 
     public partial class MinesweeperGUI : Form
     {
-
         private List<GUICell> GUICells;
         private int mapWidth;
         private int mapHeight;
@@ -53,6 +47,17 @@ namespace MinesweeperGUI
         private delegate void wipeGUICellDelegate(MinesweeperGUI GUI);
         wipeGUICellDelegate wipeGUICell = wipeGUICells;
 
+        // this thing is called a Pinvoke, I don't understand what that means but what happens here is that
+        // the default windows system timer isn't accurate enough to handle animated gifs in the picturebox,
+        // so this overrides that and sets the timer to match the frequency of the animated gif loading animation.
+        // the speed of the timer can be adjusted by changing timerAccuracy, but 10ms is enough for my animations.
+        // taken from here: https://stackoverflow.com/questions/25382400/gif-animated-files-in-c-sharp-have-lower-framerates-than-they-should
+        private const int timerAccuracy = 10;
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        private static extern int timeBeginPeriod(int msec);
+        [System.Runtime.InteropServices.DllImport("winmm.dll")]
+        public static extern int timeEndPeriod(int msec);
+
         public MinesweeperGUI()
         {
             GUICells = new List<GUICell>();
@@ -61,6 +66,41 @@ namespace MinesweeperGUI
             numMines = 10;
             currentTheme = theme.cats;
             InitializeComponent();
+            // this sets the internal timer to the new speed.
+            timeBeginPeriod(timerAccuracy);
+        }
+
+        /*
+         * ----------------
+         * NEW GAME METHODS
+         * ----------------
+         */
+
+        /// <summary>
+        /// causes the newgame button to appear pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void newgameButton_Down(object sender, MouseEventArgs e)
+        {
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    newgameButton.Image = Properties.Resources.cat_newgame_button_pressed;
+                    break;
+
+                case theme.classic:
+                    newgameButton.Image = Properties.Resources.classic_newgame_button_pressed;
+                    break;
+
+                case theme.dark:
+                    newgameButton.Image = Properties.Resources.dark_newgame_button_pressed;
+                    break;
+
+                case theme.bubble:
+                    newgameButton.Image = Properties.Resources.bubble_newgame_button_pressed;
+                    break;
+            }
         }
 
         /// <summary>
@@ -76,7 +116,27 @@ namespace MinesweeperGUI
             
             // in order for the GUI to paint changes, the main thread needs to be idle
             // this starts up the intensive work on a background worker thread, it will run loadGUICells()
-            GUICellsLoader.RunWorkerAsync();            
+            GUICellsLoader.RunWorkerAsync();
+
+            // this causes the button to pop back up.
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    newgameButton.Image = Properties.Resources.cat_newgame_button;
+                    break;
+
+                case theme.classic:
+                    newgameButton.Image = Properties.Resources.classic_newgame_button;
+                    break;
+
+                case theme.dark:
+                    newgameButton.Image = Properties.Resources.dark_newgame_button;
+                    break;
+
+                case theme.bubble:
+                    newgameButton.Image = Properties.Resources.bubble_newgame_button;
+                    break;
+            }
         }
 
         /// <summary>
@@ -115,7 +175,7 @@ namespace MinesweeperGUI
 
             // wait until the loading animation has finished playing, once this method finishes the animation will be 
             // removed and we don't want that to happen in the middle of the animation.
-            while (workTimer.ElapsedMilliseconds < 1800) { }
+            while (workTimer.ElapsedMilliseconds < 1820) { }
         }
 
         /// <summary>
@@ -142,35 +202,36 @@ namespace MinesweeperGUI
             loadingImage.Visible = false;
         }
 
+        /*
+         * ----------------------
+         * OPTIONS BUTTON METHODS
+         * ----------------------
+         */
+
         /// <summary>
-        /// click up event handler for the game.
-        /// left clicking a cell reveals it.
-        /// right clicking a cell flags it.
+        /// causes the options button to appear pressed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void GUICell_Click(object sender, MouseEventArgs e)
+        private void optionsButton_Down(object sender, MouseEventArgs e)
         {
-            // GUICells are in an array just like MinesweeperCells
-            // index = x + y * rowlength
-            // rowlength is mapWidth
-            // anchor point is the loadingImage's location in case things move
-            // x = mouse.x - anchor_x / 25
-            // y = mouse.y - anchor_y / 25
-            // MousePosition is relative to the screen, to get it relative to the form we convert 
-            Point relativeMousePosition = PointToClient(MousePosition);
-            int cellx = (relativeMousePosition.X - loadingImage.Location.X) / 25;
-            int celly = (relativeMousePosition.Y - loadingImage.Location.Y) / 25;
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    optionsButton.Image = Properties.Resources.cat_options_button_pressed;
+                    break;
 
-            // left clicking a cell reveals it
-            if (e.Button == MouseButtons.Left)
-            {
-                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.zero);
-            }
-            // right clicking a cell flags it
-            else if (e.Button == MouseButtons.Right)
-            {
-                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.flagged);
+                case theme.classic:
+                    optionsButton.Image = Properties.Resources.classic_options_button_pressed;
+                    break;
+
+                case theme.dark:
+                    optionsButton.Image = Properties.Resources.dark_options_button_pressed;
+                    break;
+
+                case theme.bubble:
+                    optionsButton.Image = Properties.Resources.bubble_options_button_pressed;
+                    break;
             }
         }
 
@@ -182,7 +243,7 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void optionsButton_Click(object sender, EventArgs e)
         {
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMines);
             settingsDialog.ShowDialog();
 
             // update the theme if a new one was chosen inside the dialog.
@@ -209,7 +270,29 @@ namespace MinesweeperGUI
                 // min and max need to be updated as well so the user can't hide the map.
                 this.MinimumSize = new Size(this.Width, this.Height);
 
+                // this causes the button to pop back up.
+                switch (currentTheme)
+                {
+                    case theme.cats:
+                        optionsButton.Image = Properties.Resources.cat_options_button;
+                        break;
+
+                    case theme.classic:
+                        optionsButton.Image = Properties.Resources.classic_options_button;
+                        break;
+
+                    case theme.dark:
+                        optionsButton.Image = Properties.Resources.dark_options_button;
+                        break;
+
+                    case theme.bubble:
+                        optionsButton.Image = Properties.Resources.bubble_options_button;
+                        break;
+                }
+
+                // this starts a new game with the new settings.
                 newgameButton_Click(null, null);
+
             }
         }
 
@@ -856,6 +939,39 @@ namespace MinesweeperGUI
             }
         }
 
+        /*
+         * --------------------
+         * STATS BUTTON METHODS
+         * --------------------
+         */
+
+        /// <summary>
+        /// causes the stats button to appear pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void statsButton_Down(object sender, MouseEventArgs e)
+        {
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    statsButton.Image = Properties.Resources.cat_stats_button_pressed;
+                    break;
+
+                case theme.classic:
+                    statsButton.Image = Properties.Resources.classic_stats_button_pressed;
+                    break;
+
+                case theme.dark:
+                    statsButton.Image = Properties.Resources.dark_stats_button_pressed;
+                    break;
+
+                case theme.bubble:
+                    statsButton.Image = Properties.Resources.bubble_stats_button_pressed;
+                    break;
+            }
+        }
+
         /// <summary>
         /// not implemented yet.
         /// </summary>
@@ -863,7 +979,60 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void statsButton_Click(object sender, EventArgs e)
         {
+            // this causes the button to pop back up.
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    statsButton.Image = Properties.Resources.cat_stats_button;
+                    break;
+
+                case theme.classic:
+                    statsButton.Image = Properties.Resources.classic_stats_button;
+                    break;
+
+                case theme.dark:
+                    statsButton.Image = Properties.Resources.dark_stats_button;
+                    break;
+
+                case theme.bubble:
+                    statsButton.Image = Properties.Resources.bubble_stats_button;
+                    break;
+            }
+
             MessageBox.Show("I have not added stats yet.", "oops");
+        }
+
+        /*
+         * -------------------
+         * HELP BUTTON METHODS
+         * -------------------
+         */
+
+        /// <summary>
+        /// causes the help button to appear pressed.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void helpButton_Down(object sender, MouseEventArgs e)
+        {
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    helpButton.Image = Properties.Resources.cat_help_button_pressed;
+                    break;
+
+                case theme.classic:
+                    helpButton.Image = Properties.Resources.classic_help_button_pressed;
+                    break;
+
+                case theme.dark:
+                    helpButton.Image = Properties.Resources.dark_help_button_pressed;
+                    break;
+
+                case theme.bubble:
+                    helpButton.Image = Properties.Resources.bubble_help_button_pressed;
+                    break;
+            }
         }
 
         /// <summary>
@@ -873,6 +1042,26 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void helpButton_Click(object sender, EventArgs e)
         {
+            // this causes the button to pop back up.
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    helpButton.Image = Properties.Resources.cat_help_button;
+                    break;
+
+                case theme.classic:
+                    helpButton.Image = Properties.Resources.classic_help_button;
+                    break;
+
+                case theme.dark:
+                    helpButton.Image = Properties.Resources.dark_help_button;
+                    break;
+
+                case theme.bubble:
+                    helpButton.Image = Properties.Resources.bubble_help_button;
+                    break;
+            }
+
             string helpContents = "" +
                 "How to play Minesweeper:\n\n" +
                 "Left-click a cell to reveal it, right-click a cell to flag it." +
@@ -884,7 +1073,55 @@ namespace MinesweeperGUI
 
             MessageBox.Show(helpContents, "Help");
         }
-
         
+        /*
+         * -----------------
+         * MAIN GAME METHODS
+         * -----------------
+         */
+
+        /// <summary>
+        /// click up event handler for the game.
+        /// left clicking a cell reveals it.
+        /// right clicking a cell flags it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void GUICell_Click(object sender, MouseEventArgs e)
+        {
+            // GUICells are in an array just like MinesweeperCells
+            // index = x + y * rowlength
+            // rowlength is mapWidth
+            // anchor point is the loadingImage's location in case things move
+            // x = mouse.x - anchor_x / 25
+            // y = mouse.y - anchor_y / 25
+            // MousePosition is relative to the screen, to get it relative to the form we convert 
+            Point relativeMousePosition = PointToClient(MousePosition);
+            int cellx = (relativeMousePosition.X - loadingImage.Location.X) / 25;
+            int celly = (relativeMousePosition.Y - loadingImage.Location.Y) / 25;
+
+            // left clicking a cell reveals it
+            if (e.Button == MouseButtons.Left)
+            {
+                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.zero);
+            }
+            // right clicking a cell flags it
+            else if (e.Button == MouseButtons.Right)
+            {
+                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.flagged);
+            }
+        }
+
+        /// <summary>
+        /// cleanup for when the form closes.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void onExit(object sender, EventArgs e)
+        {
+            // I'm not sure why this bit is necessary or if I'm even using the right value here but it's what stackoverflow said.
+            timeEndPeriod(timerAccuracy);
+        }
+
     }
 }

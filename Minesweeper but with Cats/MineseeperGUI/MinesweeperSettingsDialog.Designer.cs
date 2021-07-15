@@ -251,9 +251,9 @@ namespace MinesweeperGUI
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MinesweeperSettingsDialog";
+            this.Text = "Settings";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Form1";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).EndInit();

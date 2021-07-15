@@ -1,6 +1,7 @@
 ﻿using MinesweeperModel;
 using System;
 using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace MinesweeperGUI
 {
@@ -70,7 +71,8 @@ namespace MinesweeperGUI
             this.helpButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.helpButton.TabIndex = 3;
             this.helpButton.TabStop = false;
-            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
+            this.helpButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.helpButton_Down);
+            this.helpButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.helpButton_Click);
             // 
             // statsButton
             // 
@@ -81,7 +83,8 @@ namespace MinesweeperGUI
             this.statsButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.statsButton.TabIndex = 2;
             this.statsButton.TabStop = false;
-            this.statsButton.Click += new System.EventHandler(this.statsButton_Click);
+            this.statsButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.statsButton_Down);
+            this.statsButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.statsButton_Click);
             // 
             // optionsButton
             // 
@@ -92,7 +95,8 @@ namespace MinesweeperGUI
             this.optionsButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.optionsButton.TabIndex = 1;
             this.optionsButton.TabStop = false;
-            this.optionsButton.Click += new System.EventHandler(this.optionsButton_Click);
+            this.optionsButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.optionsButton_Down);
+            this.optionsButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.optionsButton_Click);
             // 
             // newgameButton
             // 
@@ -103,7 +107,8 @@ namespace MinesweeperGUI
             this.newgameButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.newgameButton.TabIndex = 0;
             this.newgameButton.TabStop = false;
-            this.newgameButton.Click += new System.EventHandler(this.newgameButton_Click);
+            this.newgameButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.newgameButton_Down);
+            this.newgameButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.newgameButton_Click);
             // 
             // MinesweeperGUI
             // 
@@ -120,6 +125,7 @@ namespace MinesweeperGUI
             this.MinimumSize = new System.Drawing.Size(530, 500);
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onExit);
             ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).EndInit();

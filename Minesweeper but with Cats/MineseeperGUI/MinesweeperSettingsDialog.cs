@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MinesweeperGUI
@@ -18,12 +12,16 @@ namespace MinesweeperGUI
         public bool confirmed;
         public theme selectedTheme;
 
-        public MinesweeperSettingsDialog(theme parentTheme)
+        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines)
         {
             confirmed = false;
             InitializeComponent();
+           
+            // sets the dialog's theme and map type to match the main window for consistency.
+            customWidthBox.Value  = parentWidth;
+            customHeightBox.Value = parentHeight;
+            customMinesBox.Value  = parentMines;
 
-            // sets the dialog's theme to match the main window for consistency.
             switch (parentTheme)
             {
                 case (theme.cats):
