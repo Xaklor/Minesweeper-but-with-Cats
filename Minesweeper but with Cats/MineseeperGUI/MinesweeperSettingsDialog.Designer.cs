@@ -45,6 +45,10 @@ namespace MinesweeperGUI
             this.hardDifficultyButton = new System.Windows.Forms.PictureBox();
             this.confirmButton = new System.Windows.Forms.PictureBox();
             this.cancelButton = new System.Windows.Forms.PictureBox();
+            this.widthLabel = new System.Windows.Forms.PictureBox();
+            this.minesLabel = new System.Windows.Forms.PictureBox();
+            this.heightLabel = new System.Windows.Forms.PictureBox();
+            this.themesLabel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
@@ -57,11 +61,15 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.hardDifficultyButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.confirmButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).BeginInit();
             this.SuspendLayout();
             // 
             // customWidthBox
             // 
-            this.customWidthBox.Location = new System.Drawing.Point(354, 168);
+            this.customWidthBox.Location = new System.Drawing.Point(470, 37);
             this.customWidthBox.Maximum = new decimal(new int[] {
             30,
             0,
@@ -73,7 +81,7 @@ namespace MinesweeperGUI
             0,
             0});
             this.customWidthBox.Name = "customWidthBox";
-            this.customWidthBox.Size = new System.Drawing.Size(150, 27);
+            this.customWidthBox.Size = new System.Drawing.Size(63, 27);
             this.customWidthBox.TabIndex = 5;
             this.customWidthBox.Value = new decimal(new int[] {
             5,
@@ -83,7 +91,7 @@ namespace MinesweeperGUI
             // 
             // customHeightBox
             // 
-            this.customHeightBox.Location = new System.Drawing.Point(354, 201);
+            this.customHeightBox.Location = new System.Drawing.Point(470, 85);
             this.customHeightBox.Maximum = new decimal(new int[] {
             30,
             0,
@@ -95,7 +103,7 @@ namespace MinesweeperGUI
             0,
             0});
             this.customHeightBox.Name = "customHeightBox";
-            this.customHeightBox.Size = new System.Drawing.Size(150, 27);
+            this.customHeightBox.Size = new System.Drawing.Size(63, 27);
             this.customHeightBox.TabIndex = 6;
             this.customHeightBox.Value = new decimal(new int[] {
             5,
@@ -105,7 +113,7 @@ namespace MinesweeperGUI
             // 
             // customMinesBox
             // 
-            this.customMinesBox.Location = new System.Drawing.Point(354, 234);
+            this.customMinesBox.Location = new System.Drawing.Point(470, 135);
             this.customMinesBox.Maximum = new decimal(new int[] {
             1599,
             0,
@@ -117,7 +125,7 @@ namespace MinesweeperGUI
             0,
             0});
             this.customMinesBox.Name = "customMinesBox";
-            this.customMinesBox.Size = new System.Drawing.Size(150, 27);
+            this.customMinesBox.Size = new System.Drawing.Size(63, 27);
             this.customMinesBox.TabIndex = 7;
             this.customMinesBox.Value = new decimal(new int[] {
             1,
@@ -128,7 +136,7 @@ namespace MinesweeperGUI
             // catsThemeButton
             // 
             this.catsThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("catsThemeButton.Image")));
-            this.catsThemeButton.Location = new System.Drawing.Point(354, 63);
+            this.catsThemeButton.Location = new System.Drawing.Point(470, 213);
             this.catsThemeButton.Name = "catsThemeButton";
             this.catsThemeButton.Size = new System.Drawing.Size(25, 25);
             this.catsThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -139,7 +147,7 @@ namespace MinesweeperGUI
             // bubbleThemeButton
             // 
             this.bubbleThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("bubbleThemeButton.Image")));
-            this.bubbleThemeButton.Location = new System.Drawing.Point(416, 63);
+            this.bubbleThemeButton.Location = new System.Drawing.Point(470, 244);
             this.bubbleThemeButton.Name = "bubbleThemeButton";
             this.bubbleThemeButton.Size = new System.Drawing.Size(25, 25);
             this.bubbleThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -150,7 +158,7 @@ namespace MinesweeperGUI
             // darkThemeButton
             // 
             this.darkThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("darkThemeButton.Image")));
-            this.darkThemeButton.Location = new System.Drawing.Point(447, 63);
+            this.darkThemeButton.Location = new System.Drawing.Point(501, 244);
             this.darkThemeButton.Name = "darkThemeButton";
             this.darkThemeButton.Size = new System.Drawing.Size(25, 25);
             this.darkThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -161,7 +169,7 @@ namespace MinesweeperGUI
             // classicThemeButton
             // 
             this.classicThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("classicThemeButton.Image")));
-            this.classicThemeButton.Location = new System.Drawing.Point(385, 63);
+            this.classicThemeButton.Location = new System.Drawing.Point(501, 213);
             this.classicThemeButton.Name = "classicThemeButton";
             this.classicThemeButton.Size = new System.Drawing.Size(25, 25);
             this.classicThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -178,8 +186,8 @@ namespace MinesweeperGUI
             this.easyDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.easyDifficultyButton.TabIndex = 12;
             this.easyDifficultyButton.TabStop = false;
-            this.easyDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.easyButton_Up);
             this.easyDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.easyButton_Down);
+            this.easyDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.easyButton_Up);
             // 
             // normalDifficultyButton
             // 
@@ -190,8 +198,8 @@ namespace MinesweeperGUI
             this.normalDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.normalDifficultyButton.TabIndex = 13;
             this.normalDifficultyButton.TabStop = false;
-            this.normalDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.normalButton_Up);
             this.normalDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.normalButton_Down);
+            this.normalDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.normalButton_Up);
             // 
             // hardDifficultyButton
             // 
@@ -202,8 +210,8 @@ namespace MinesweeperGUI
             this.hardDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.hardDifficultyButton.TabIndex = 14;
             this.hardDifficultyButton.TabStop = false;
-            this.hardDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.hardButton_Up);
             this.hardDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.hardButton_Down);
+            this.hardDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.hardButton_Up);
             // 
             // confirmButton
             // 
@@ -214,8 +222,8 @@ namespace MinesweeperGUI
             this.confirmButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.confirmButton.TabIndex = 15;
             this.confirmButton.TabStop = false;
-            this.confirmButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.confirmButton_Up);
             this.confirmButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.confirmButton_Down);
+            this.confirmButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.confirmButton_Up);
             // 
             // cancelButton
             // 
@@ -226,15 +234,59 @@ namespace MinesweeperGUI
             this.cancelButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.cancelButton.TabIndex = 16;
             this.cancelButton.TabStop = false;
-            this.cancelButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cancelButton_Up);
             this.cancelButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cancelButton_Down);
+            this.cancelButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cancelButton_Up);
+            // 
+            // widthLabel
+            // 
+            this.widthLabel.Image = ((System.Drawing.Image)(resources.GetObject("widthLabel.Image")));
+            this.widthLabel.Location = new System.Drawing.Point(304, 35);
+            this.widthLabel.Name = "widthLabel";
+            this.widthLabel.Size = new System.Drawing.Size(160, 29);
+            this.widthLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.widthLabel.TabIndex = 17;
+            this.widthLabel.TabStop = false;
+            // 
+            // minesLabel
+            // 
+            this.minesLabel.Image = ((System.Drawing.Image)(resources.GetObject("minesLabel.Image")));
+            this.minesLabel.Location = new System.Drawing.Point(304, 135);
+            this.minesLabel.Name = "minesLabel";
+            this.minesLabel.Size = new System.Drawing.Size(160, 29);
+            this.minesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.minesLabel.TabIndex = 18;
+            this.minesLabel.TabStop = false;
+            // 
+            // heightLabel
+            // 
+            this.heightLabel.Image = ((System.Drawing.Image)(resources.GetObject("heightLabel.Image")));
+            this.heightLabel.Location = new System.Drawing.Point(304, 85);
+            this.heightLabel.Name = "heightLabel";
+            this.heightLabel.Size = new System.Drawing.Size(160, 37);
+            this.heightLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.heightLabel.TabIndex = 19;
+            this.heightLabel.TabStop = false;
+            // 
+            // themesLabel
+            // 
+            this.themesLabel.Image = ((System.Drawing.Image)(resources.GetObject("themesLabel.Image")));
+            this.themesLabel.Location = new System.Drawing.Point(304, 225);
+            this.themesLabel.Name = "themesLabel";
+            this.themesLabel.Size = new System.Drawing.Size(160, 29);
+            this.themesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.themesLabel.TabIndex = 20;
+            this.themesLabel.TabStop = false;
             // 
             // MinesweeperSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(34, 128, 58);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
             this.ClientSize = new System.Drawing.Size(545, 403);
+            this.Controls.Add(this.themesLabel);
+            this.Controls.Add(this.heightLabel);
+            this.Controls.Add(this.minesLabel);
+            this.Controls.Add(this.widthLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.confirmButton);
             this.Controls.Add(this.hardDifficultyButton);
@@ -251,9 +303,9 @@ namespace MinesweeperGUI
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MinesweeperSettingsDialog";
-            this.Text = "Settings";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Settings";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).EndInit();
@@ -267,6 +319,10 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.hardDifficultyButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.confirmButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cancelButton)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.widthLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -285,6 +341,10 @@ namespace MinesweeperGUI
         private System.Windows.Forms.PictureBox hardDifficultyButton;
         private System.Windows.Forms.PictureBox confirmButton;
         private System.Windows.Forms.PictureBox cancelButton;
+        private PictureBox widthLabel;
+        private PictureBox minesLabel;
+        private PictureBox heightLabel;
+        private PictureBox themesLabel;
     }
 }
 

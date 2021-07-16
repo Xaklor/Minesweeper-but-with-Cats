@@ -481,4 +481,70 @@
   <data name="dark_stats_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark stats button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="display_0" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 0.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 5.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 6.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 7.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 8.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="display_9" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\display 9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_height_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble height label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_mines_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble mines label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_themes_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble themes label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bubble_width_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bubble width label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_height_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat height label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_mines_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat mines label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_themes_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat themes label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="cat_width_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\cat width label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_height_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark height label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_mines_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark mines label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_themes_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark themes label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="dark_width_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\dark width label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

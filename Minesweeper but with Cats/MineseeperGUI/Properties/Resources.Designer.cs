@@ -253,6 +253,16 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bubble_height_label {
+            get {
+                object obj = ResourceManager.GetObject("bubble_height_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bubble_help_button {
             get {
                 object obj = ResourceManager.GetObject("bubble_help_button", resourceCulture);
@@ -286,6 +296,16 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap bubble_mine {
             get {
                 object obj = ResourceManager.GetObject("bubble mine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bubble_mines_label {
+            get {
+                object obj = ResourceManager.GetObject("bubble_mines_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -366,6 +386,26 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap bubble_stats_button_pressed {
             get {
                 object obj = ResourceManager.GetObject("bubble_stats_button_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bubble_themes_label {
+            get {
+                object obj = ResourceManager.GetObject("bubble_themes_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bubble_width_label {
+            get {
+                object obj = ResourceManager.GetObject("bubble_width_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -553,6 +593,16 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap cat_height_label {
+            get {
+                object obj = ResourceManager.GetObject("cat_height_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap cat_help_button {
             get {
                 object obj = ResourceManager.GetObject("cat_help_button", resourceCulture);
@@ -586,6 +636,16 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap cat_mine {
             get {
                 object obj = ResourceManager.GetObject("cat mine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cat_mines_label {
+            get {
+                object obj = ResourceManager.GetObject("cat_mines_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -666,6 +726,26 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap cat_stats_button_pressed {
             get {
                 object obj = ResourceManager.GetObject("cat_stats_button_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cat_themes_label {
+            get {
+                object obj = ResourceManager.GetObject("cat_themes_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cat_width_label {
+            get {
+                object obj = ResourceManager.GetObject("cat_width_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1153,6 +1233,16 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap dark_height_label {
+            get {
+                object obj = ResourceManager.GetObject("dark_height_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dark_help_button {
             get {
                 object obj = ResourceManager.GetObject("dark_help_button", resourceCulture);
@@ -1186,6 +1276,16 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap dark_mine {
             get {
                 object obj = ResourceManager.GetObject("dark mine", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dark_mines_label {
+            get {
+                object obj = ResourceManager.GetObject("dark_mines_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1266,6 +1366,126 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap dark_stats_button_pressed {
             get {
                 object obj = ResourceManager.GetObject("dark_stats_button_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dark_themes_label {
+            get {
+                object obj = ResourceManager.GetObject("dark_themes_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dark_width_label {
+            get {
+                object obj = ResourceManager.GetObject("dark_width_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_0 {
+            get {
+                object obj = ResourceManager.GetObject("display_0", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_1 {
+            get {
+                object obj = ResourceManager.GetObject("display_1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_2 {
+            get {
+                object obj = ResourceManager.GetObject("display_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_3 {
+            get {
+                object obj = ResourceManager.GetObject("display_3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_4 {
+            get {
+                object obj = ResourceManager.GetObject("display_4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_5 {
+            get {
+                object obj = ResourceManager.GetObject("display_5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_6 {
+            get {
+                object obj = ResourceManager.GetObject("display_6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_7 {
+            get {
+                object obj = ResourceManager.GetObject("display_7", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_8 {
+            get {
+                object obj = ResourceManager.GetObject("display_8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap display_9 {
+            get {
+                object obj = ResourceManager.GetObject("display_9", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

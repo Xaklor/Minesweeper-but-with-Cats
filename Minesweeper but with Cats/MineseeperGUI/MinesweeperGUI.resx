@@ -5353,6 +5353,86 @@
         QmCC
 </value>
   </data>
+  <data name="minesCounter1.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAD4AAABWCAYAAACXZiVzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAAd0SU1FB+UHDxEdILn4aUQAAAMpSURBVHhe7Y9BjuMwEAPz/0/PUhfDJAg1GY8B
+        L8YFVA5RV0v+vLy8vPwZfn5+yPXXf+Z3vB/+frhd/mS/xi07fBrujWKMiw+fhnujGOPiw6fh3ijGuPjw
+        abg3ijEUKtP53Uz36zmMoVCZzu9mul/PYQyFynR+N9P9eg5jKFSm87uZ7tdzGEPhRDvf0u7XeRhD4UQ7
+        39Lu13kYQ+FEO9/S7td5GEPhRDvf0u7XeRhDYYv2V20xO2IobNH+qi1mRwyFLdpftcXsiKGwRfurtpgd
+        MRS2aA9bqG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5F
+        exhDYYv2sIX6Fu1hDIUt2sMW6lu0hzEUtph+/cSavkJ7GENhi+mPj0o0fYX2MIbCFtMfH5Vo+grtYQyF
+        LaY/PirR9BXawxgKJ3TeSKxk5xrZOWGaGAondN5IrGTnGtk5YZoYCid03kisZOca2TlhmhgKJ3TeSKxk
+        5xrZOWGaGBc3bllv22nQ/a0xLm7c4j72rEH3t8a4uHGL+9izBt3fGuPixi3uY88adH9rDIUTOm8kVrJz
+        jeycME0MhRM6byRWsnON7JwwTQyFEzpvJFayc43snDBNDIUTOm8kVrJzjeycME0MhS3aQ2KN7FwjZ1u0
+        hzEUtmgPiTWyc42cbdEexlDYoj0k1sjONXK2RXsYQ2GL9pBYIzvXyNkW7WEMhS3awxbqW7SHMRS2aA9b
+        qG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5FexhDYYv2
+        sIX6Fu1hDIUt2l+1xeyIobBF+6u2mB0xFLZof9UWsyOGwhbtr9pidsRQONHOt7T7dR7GUDjRzre0+3Ue
+        xlA40c63tPt1HsZQONHOt7T7dR7GUKhM53cz3a/nMIZCZTq/m+l+PYcxFCrT+d1M9+s5jKFQmc7vZrpf
+        z2GMiw+fhnujGOPiw6fh3ijGuPjwabg3ijEuPnwa7o3i17hlT/bXcMuf7K/hlj/ZX8Mtf7IvLy8vf5HP
+        5x+JTR3dJVbyZAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="minesCounter10.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAD4AAABWCAYAAACXZiVzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAAd0SU1FB+UHDxEdILn4aUQAAAMpSURBVHhe7Y9BjuMwEAPz/0/PUhfDJAg1GY8B
+        L8YFVA5RV0v+vLy8vPwZfn5+yPXXf+Z3vB/+frhd/mS/xi07fBrujWKMiw+fhnujGOPiw6fh3ijGuPjw
+        abg3ijEUKtP53Uz36zmMoVCZzu9mul/PYQyFynR+N9P9eg5jKFSm87uZ7tdzGEPhRDvf0u7XeRhD4UQ7
+        39Lu13kYQ+FEO9/S7td5GEPhRDvf0u7XeRhDYYv2V20xO2IobNH+qi1mRwyFLdpftcXsiKGwRfurtpgd
+        MRS2aA9bqG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5F
+        exhDYYv2sIX6Fu1hDIUt2sMW6lu0hzEUtph+/cSavkJ7GENhi+mPj0o0fYX2MIbCFtMfH5Vo+grtYQyF
+        LaY/PirR9BXawxgKJ3TeSKxk5xrZOWGaGAondN5IrGTnGtk5YZoYCid03kisZOca2TlhmhgKJ3TeSKxk
+        5xrZOWGaGBc3bllv22nQ/a0xLm7c4j72rEH3t8a4uHGL+9izBt3fGuPixi3uY88adH9rDIUTOm8kVrJz
+        jeycME0MhRM6byRWsnON7JwwTQyFEzpvJFayc43snDBNDIUTOm8kVrJzjeycME0MhS3aQ2KN7FwjZ1u0
+        hzEUtmgPiTWyc42cbdEexlDYoj0k1sjONXK2RXsYQ2GL9pBYIzvXyNkW7WEMhS3awxbqW7SHMRS2aA9b
+        qG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5FexhDYYv2
+        sIX6Fu1hDIUt2l+1xeyIobBF+6u2mB0xFLZof9UWsyOGwhbtr9pidsRQONHOt7T7dR7GUDjRzre0+3Ue
+        xlA40c63tPt1HsZQONHOt7T7dR7GUKhM53cz3a/nMIZCZTq/m+l+PYcxFCrT+d1M9+s5jKFQmc7vZrpf
+        z2GMiw+fhnujGOPiw6fh3ijGuPjwabg3ijEuPnwa7o3i17hlT/bXcMuf7K/hlj/ZX8Mtf7IvLy8vf5HP
+        5x+JTR3dJVbyZAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="minesCounter100.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAD4AAABWCAYAAACXZiVzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAAd0SU1FB+UHDxEdILn4aUQAAAMpSURBVHhe7Y9BjuMwEAPz/0/PUhfDJAg1GY8B
+        L8YFVA5RV0v+vLy8vPwZfn5+yPXXf+Z3vB/+frhd/mS/xi07fBrujWKMiw+fhnujGOPiw6fh3ijGuPjw
+        abg3ijEUKtP53Uz36zmMoVCZzu9mul/PYQyFynR+N9P9eg5jKFSm87uZ7tdzGEPhRDvf0u7XeRhD4UQ7
+        39Lu13kYQ+FEO9/S7td5GEPhRDvf0u7XeRhDYYv2V20xO2IobNH+qi1mRwyFLdpftcXsiKGwRfurtpgd
+        MRS2aA9bqG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5F
+        exhDYYv2sIX6Fu1hDIUt2sMW6lu0hzEUtph+/cSavkJ7GENhi+mPj0o0fYX2MIbCFtMfH5Vo+grtYQyF
+        LaY/PirR9BXawxgKJ3TeSKxk5xrZOWGaGAondN5IrGTnGtk5YZoYCid03kisZOca2TlhmhgKJ3TeSKxk
+        5xrZOWGaGBc3bllv22nQ/a0xLm7c4j72rEH3t8a4uHGL+9izBt3fGuPixi3uY88adH9rDIUTOm8kVrJz
+        jeycME0MhRM6byRWsnON7JwwTQyFEzpvJFayc43snDBNDIUTOm8kVrJzjeycME0MhS3aQ2KN7FwjZ1u0
+        hzEUtmgPiTWyc42cbdEexlDYoj0k1sjONXK2RXsYQ2GL9pBYIzvXyNkW7WEMhS3awxbqW7SHMRS2aA9b
+        qG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5FexhDYYv2
+        sIX6Fu1hDIUt2l+1xeyIobBF+6u2mB0xFLZof9UWsyOGwhbtr9pidsRQONHOt7T7dR7GUDjRzre0+3Ue
+        xlA40c63tPt1HsZQONHOt7T7dR7GUKhM53cz3a/nMIZCZTq/m+l+PYcxFCrT+d1M9+s5jKFQmc7vZrpf
+        z2GMiw+fhnujGOPiw6fh3ijGuPjwabg3ijEuPnwa7o3i17hlT/bXcMuf7K/hlj/ZX8Mtf7IvLy8vf5HP
+        5x+JTR3dJVbyZAAAAABJRU5ErkJggg==
+</value>
+  </data>
+  <data name="minesCounter1000.Image" type="System.Drawing.Bitmap, System.Drawing.Common" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAAD4AAABWCAYAAACXZiVzAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
+        EAAACxABrSO9dQAAAAd0SU1FB+UHDxEdILn4aUQAAAMpSURBVHhe7Y9BjuMwEAPz/0/PUhfDJAg1GY8B
+        L8YFVA5RV0v+vLy8vPwZfn5+yPXXf+Z3vB/+frhd/mS/xi07fBrujWKMiw+fhnujGOPiw6fh3ijGuPjw
+        abg3ijEUKtP53Uz36zmMoVCZzu9mul/PYQyFynR+N9P9eg5jKFSm87uZ7tdzGEPhRDvf0u7XeRhD4UQ7
+        39Lu13kYQ+FEO9/S7td5GEPhRDvf0u7XeRhDYYv2V20xO2IobNH+qi1mRwyFLdpftcXsiKGwRfurtpgd
+        MRS2aA9bqG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5F
+        exhDYYv2sIX6Fu1hDIUt2sMW6lu0hzEUtph+/cSavkJ7GENhi+mPj0o0fYX2MIbCFtMfH5Vo+grtYQyF
+        LaY/PirR9BXawxgKJ3TeSKxk5xrZOWGaGAondN5IrGTnGtk5YZoYCid03kisZOca2TlhmhgKJ3TeSKxk
+        5xrZOWGaGBc3bllv22nQ/a0xLm7c4j72rEH3t8a4uHGL+9izBt3fGuPixi3uY88adH9rDIUTOm8kVrJz
+        jeycME0MhRM6byRWsnON7JwwTQyFEzpvJFayc43snDBNDIUTOm8kVrJzjeycME0MhS3aQ2KN7FwjZ1u0
+        hzEUtmgPiTWyc42cbdEexlDYoj0k1sjONXK2RXsYQ2GL9pBYIzvXyNkW7WEMhS3awxbqW7SHMRS2aA9b
+        qG/RHsZQ2KI9bKG+RXsYQ2GL9rCF+hbtYQyFLdrDFupbtIcxFLZoD1uob9EexlDYoj1sob5FexhDYYv2
+        sIX6Fu1hDIUt2l+1xeyIobBF+6u2mB0xFLZof9UWsyOGwhbtr9pidsRQONHOt7T7dR7GUDjRzre0+3Ue
+        xlA40c63tPt1HsZQONHOt7T7dR7GUKhM53cz3a/nMIZCZTq/m+l+PYcxFCrT+d1M9+s5jKFQmc7vZrpf
+        z2GMiw+fhnujGOPiw6fh3ijGuPjwabg3ijEuPnwa7o3i17hlT/bXcMuf7K/hlj/ZX8Mtf7IvLy8vf5HP
+        5x+JTR3dJVbyZAAAAABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e">
     <value>58</value>
   </metadata>

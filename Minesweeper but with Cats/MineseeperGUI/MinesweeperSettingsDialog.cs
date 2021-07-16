@@ -57,7 +57,11 @@ namespace MinesweeperGUI
             hardDifficultyButton.Image   = Properties.Resources.cat_hard_button;
             confirmButton.Image          = Properties.Resources.cat_confirm_button;
             cancelButton.Image           = Properties.Resources.cat_cancel_button;
-            
+            widthLabel.Image             = Properties.Resources.cat_width_label;
+            heightLabel.Image            = Properties.Resources.cat_height_label;
+            minesLabel.Image             = Properties.Resources.cat_mines_label;
+            themesLabel.Image            = Properties.Resources.cat_themes_label;
+
         }
 
         /// <summary>
@@ -74,6 +78,11 @@ namespace MinesweeperGUI
             hardDifficultyButton.Image   = Properties.Resources.classic_hard_button;
             confirmButton.Image          = Properties.Resources.classic_confirm_button;
             cancelButton.Image           = Properties.Resources.classic_cancel_button;
+            // classic and cat labels are the same due to having the same font.
+            widthLabel.Image             = Properties.Resources.cat_width_label;
+            heightLabel.Image            = Properties.Resources.cat_height_label;
+            minesLabel.Image             = Properties.Resources.cat_mines_label;
+            themesLabel.Image            = Properties.Resources.cat_themes_label;
         }
 
         /// <summary>
@@ -90,6 +99,10 @@ namespace MinesweeperGUI
             hardDifficultyButton.Image   = Properties.Resources.bubble_hard_button;
             confirmButton.Image          = Properties.Resources.bubble_confirm_button;
             cancelButton.Image           = Properties.Resources.bubble_cancel_button;
+            widthLabel.Image             = Properties.Resources.bubble_width_label;
+            heightLabel.Image            = Properties.Resources.bubble_height_label;
+            minesLabel.Image             = Properties.Resources.bubble_mines_label;
+            themesLabel.Image            = Properties.Resources.bubble_themes_label;
         }
 
         /// <summary>
@@ -106,6 +119,10 @@ namespace MinesweeperGUI
             hardDifficultyButton.Image   = Properties.Resources.dark_hard_button;
             confirmButton.Image          = Properties.Resources.dark_confirm_button;
             cancelButton.Image           = Properties.Resources.dark_cancel_button;
+            widthLabel.Image             = Properties.Resources.dark_width_label;
+            heightLabel.Image            = Properties.Resources.dark_height_label;
+            minesLabel.Image             = Properties.Resources.dark_mines_label;
+            themesLabel.Image            = Properties.Resources.dark_themes_label;
         }
 
         /// <summary>

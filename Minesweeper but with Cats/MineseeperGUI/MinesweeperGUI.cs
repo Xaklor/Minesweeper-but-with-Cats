@@ -37,6 +37,7 @@ namespace MinesweeperGUI
         private int mapWidth;
         private int mapHeight;
         private int numMines;
+        private int numMinesInit;
         private theme currentTheme;
 
         // used for attaching GUICells to the GUI from the background worker
@@ -64,6 +65,7 @@ namespace MinesweeperGUI
             mapWidth = 9;
             mapHeight = 9;
             numMines = 10;
+            numMinesInit = 10;
             currentTheme = theme.cats;
             InitializeComponent();
             // this sets the internal timer to the new speed.
@@ -113,7 +115,10 @@ namespace MinesweeperGUI
             // this starts the loading animation playing and adjusts it to match our current map size
             loadingImage.Size = new Size(mapWidth * 25, mapHeight * 25);
             loadingImage.Visible = true;
-            
+
+            numMines = numMinesInit;
+            setMinesDisplay(true);
+
             // in order for the GUI to paint changes, the main thread needs to be idle
             // this starts up the intensive work on a background worker thread, it will run loadGUICells()
             GUICellsLoader.RunWorkerAsync();
@@ -135,6 +140,176 @@ namespace MinesweeperGUI
 
                 case theme.bubble:
                     newgameButton.Image = Properties.Resources.bubble_newgame_button;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// sets the mines displays to match the current number of shown mines. if this is called on game startup, 
+        /// then it will also hide the hundreds or thousands place if they are unneeded.
+        /// </summary>
+        /// <param name="startup"></param>
+        private void setMinesDisplay(bool startup=false)
+        {
+            // don't count negatives, just set everything to 0 and end instead.
+            if (numMines < 0)
+            {
+                this.minesCounter1.Image    = Properties.Resources.display_0;
+                this.minesCounter10.Image   = Properties.Resources.display_0;
+                this.minesCounter100.Image  = Properties.Resources.display_0;
+                this.minesCounter1000.Image = Properties.Resources.display_0;
+                return;
+            }
+
+            // ones
+            switch (numMines % 10)
+            {
+                case 0:
+                    this.minesCounter1.Image = Properties.Resources.display_0;
+                    break;
+                case 1:
+                    this.minesCounter1.Image = Properties.Resources.display_1;
+                    break;
+                case 2:
+                    this.minesCounter1.Image = Properties.Resources.display_2;
+                    break;
+                case 3:
+                    this.minesCounter1.Image = Properties.Resources.display_3;
+                    break;
+                case 4:
+                    this.minesCounter1.Image = Properties.Resources.display_4;
+                    break;
+                case 5:
+                    this.minesCounter1.Image = Properties.Resources.display_5;
+                    break;
+                case 6:
+                    this.minesCounter1.Image = Properties.Resources.display_6;
+                    break;
+                case 7:
+                    this.minesCounter1.Image = Properties.Resources.display_7;
+                    break;
+                case 8:
+                    this.minesCounter1.Image = Properties.Resources.display_8;
+                    break;
+                case 9:
+                    this.minesCounter1.Image = Properties.Resources.display_9;
+                    break;
+            }
+
+            // tens
+            switch (numMines % 100 / 10)
+            {
+                case 0:
+                    this.minesCounter10.Image = Properties.Resources.display_0;
+                    break;
+                case 1:
+                    this.minesCounter10.Image = Properties.Resources.display_1;
+                    break;
+                case 2:
+                    this.minesCounter10.Image = Properties.Resources.display_2;
+                    break;
+                case 3:
+                    this.minesCounter10.Image = Properties.Resources.display_3;
+                    break;
+                case 4:
+                    this.minesCounter10.Image = Properties.Resources.display_4;
+                    break;
+                case 5:
+                    this.minesCounter10.Image = Properties.Resources.display_5;
+                    break;
+                case 6:
+                    this.minesCounter10.Image = Properties.Resources.display_6;
+                    break;
+                case 7:
+                    this.minesCounter10.Image = Properties.Resources.display_7;
+                    break;
+                case 8:
+                    this.minesCounter10.Image = Properties.Resources.display_8;
+                    break;
+                case 9:
+                    this.minesCounter10.Image = Properties.Resources.display_9;
+                    break;
+            }
+
+            // hundreds
+            if(startup)
+                this.minesCounter100.Visible = true;
+
+            switch (numMines % 1000 / 100)
+            {
+                case 0:
+                    this.minesCounter100.Image = Properties.Resources.display_0;
+                    if(startup)
+                        this.minesCounter100.Visible = false;
+
+                    break;
+                case 1:
+                    this.minesCounter100.Image = Properties.Resources.display_1;
+                    break;
+                case 2:
+                    this.minesCounter100.Image = Properties.Resources.display_2;
+                    break;
+                case 3:
+                    this.minesCounter100.Image = Properties.Resources.display_3;
+                    break;
+                case 4:
+                    this.minesCounter100.Image = Properties.Resources.display_4;
+                    break;
+                case 5:
+                    this.minesCounter100.Image = Properties.Resources.display_5;
+                    break;
+                case 6:
+                    this.minesCounter100.Image = Properties.Resources.display_6;
+                    break;
+                case 7:
+                    this.minesCounter100.Image = Properties.Resources.display_7;
+                    break;
+                case 8:
+                    this.minesCounter100.Image = Properties.Resources.display_8;
+                    break;
+                case 9:
+                    this.minesCounter100.Image = Properties.Resources.display_9;
+                    break;
+            }
+
+            // thousands
+            if(startup)
+                this.minesCounter1000.Visible = true;
+
+            switch (numMines % 10000 / 1000)
+            {
+                case 0:
+                    this.minesCounter1000.Image = Properties.Resources.display_0;
+                    if(startup)
+                        this.minesCounter1000.Visible = false;
+
+                    break;
+                case 1:
+                    this.minesCounter1000.Image = Properties.Resources.display_1;
+                    break;
+                case 2:
+                    this.minesCounter1000.Image = Properties.Resources.display_2;
+                    break;
+                case 3:
+                    this.minesCounter1000.Image = Properties.Resources.display_3;
+                    break;
+                case 4:
+                    this.minesCounter1000.Image = Properties.Resources.display_4;
+                    break;
+                case 5:
+                    this.minesCounter1000.Image = Properties.Resources.display_5;
+                    break;
+                case 6:
+                    this.minesCounter1000.Image = Properties.Resources.display_6;
+                    break;
+                case 7:
+                    this.minesCounter1000.Image = Properties.Resources.display_7;
+                    break;
+                case 8:
+                    this.minesCounter1000.Image = Properties.Resources.display_8;
+                    break;
+                case 9:
+                    this.minesCounter1000.Image = Properties.Resources.display_9;
                     break;
             }
         }
@@ -246,6 +421,26 @@ namespace MinesweeperGUI
             MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMines);
             settingsDialog.ShowDialog();
 
+            // this causes the button to pop back up.
+            switch (currentTheme)
+            {
+                case theme.cats:
+                    optionsButton.Image = Properties.Resources.cat_options_button;
+                    break;
+
+                case theme.classic:
+                    optionsButton.Image = Properties.Resources.classic_options_button;
+                    break;
+
+                case theme.dark:
+                    optionsButton.Image = Properties.Resources.dark_options_button;
+                    break;
+
+                case theme.bubble:
+                    optionsButton.Image = Properties.Resources.bubble_options_button;
+                    break;
+            }
+
             // update the theme if a new one was chosen inside the dialog.
             if (settingsDialog.selectedTheme != this.currentTheme)
             {
@@ -258,37 +453,16 @@ namespace MinesweeperGUI
 
                 mapWidth = settingsDialog.mapWidth;
                 mapHeight = settingsDialog.mapHeight;
-                numMines = settingsDialog.numMines;
+                numMinesInit = settingsDialog.numMines;
 
                 // change our own dimensions accordingly
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
                 // the larger of our starting dimensions and the new dimensions based on the new map.
                 // the +1 and +2 on mapWidth and mapHeight are necessary and I have no idea why.
-                this.Width  = Math.Max(500, loadingImage.Location.X + (mapWidth + 1) * 25);
-                this.Height = Math.Max(600, loadingImage.Location.Y + (mapHeight + 2) * 25);
-
-                // min and max need to be updated as well so the user can't hide the map.
-                this.MinimumSize = new Size(this.Width, this.Height);
-
-                // this causes the button to pop back up.
-                switch (currentTheme)
-                {
-                    case theme.cats:
-                        optionsButton.Image = Properties.Resources.cat_options_button;
-                        break;
-
-                    case theme.classic:
-                        optionsButton.Image = Properties.Resources.classic_options_button;
-                        break;
-
-                    case theme.dark:
-                        optionsButton.Image = Properties.Resources.dark_options_button;
-                        break;
-
-                    case theme.bubble:
-                        optionsButton.Image = Properties.Resources.bubble_options_button;
-                        break;
-                }
+                int w = Math.Max(530, loadingImage.Location.X + (mapWidth + 1) * 25);
+                int h = Math.Max(550, loadingImage.Location.Y + (mapHeight + 2) * 25);
+                this.MinimumSize = new Size(w, h);
+                this.Size = MinimumSize;
 
                 // this starts a new game with the new settings.
                 newgameButton_Click(null, null);
@@ -1099,16 +1273,30 @@ namespace MinesweeperGUI
             Point relativeMousePosition = PointToClient(MousePosition);
             int cellx = (relativeMousePosition.X - loadingImage.Location.X) / 25;
             int celly = (relativeMousePosition.Y - loadingImage.Location.Y) / 25;
+            bool isTargetFlagged = GUICells[cellx + (celly * mapWidth)].currentState == state.flagged;
 
-            // left clicking a cell reveals it
-            if (e.Button == MouseButtons.Left)
+            // left clicking a cell reveals it unless it is flagged.
+            if (e.Button == MouseButtons.Left && !isTargetFlagged)
             {
                 updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.zero);
             }
-            // right clicking a cell flags it
+            // right clicking a cell toggles flagged state.
             else if (e.Button == MouseButtons.Right)
             {
-                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.flagged);
+                // if the cell is already flagged, unflag it and increase the counter, 
+                // otherwise flag it and decrease the counter instead.
+                if (isTargetFlagged)
+                {
+                    updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.blank);
+                    numMines++;
+                    setMinesDisplay();
+                }
+                else
+                {
+                    updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.flagged);
+                    numMines--;
+                    setMinesDisplay();
+                }                
             }
         }
 
