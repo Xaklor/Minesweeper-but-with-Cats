@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.Threading;
 using System.Windows.Forms;
 using MinesweeperModel;
 
@@ -33,20 +34,31 @@ namespace MinesweeperGUI
 
     public partial class MinesweeperGUI : Form
     {
-        private List<GUICell> GUICells;
         private int mapWidth;
         private int mapHeight;
         private int numMines;
         private int numMinesInit;
         private theme currentTheme;
+        private bool animationsOn;
+        private bool loading;
 
-        // used for attaching GUICells to the GUI from the background worker
-        private delegate void addGUICellDelegate(Form form, Control GUICell);
-        addGUICellDelegate addGUICell = (Form form, Control GUICell) => form.Controls.Add(GUICell);
+        // tiles
+        private bool draw;
+        private Point  tileAnchor;
+        private Bitmap blankTile;
+        private Bitmap selectTile;
+        private Bitmap flaggedTile;
+        private Bitmap mineTile;
+        private Bitmap oneTile;
+        private Bitmap twoTile;
+        private Bitmap threeTile;
+        private Bitmap fourTile;
+        private Bitmap fiveTile;
+        private Bitmap sixTile;
+        private Bitmap sevenTile;
+        private Bitmap eightTile;   
 
-        // used for deleting old GUICells from the GUI from the background worker
-        private delegate void wipeGUICellDelegate(MinesweeperGUI GUI);
-        wipeGUICellDelegate wipeGUICell = wipeGUICells;
+        private Bitmap mapBackgroundImage;
 
         // this thing is called a Pinvoke, I don't understand what that means but what happens here is that
         // the default windows system timer isn't accurate enough to handle animated gifs in the picturebox,
@@ -61,13 +73,33 @@ namespace MinesweeperGUI
 
         public MinesweeperGUI()
         {
-            GUICells = new List<GUICell>();
             mapWidth = 9;
             mapHeight = 9;
             numMines = 10;
             numMinesInit = 10;
             currentTheme = theme.cats;
-            InitializeComponent();
+
+            animationsOn = false;
+            loading = false;
+
+            draw = false;
+            tileAnchor  = new Point(278, 112);
+            blankTile   = Properties.Resources.cat_blank;
+            selectTile  = Properties.Resources.cat_selected;
+            flaggedTile = Properties.Resources.cat_flagged;
+            mineTile    = Properties.Resources.cat_mine;
+            oneTile     = Properties.Resources.cat_1;
+            twoTile     = Properties.Resources.cat_2;
+            threeTile   = Properties.Resources.cat_3;
+            fourTile    = Properties.Resources.cat_4;
+            fiveTile    = Properties.Resources.cat_5;
+            sixTile     = Properties.Resources.cat_6;
+            sevenTile   = Properties.Resources.cat_7;
+            eightTile   = Properties.Resources.cat_8;
+
+            mapBackgroundImage = Properties.Resources.blobcathug;
+
+        InitializeComponent();
             // this sets the internal timer to the new speed.
             timeBeginPeriod(timerAccuracy);
         }
@@ -112,16 +144,9 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void newgameButton_Click(object sender, EventArgs e)
         {
-            // this starts the loading animation playing and adjusts it to match our current map size
-            loadingImage.Size = new Size(mapWidth * 25, mapHeight * 25);
-            loadingImage.Visible = true;
-
+            
             numMines = numMinesInit;
             setMinesDisplay(true);
-
-            // in order for the GUI to paint changes, the main thread needs to be idle
-            // this starts up the intensive work on a background worker thread, it will run loadGUICells()
-            GUICellsLoader.RunWorkerAsync();
 
             // this causes the button to pop back up.
             switch (currentTheme)
@@ -142,6 +167,46 @@ namespace MinesweeperGUI
                     newgameButton.Image = Properties.Resources.bubble_newgame_button;
                     break;
             }
+
+            if (animationsOn)
+            {
+                // this starts the loading animation playing and adjusts it to match our current map size
+                loadingImage.Size = new Size(mapWidth * 25, mapHeight * 25);
+                loadingImage.Visible = true;
+                loading = true;
+                // this starts up a background thread to wait out the loading animation, 
+                // since the main thread needs to be idle for the animation to be visible.
+                loadingStaller.RunWorkerAsync();
+            }
+            else
+            {
+                draw = true;
+                Invalidate();
+            }
+
+        }
+
+        /// <summary>
+        /// does nothing for 1.8 seconds so the loading animation can play.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void loadingStall(object sender, DoWorkEventArgs e)
+        {
+            Thread.Sleep(1800);
+        }
+
+        /// <summary>
+        /// removes the loading animation and lets the main GUI get back to work.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void endStall(object sender, RunWorkerCompletedEventArgs e)
+        {
+            loadingImage.Visible = false;
+            loading = false;
+            draw = true;
+            Invalidate();
         }
 
         /// <summary>
@@ -314,69 +379,6 @@ namespace MinesweeperGUI
             }
         }
 
-        /// <summary>
-        /// work done by the background worker, GUICellsLoader.
-        /// this clears away the old GUICells, and then generates the new ones.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void loadGUICells(object sender, DoWorkEventArgs e)
-        {
-            // this timer tracks how long it takes to perform the task
-            Stopwatch workTimer = new Stopwatch();
-            workTimer.Start();
-
-            // clearing the old GUICells requires access to the main thread, so Invoke is necessary here.
-            Invoke(wipeGUICell, new object[] { this });
-
-            for (int y = 0; y < mapHeight; y++)
-            {
-                for (int x = 0; x < mapWidth; x++)
-                {
-                    GUICell cell = new GUICell();
-                    cell.currentTheme = this.currentTheme;
-                    cell.currentState = state.blank;
-                    updateGUICellState(cell, state.blank);
-                    // anchor the GUICells based on loadingImage's location for consistency in case something moves.
-                    cell.Location = new Point((x * 25) + loadingImage.Location.X, (y * 25) + loadingImage.Location.Y);
-                    cell.Size = new Size(25, 25);
-                    cell.MouseUp += new MouseEventHandler(GUICell_Click);
-
-                    // adding to the GUI's controls requires access to the main thread, so Invoke is necessary here.
-                    Invoke(addGUICell, new Object[] { this, cell });
-                    GUICells.Add(cell);
-                }
-            }
-
-            // wait until the loading animation has finished playing, once this method finishes the animation will be 
-            // removed and we don't want that to happen in the middle of the animation.
-            while (workTimer.ElapsedMilliseconds < 1820) { }
-        }
-
-        /// <summary>
-        /// static method for clearing away old GUICells, used by the background worker's Invoke.
-        /// </summary>
-        /// <param name="GUI"></param>
-        private static void wipeGUICells(MinesweeperGUI GUI)
-        {
-            foreach (GUICell cell in GUI.GUICells)
-            {
-                cell.Dispose();
-            }
-
-            GUI.GUICells.Clear();
-        }
-
-        /// <summary>
-        /// ending point for the process of starting a new game. removes the loading animation.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void endLoadingAnimation(object sender, RunWorkerCompletedEventArgs e)
-        {
-            loadingImage.Visible = false;
-        }
-
         /*
          * ----------------------
          * OPTIONS BUTTON METHODS
@@ -418,7 +420,7 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void optionsButton_Click(object sender, EventArgs e)
         {
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMines);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMines, animationsOn);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -450,10 +452,11 @@ namespace MinesweeperGUI
             // only make game changes if the confirm button was clicked in the dialog. 
             if (settingsDialog.confirmed)
             {
-
                 mapWidth = settingsDialog.mapWidth;
                 mapHeight = settingsDialog.mapHeight;
                 numMinesInit = settingsDialog.numMines;
+
+                animationsOn = settingsDialog.animationsOn;
 
                 // change our own dimensions accordingly
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
@@ -476,642 +479,97 @@ namespace MinesweeperGUI
         /// <param name="newTheme"></param>
         private void changeTheme(theme newTheme)
         {
-            // update our current theme
             this.currentTheme = newTheme;
 
-            // update buttons
-            updateSidebarButtons(newTheme);
-
-            // update cells
-            foreach (GUICell cell in GUICells)
-            {
-                updateGUICellTheme(cell, newTheme);
-            }
-
-            // update background color
-            updateBGColor(newTheme);
-
-            // update loading animation
-            updateLoadingAnimation(newTheme);
-        }
-
-        /// <summary>
-        /// changes the sidebar buttons to match the given theme.
-        /// </summary>
-        /// <param name="newTheme"></param>
-        private void updateSidebarButtons(theme newTheme)
-        {
-            // new game button
-            switch (newTheme)
-            {
-                case theme.cats:
-                    this.newgameButton.Image = Properties.Resources.cat_newgame_button;
-                    break;
-
-                case theme.classic:
-                    this.newgameButton.Image = Properties.Resources.classic_newgame_button; 
-                    break;
-
-                case theme.bubble:
-                    this.newgameButton.Image = Properties.Resources.bubble_newgame_button; 
-                    break;
-
-                case theme.dark:
-                    this.newgameButton.Image = Properties.Resources.dark_newgame_button; 
-                    break;
-
-            }
-
-            // options button
-            switch (newTheme)
-            {
-                case theme.cats:
-                    this.optionsButton.Image = Properties.Resources.cat_options_button;
-                    break;
-
-                case theme.classic:
-                    this.optionsButton.Image = Properties.Resources.classic_options_button;
-                    break;
-
-                case theme.bubble:
-                    this.optionsButton.Image = Properties.Resources.bubble_options_button;
-                    break;
-
-                case theme.dark:
-                    this.optionsButton.Image = Properties.Resources.dark_options_button;
-                    break;
-
-            }
-
-            // stats button
-            switch (newTheme)
-            {
-                case theme.cats:
-                    this.statsButton.Image = Properties.Resources.cat_stats_button;
-                    break;
-
-                case theme.classic:
-                    this.statsButton.Image = Properties.Resources.classic_stats_button;
-                    break;
-
-                case theme.bubble:
-                    this.statsButton.Image = Properties.Resources.bubble_stats_button;
-                    break;
-
-                case theme.dark:
-                    this.statsButton.Image = Properties.Resources.dark_stats_button;
-                    break;
-
-            }
-
-            // help button
-            switch (newTheme)
-            {
-                case theme.cats:
-                    this.helpButton.Image = Properties.Resources.cat_help_button;
-                    break;
-
-                case theme.classic:
-                    this.helpButton.Image = Properties.Resources.classic_help_button;
-                    break;
-
-                case theme.bubble:
-                    this.helpButton.Image = Properties.Resources.bubble_help_button;
-                    break;
-
-                case theme.dark:
-                    this.helpButton.Image = Properties.Resources.dark_help_button;
-                    break;
-
-            }
-        }
-
-        /// <summary>
-        /// changes the loading animation to match the given theme.
-        /// </summary>
-        /// <param name="newTheme"></param>
-        private void updateLoadingAnimation(theme newTheme)
-        {
-            switch (newTheme)
-            {
-                case theme.cats:
-                    this.loadingImage.Image = Properties.Resources.cat_loading_animation;
-                    break;
-
-                case theme.classic:
-                    this.loadingImage.Image = Properties.Resources.classic_loading_animation;
-                    break;
-
-                case theme.bubble:
-                    this.loadingImage.Image = Properties.Resources.bubble_loading_animation;
-                    break;
-
-                case theme.dark:
-                    this.loadingImage.Image = Properties.Resources.dark_loading_animation;
-                    break;
-
-            }
-        }
-
-        /// <summary>
-        /// changes the background color to match the given theme.
-        /// </summary>
-        /// <param name="newTheme"></param>
-        private void updateBGColor(theme newTheme)
-        {
             switch (newTheme)
             {
                 case theme.cats:
                     this.BackColor = Color.FromArgb(34, 128, 58);
+                    newgameButton.Image = Properties.Resources.cat_newgame_button;
+                    optionsButton.Image = Properties.Resources.cat_options_button;
+                    statsButton.Image   = Properties.Resources.cat_stats_button;
+                    helpButton.Image    = Properties.Resources.cat_help_button;
+                    loadingImage.Image  = Properties.Resources.cat_loading_animation;
+                    blankTile   = Properties.Resources.cat_blank;
+                    selectTile  = Properties.Resources.cat_selected;
+                    flaggedTile = Properties.Resources.cat_flagged;
+                    mineTile    = Properties.Resources.cat_mine;
+                    oneTile     = Properties.Resources.cat_1;
+                    twoTile     = Properties.Resources.cat_2;
+                    threeTile   = Properties.Resources.cat_3;
+                    fourTile    = Properties.Resources.cat_4;
+                    fiveTile    = Properties.Resources.cat_5;
+                    sixTile     = Properties.Resources.cat_6;
+                    sevenTile   = Properties.Resources.cat_7;
+                    eightTile   = Properties.Resources.cat_8;
                     break;
 
                 case theme.classic:
                     this.BackColor = Color.FromArgb(160, 160, 160);
+                    newgameButton.Image = Properties.Resources.classic_newgame_button;
+                    optionsButton.Image = Properties.Resources.classic_options_button;
+                    statsButton.Image   = Properties.Resources.classic_stats_button;
+                    helpButton.Image    = Properties.Resources.classic_help_button;
+                    loadingImage.Image  = Properties.Resources.classic_loading_animation;
+                    blankTile   = Properties.Resources.classic_blank;
+                    selectTile  = Properties.Resources.classic_selected;
+                    flaggedTile = Properties.Resources.classic_flagged;
+                    mineTile    = Properties.Resources.classic_mine;
+                    oneTile     = Properties.Resources.classic_1;
+                    twoTile     = Properties.Resources.classic_2;
+                    threeTile   = Properties.Resources.classic_3;
+                    fourTile    = Properties.Resources.classic_4;
+                    fiveTile    = Properties.Resources.classic_5;
+                    sixTile     = Properties.Resources.classic_6;
+                    sevenTile   = Properties.Resources.classic_7;
+                    eightTile   = Properties.Resources.classic_8;
                     break;
 
                 case theme.bubble:
                     this.BackColor = Color.FromArgb(14, 66, 77);
+                    newgameButton.Image = Properties.Resources.bubble_newgame_button;
+                    optionsButton.Image = Properties.Resources.bubble_options_button;
+                    statsButton.Image   = Properties.Resources.bubble_stats_button;
+                    helpButton.Image    = Properties.Resources.bubble_help_button;
+                    loadingImage.Image  = Properties.Resources.bubble_loading_animation;
+                    blankTile   = Properties.Resources.bubble_blank;
+                    selectTile  = Properties.Resources.bubble_selected;
+                    flaggedTile = Properties.Resources.bubble_flagged;
+                    mineTile    = Properties.Resources.bubble_mine;
+                    oneTile     = Properties.Resources.bubble_1;
+                    twoTile     = Properties.Resources.bubble_2;
+                    threeTile   = Properties.Resources.bubble_3;
+                    fourTile    = Properties.Resources.bubble_4;
+                    fiveTile    = Properties.Resources.bubble_5;
+                    sixTile     = Properties.Resources.bubble_6;
+                    sevenTile   = Properties.Resources.bubble_7;
+                    eightTile   = Properties.Resources.bubble_8;
                     break;
 
                 case theme.dark:
                     this.BackColor = Color.FromArgb(45, 41, 51);
+                    newgameButton.Image = Properties.Resources.dark_newgame_button;
+                    optionsButton.Image = Properties.Resources.dark_options_button;
+                    statsButton.Image   = Properties.Resources.dark_stats_button;
+                    helpButton.Image    = Properties.Resources.dark_help_button;
+                    loadingImage.Image  = Properties.Resources.dark_loading_animation;
+                    blankTile   = Properties.Resources.dark_blank;
+                    selectTile  = Properties.Resources.dark_selected;
+                    flaggedTile = Properties.Resources.dark_flagged;
+                    mineTile    = Properties.Resources.dark_mine;
+                    oneTile     = Properties.Resources.dark_1;
+                    twoTile     = Properties.Resources.dark_2;
+                    threeTile   = Properties.Resources.dark_3;
+                    fourTile    = Properties.Resources.dark_4;
+                    fiveTile    = Properties.Resources.dark_5;
+                    sixTile     = Properties.Resources.dark_6;
+                    sevenTile   = Properties.Resources.dark_7;
+                    eightTile   = Properties.Resources.dark_8;
                     break;
-
             }
+
         }
-
-        /// <summary>
-        /// changes the given GUI cell to a given state while retaining its current theme.
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="newState"></param>
-        private void updateGUICellState(GUICell cell, state newState)
-        {
-            // first update the cell's state to match the new one
-            cell.currentState = newState;
-
-            // zero is a special case, we can update it without needing to check for theme because all themes use the same one
-            if (newState == state.zero)
-            {
-                cell.Image = Properties.Resources._0;
-                return;
-            }
-
-            // check fot the cell's current theme so we can keep the theme constant.
-            switch (cell.currentTheme)
-            {
-                case theme.cats:
-                    switch (newState)
-                    {
-                        case state.one:
-                            cell.Image = Properties.Resources.cat_1;
-                            break;
-
-                        case state.two:
-                            cell.Image = Properties.Resources.cat_2;
-                            break;
-
-                        case state.three:
-                            cell.Image = Properties.Resources.cat_3;
-                            break;
-
-                        case state.four:
-                            cell.Image = Properties.Resources.cat_4;
-                            break;
-
-                        case state.five:
-                            cell.Image = Properties.Resources.cat_5;
-                            break;
-
-                        case state.six:
-                            cell.Image = Properties.Resources.cat_6;
-                            break;
-
-                        case state.seven:
-                            cell.Image = Properties.Resources.cat_7;
-                            break;
-
-                        case state.eight:
-                            cell.Image = Properties.Resources.cat_8;
-                            break;
-
-                        case state.blank:
-                            cell.Image = Properties.Resources.cat_blank;
-                            break;
-
-                        case state.flagged:
-                            cell.Image = Properties.Resources.cat_flagged;
-                            break;
-
-                        case state.mine:
-                            cell.Image = Properties.Resources.cat_mine;
-                            break;
-
-                    }
-                    break;
-
-                case theme.classic:
-                    switch (newState)
-                    {
-                        case state.one:
-                            cell.Image = Properties.Resources.classic_1;
-                            break;
-
-                        case state.two:
-                            cell.Image = Properties.Resources.classic_2;
-                            break;
-
-                        case state.three:
-                            cell.Image = Properties.Resources.classic_3;
-                            break;
-
-                        case state.four:
-                            cell.Image = Properties.Resources.classic_4;
-                            break;
-
-                        case state.five:
-                            cell.Image = Properties.Resources.classic_5;
-                            break;
-
-                        case state.six:
-                            cell.Image = Properties.Resources.classic_6;
-                            break;
-
-                        case state.seven:
-                            cell.Image = Properties.Resources.classic_7;
-                            break;
-
-                        case state.eight:
-                            cell.Image = Properties.Resources.classic_8;
-                            break;
-
-                        case state.blank:
-                            cell.Image = Properties.Resources.classic_blank;
-                            break;
-
-                        case state.flagged:
-                            cell.Image = Properties.Resources.classic_flagged;
-                            break;
-
-                        case state.mine:
-                            cell.Image = Properties.Resources.classic_mine;
-                            break;
-
-                    }
-                    break;
-
-                case theme.bubble:
-                    switch (newState)
-                    {
-                        case state.one:
-                            cell.Image = Properties.Resources.bubble_1;
-                            break;
-
-                        case state.two:
-                            cell.Image = Properties.Resources.bubble_2;
-                            break;
-
-                        case state.three:
-                            cell.Image = Properties.Resources.bubble_3;
-                            break;
-
-                        case state.four:
-                            cell.Image = Properties.Resources.bubble_4;
-                            break;
-
-                        case state.five:
-                            cell.Image = Properties.Resources.bubble_5;
-                            break;
-
-                        case state.six:
-                            cell.Image = Properties.Resources.bubble_6;
-                            break;
-
-                        case state.seven:
-                            cell.Image = Properties.Resources.bubble_7;
-                            break;
-
-                        case state.eight:
-                            cell.Image = Properties.Resources.bubble_8;
-                            break;
-
-                        case state.blank:
-                            cell.Image = Properties.Resources.bubble_blank;
-                            break;
-
-                        case state.flagged:
-                            cell.Image = Properties.Resources.bubble_flagged;
-                            break;
-
-                        case state.mine:
-                            cell.Image = Properties.Resources.bubble_mine;
-                            break;
-
-                    }
-                    break;
-
-                case theme.dark:
-                    switch (newState)
-                    {
-                        case state.one:
-                            cell.Image = Properties.Resources.dark_1;
-                            break;
-
-                        case state.two:
-                            cell.Image = Properties.Resources.dark_2;
-                            break;
-
-                        case state.three:
-                            cell.Image = Properties.Resources.dark_3;
-                            break;
-
-                        case state.four:
-                            cell.Image = Properties.Resources.dark_4;
-                            break;
-
-                        case state.five:
-                            cell.Image = Properties.Resources.dark_5;
-                            break;
-
-                        case state.six:
-                            cell.Image = Properties.Resources.dark_6;
-                            break;
-
-                        case state.seven:
-                            cell.Image = Properties.Resources.dark_7;
-                            break;
-
-                        case state.eight:
-                            cell.Image = Properties.Resources.dark_8;
-                            break;
-
-                        case state.blank:
-                            cell.Image = Properties.Resources.dark_blank;
-                            break;
-
-                        case state.flagged:
-                            cell.Image = Properties.Resources.dark_flagged;
-                            break;
-
-                        case state.mine:
-                            cell.Image = Properties.Resources.dark_mine;
-                            break;
-
-                    }
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// changes the given GUI cell to the given theme while retaining its current "state".
-        /// that is, it will change a cat 3 to a dark 3 or a classic blank to a bubble blank.
-        /// </summary>
-        /// <param name="cell"></param>
-        /// <param name="newTheme"></param>
-        private void updateGUICellTheme(GUICell cell, theme newTheme)
-        {
-            // update the cell's current theme to match the new one.
-            cell.currentTheme = newTheme;
-
-            // check for the cell's current state so we can keep the state constant.
-            switch (cell.currentState)
-            {
-                // do nothing if the state is zero, all themes use the same zero sprite.
-                case state.zero:
-                    break;
-
-                case state.one:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_1;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_1;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_1;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_1;
-                            break;
-                    }
-                    break;
-
-                case state.two:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_2;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_2;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_2;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_2;
-                            break;
-                    }
-                    break;
-
-                case state.three:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_3;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_3;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_3;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_3;
-                            break;
-                    }
-                    break;
-
-                case state.four:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_4;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_4;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_4;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_4;
-                            break;
-                    }
-                    break;
-
-                case state.five:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_5;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_5;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_5;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_5;
-                            break;
-                    }
-                    break;
-
-                case state.six:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_6;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_6;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_6;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_6;
-                            break;
-                    }
-                    break;
-
-                case state.seven:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_7;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_7;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_7;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_7;
-                            break;
-                    }
-                    break;
-
-                case state.eight:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_8;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_8;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_8;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_8;
-                            break;
-                    }
-                    break;
-
-                case state.blank:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_blank;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_blank;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_blank;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_blank;
-                            break;
-                    }
-                    break;
-
-                case state.flagged:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_flagged;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_flagged;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_flagged;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_flagged;
-                            break;
-                    }
-                    break;
-
-                case state.mine:
-                    switch (newTheme)
-                    {
-                        case theme.cats:
-                            cell.Image = Properties.Resources.cat_mine;
-                            break;
-
-                        case theme.classic:
-                            cell.Image = Properties.Resources.classic_mine;
-                            break;
-
-                        case theme.bubble:
-                            cell.Image = Properties.Resources.bubble_mine;
-                            break;
-
-                        case theme.dark:
-                            cell.Image = Properties.Resources.dark_mine;
-                            break;
-                    }
-                    break;
-            }
-        }
+     
 
         /*
          * --------------------
@@ -1247,12 +705,42 @@ namespace MinesweeperGUI
 
             MessageBox.Show(helpContents, "Help");
         }
-        
+
         /*
          * -----------------
          * MAIN GAME METHODS
          * -----------------
          */
+
+        /// <summary>
+        /// mouse down handler for the game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tilesMouseDown(object sender, MouseEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// mouse up handler for the game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tilesMouseUp(object sender, MouseEventArgs e)
+        {
+
+            // MousePosition is relative to the screen, to get it relative to the form we convert 
+            Point relativeMousePosition = PointToClient(MousePosition);
+
+            // verify the mouse position is within the board before doing anything
+            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
+            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
+            if (isValidX && isValidY && draw && !loading)
+            {
+                MessageBox.Show("you clicked on the board!");
+            }
+
+        }
 
         /// <summary>
         /// click up event handler for the game.
@@ -1263,6 +751,8 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void GUICell_Click(object sender, MouseEventArgs e)
         {
+            /* this method needs to be deleted, but it has information that will help in making the new event handlers.
+
             // GUICells are in an array just like MinesweeperCells
             // index = x + y * rowlength
             // rowlength is mapWidth
@@ -1298,6 +788,8 @@ namespace MinesweeperGUI
                     setMinesDisplay();
                 }                
             }
+
+            */
         }
 
         /// <summary>
@@ -1311,5 +803,33 @@ namespace MinesweeperGUI
             timeEndPeriod(timerAccuracy);
         }
 
+        /*
+         * --------
+         * PAINTING
+         * --------
+         */
+
+        /// <summary>
+        /// paints all GUI elements to the screen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void drawBoard(object sender, PaintEventArgs e)
+        {
+            // draws the hidden background image
+            e.Graphics.DrawImage(mapBackgroundImage, tileAnchor.X, tileAnchor.Y, mapWidth * 25, mapHeight * 25);
+
+            // TODO: this is currently hardcoded and needs to be changed to read info from the map instead
+            if (draw)
+            {
+                for (int i = 0; i < mapWidth; i++)
+                {
+                    for (int j = 0; j < mapHeight; j++)
+                    {
+                        e.Graphics.DrawImage(blankTile, tileAnchor.X + (i * 25), tileAnchor.Y + (j * 25));
+                    }
+                }
+            }
+        }
     }
 }

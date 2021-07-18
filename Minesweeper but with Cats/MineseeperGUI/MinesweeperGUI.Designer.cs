@@ -34,7 +34,7 @@ namespace MinesweeperGUI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MinesweeperGUI));
-            this.GUICellsLoader = new System.ComponentModel.BackgroundWorker();
+            this.loadingStaller = new System.ComponentModel.BackgroundWorker();
             this.loadingImage = new System.Windows.Forms.PictureBox();
             this.helpButton = new System.Windows.Forms.PictureBox();
             this.statsButton = new System.Windows.Forms.PictureBox();
@@ -54,11 +54,11 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter100)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter1000)).BeginInit();
             this.SuspendLayout();
-            // 
-            // GUICellsLoader
-            // 
-            this.GUICellsLoader.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loadGUICells);
-            this.GUICellsLoader.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.endLoadingAnimation);
+            //
+            // loadingStaller
+            //
+            this.loadingStaller.DoWork += new DoWorkEventHandler(this.loadingStall);
+            this.loadingStaller.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.endStall);
             // 
             // loadingImage
             // 
@@ -180,6 +180,9 @@ namespace MinesweeperGUI
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onExit);
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoard);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tilesMouseDown);
+            this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tilesMouseUp);
             ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).EndInit();
@@ -195,7 +198,7 @@ namespace MinesweeperGUI
         }
 
         #endregion
-        private System.ComponentModel.BackgroundWorker GUICellsLoader;
+        private System.ComponentModel.BackgroundWorker loadingStaller;
         private System.Windows.Forms.PictureBox loadingImage;
         private System.Windows.Forms.PictureBox helpButton;
         private System.Windows.Forms.PictureBox statsButton;

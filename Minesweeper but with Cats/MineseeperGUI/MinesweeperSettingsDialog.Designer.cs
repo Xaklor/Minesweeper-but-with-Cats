@@ -49,6 +49,8 @@ namespace MinesweeperGUI
             this.minesLabel = new System.Windows.Forms.PictureBox();
             this.heightLabel = new System.Windows.Forms.PictureBox();
             this.themesLabel = new System.Windows.Forms.PictureBox();
+            this.animationsLabel = new System.Windows.Forms.PictureBox();
+            this.animationsCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
@@ -65,6 +67,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).BeginInit();
             this.SuspendLayout();
             // 
             // customWidthBox
@@ -136,7 +139,7 @@ namespace MinesweeperGUI
             // catsThemeButton
             // 
             this.catsThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("catsThemeButton.Image")));
-            this.catsThemeButton.Location = new System.Drawing.Point(470, 213);
+            this.catsThemeButton.Location = new System.Drawing.Point(470, 173);
             this.catsThemeButton.Name = "catsThemeButton";
             this.catsThemeButton.Size = new System.Drawing.Size(25, 25);
             this.catsThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -147,7 +150,7 @@ namespace MinesweeperGUI
             // bubbleThemeButton
             // 
             this.bubbleThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("bubbleThemeButton.Image")));
-            this.bubbleThemeButton.Location = new System.Drawing.Point(470, 244);
+            this.bubbleThemeButton.Location = new System.Drawing.Point(470, 204);
             this.bubbleThemeButton.Name = "bubbleThemeButton";
             this.bubbleThemeButton.Size = new System.Drawing.Size(25, 25);
             this.bubbleThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -158,7 +161,7 @@ namespace MinesweeperGUI
             // darkThemeButton
             // 
             this.darkThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("darkThemeButton.Image")));
-            this.darkThemeButton.Location = new System.Drawing.Point(501, 244);
+            this.darkThemeButton.Location = new System.Drawing.Point(501, 204);
             this.darkThemeButton.Name = "darkThemeButton";
             this.darkThemeButton.Size = new System.Drawing.Size(25, 25);
             this.darkThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -169,7 +172,7 @@ namespace MinesweeperGUI
             // classicThemeButton
             // 
             this.classicThemeButton.Image = ((System.Drawing.Image)(resources.GetObject("classicThemeButton.Image")));
-            this.classicThemeButton.Location = new System.Drawing.Point(501, 213);
+            this.classicThemeButton.Location = new System.Drawing.Point(501, 173);
             this.classicThemeButton.Name = "classicThemeButton";
             this.classicThemeButton.Size = new System.Drawing.Size(25, 25);
             this.classicThemeButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -270,12 +273,31 @@ namespace MinesweeperGUI
             // themesLabel
             // 
             this.themesLabel.Image = ((System.Drawing.Image)(resources.GetObject("themesLabel.Image")));
-            this.themesLabel.Location = new System.Drawing.Point(304, 225);
+            this.themesLabel.Location = new System.Drawing.Point(304, 185);
             this.themesLabel.Name = "themesLabel";
             this.themesLabel.Size = new System.Drawing.Size(160, 29);
             this.themesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.themesLabel.TabIndex = 20;
             this.themesLabel.TabStop = false;
+            // 
+            // animationsLabel
+            // 
+            this.animationsLabel.Image = ((System.Drawing.Image)(resources.GetObject("animationsLabel.Image")));
+            this.animationsLabel.Location = new System.Drawing.Point(304, 229);
+            this.animationsLabel.Name = "animationsLabel";
+            this.animationsLabel.Size = new System.Drawing.Size(117, 59);
+            this.animationsLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.animationsLabel.TabIndex = 21;
+            this.animationsLabel.TabStop = false;
+            // 
+            // animationsCheckBox
+            // 
+            this.animationsCheckBox.AutoSize = true;
+            this.animationsCheckBox.Location = new System.Drawing.Point(470, 253);
+            this.animationsCheckBox.Name = "animationsCheckBox";
+            this.animationsCheckBox.Size = new System.Drawing.Size(18, 17);
+            this.animationsCheckBox.TabIndex = 22;
+            this.animationsCheckBox.UseVisualStyleBackColor = true;
             // 
             // MinesweeperSettingsDialog
             // 
@@ -283,6 +305,8 @@ namespace MinesweeperGUI
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
             this.ClientSize = new System.Drawing.Size(545, 403);
+            this.Controls.Add(this.animationsCheckBox);
+            this.Controls.Add(this.animationsLabel);
             this.Controls.Add(this.themesLabel);
             this.Controls.Add(this.heightLabel);
             this.Controls.Add(this.minesLabel);
@@ -299,6 +323,7 @@ namespace MinesweeperGUI
             this.Controls.Add(this.customMinesBox);
             this.Controls.Add(this.customHeightBox);
             this.Controls.Add(this.customWidthBox);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -323,6 +348,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -345,6 +371,8 @@ namespace MinesweeperGUI
         private PictureBox minesLabel;
         private PictureBox heightLabel;
         private PictureBox themesLabel;
+        private PictureBox animationsLabel;
+        private CheckBox animationsCheckBox;
     }
 }
 

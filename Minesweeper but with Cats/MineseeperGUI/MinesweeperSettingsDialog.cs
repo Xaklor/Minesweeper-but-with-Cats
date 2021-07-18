@@ -10,9 +10,10 @@ namespace MinesweeperGUI
         public int mapHeight = 9;
         public int numMines = 10;
         public bool confirmed;
+        public bool animationsOn;
         public theme selectedTheme;
 
-        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines)
+        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines, bool parentAnimations)
         {
             confirmed = false;
             InitializeComponent();
@@ -21,6 +22,8 @@ namespace MinesweeperGUI
             customWidthBox.Value  = parentWidth;
             customHeightBox.Value = parentHeight;
             customMinesBox.Value  = parentMines;
+
+            animationsCheckBox.Checked = parentAnimations;
 
             switch (parentTheme)
             {
@@ -61,6 +64,7 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.cat_height_label;
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
+            animationsLabel.Image        = Properties.Resources.cat_animations_label;
 
         }
 
@@ -83,6 +87,8 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.cat_height_label;
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
+            animationsLabel.Image        = Properties.Resources.cat_animations_label;
+
         }
 
         /// <summary>
@@ -103,6 +109,8 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.bubble_height_label;
             minesLabel.Image             = Properties.Resources.bubble_mines_label;
             themesLabel.Image            = Properties.Resources.bubble_themes_label;
+            animationsLabel.Image        = Properties.Resources.bubble_animations_label;
+
         }
 
         /// <summary>
@@ -123,6 +131,8 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.dark_height_label;
             minesLabel.Image             = Properties.Resources.dark_mines_label;
             themesLabel.Image            = Properties.Resources.dark_themes_label;
+            animationsLabel.Image        = Properties.Resources.dark_animations_label;
+
         }
 
         /// <summary>
@@ -375,6 +385,7 @@ namespace MinesweeperGUI
             mapWidth = (int)customWidthBox.Value;
             mapHeight = (int)customHeightBox.Value;
             numMines = (int)customMinesBox.Value;
+            animationsOn = animationsCheckBox.Checked;
             this.Close();
         }
 
