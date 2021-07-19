@@ -42,13 +42,17 @@ namespace MinesweeperGUI
         private bool animationsOn;
         private bool loading;
 
+        private MinesweeperMap gameMap;
+        private bool hasMapGenerated;
+
         // tiles
-        private bool draw;
+        private bool drawMap;
         private Point  tileAnchor;
         private Bitmap blankTile;
         private Bitmap selectTile;
         private Bitmap flaggedTile;
         private Bitmap mineTile;
+        private Bitmap zeroTile;
         private Bitmap oneTile;
         private Bitmap twoTile;
         private Bitmap threeTile;
@@ -82,12 +86,13 @@ namespace MinesweeperGUI
             animationsOn = false;
             loading = false;
 
-            draw = false;
+            drawMap = false;
             tileAnchor  = new Point(278, 112);
             blankTile   = Properties.Resources.cat_blank;
             selectTile  = Properties.Resources.cat_selected;
             flaggedTile = Properties.Resources.cat_flagged;
             mineTile    = Properties.Resources.cat_mine;
+            zeroTile    = Properties.Resources._0;
             oneTile     = Properties.Resources.cat_1;
             twoTile     = Properties.Resources.cat_2;
             threeTile   = Properties.Resources.cat_3;
@@ -99,7 +104,7 @@ namespace MinesweeperGUI
 
             mapBackgroundImage = Properties.Resources.blobcathug;
 
-        InitializeComponent();
+            InitializeComponent();
             // this sets the internal timer to the new speed.
             timeBeginPeriod(timerAccuracy);
         }
@@ -148,6 +153,9 @@ namespace MinesweeperGUI
             numMines = numMinesInit;
             setMinesDisplay(true);
 
+            gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
+            hasMapGenerated = false;
+
             // this causes the button to pop back up.
             switch (currentTheme)
             {
@@ -180,7 +188,7 @@ namespace MinesweeperGUI
             }
             else
             {
-                draw = true;
+                drawMap = true;
                 Invalidate();
             }
 
@@ -205,7 +213,7 @@ namespace MinesweeperGUI
         {
             loadingImage.Visible = false;
             loading = false;
-            draw = true;
+            drawMap = true;
             Invalidate();
         }
 
@@ -420,7 +428,7 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void optionsButton_Click(object sender, EventArgs e)
         {
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMines, animationsOn);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, animationsOn);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -735,10 +743,84 @@ namespace MinesweeperGUI
             // verify the mouse position is within the board before doing anything
             bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
             bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
-            if (isValidX && isValidY && draw && !loading)
+            if (isValidX && isValidY && drawMap && !loading)
             {
-                MessageBox.Show("you clicked on the board!");
+                // map coordinates are relative to the tile anchor and scaled based on tile size
+                int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
+                int celly = (relativeMousePosition.Y - tileAnchor.Y) / 25;
+
+                MinesweeperCell target = gameMap.GetCell(cellx, celly);
+
+                // if this is a right click and the cell is hidden, toggle flagged status
+                if (e.Button == MouseButtons.Right && !target.isVisible)
+                {
+                    gameMap.MarkCell(cellx, celly);
+                    numMines = gameMap.GetRemainingMines();
+                    setMinesDisplay();
+                }
+                // if this is a left click and the cell isn't visible or flagged, reveal it
+                else if (e.Button == MouseButtons.Left && !target.isVisible && !target.isFlagged)
+                {
+                    // if the map hasn't been generated (because this is the first click), generate it
+                    if (!hasMapGenerated)
+                    {
+                        gameMap.GenerateMines(cellx, celly);
+                        hasMapGenerated = true;
+                    }
+
+                    try
+                    {
+                        gameMap.RevealCell(cellx, celly);
+                    }
+                    catch(GameOverException exception)
+                    {
+                        if (exception.Message == "lost")
+                        {
+                            MessageBox.Show("you have lost...");
+                        }
+                        if (exception.Message == "won")
+                        {
+                            MessageBox.Show("you won!");
+                            drawMap = false;
+                        }
+                    }
+                }
+                // if this is a left click and the cell IS revealed, reveal its neighbors if it has the right number of flags nearby
+                else if (e.Button == MouseButtons.Left && target.isVisible && target.neighboringMines > 0)
+                {
+                    int count = 0;
+                    foreach ((int x, int y) neighborPos in gameMap.GetCellNeighborPositions(cellx, celly))
+                    {
+                        if (gameMap.GetCell(neighborPos.x, neighborPos.y).isFlagged)
+                        {
+                            count++;
+                        }
+                    }
+
+                    if (count == target.neighboringMines)
+                    {                        
+                        try
+                        {
+                            gameMap.RevealNeighbors(cellx, celly);
+                        }
+                        catch (GameOverException exception)
+                        {
+                            if (exception.Message == "lost")
+                            {
+                                MessageBox.Show("you have lost...");
+                            }
+                            if (exception.Message == "won")
+                            {
+                                MessageBox.Show("you won!");
+                                drawMap = false;
+                            }
+                        }
+                    }
+                }
             }
+
+            // repaint the form to see changes
+            Invalidate();
 
         }
 
@@ -819,14 +901,79 @@ namespace MinesweeperGUI
             // draws the hidden background image
             e.Graphics.DrawImage(mapBackgroundImage, tileAnchor.X, tileAnchor.Y, mapWidth * 25, mapHeight * 25);
 
-            // TODO: this is currently hardcoded and needs to be changed to read info from the map instead
-            if (draw)
+            // only draw a map if we're ready for one
+            if (drawMap)
             {
+                MinesweeperCell target;
+                Point targetPos;
                 for (int i = 0; i < mapWidth; i++)
                 {
                     for (int j = 0; j < mapHeight; j++)
                     {
-                        e.Graphics.DrawImage(blankTile, tileAnchor.X + (i * 25), tileAnchor.Y + (j * 25));
+                        target = gameMap.GetCell(i, j);
+                        targetPos = new Point(tileAnchor.X + (i * 25), tileAnchor.Y + (j * 25));
+
+                        // if the target is not visible, then we either draw a blank or flagged tile
+                        if (!target.isVisible)
+                        {
+                            if (target.isFlagged)
+                            {
+                                e.Graphics.DrawImage(flaggedTile, targetPos);
+                            }
+                            else
+                            {
+                                e.Graphics.DrawImage(blankTile, targetPos);
+                            }
+                        }
+
+                        // if the target IS visible and has a mine, draw that
+                        else if (target.hasMine)
+                        {
+                            e.Graphics.DrawImage(mineTile, targetPos);
+                        }
+
+                        // otherwise, draw the tile corresponding to the number of neighboring mines
+                        else
+                        {
+                            switch (target.neighboringMines)
+                            {
+                                case (0):
+                                    e.Graphics.DrawImage(zeroTile, targetPos);
+                                    break;
+
+                                case (1):
+                                    e.Graphics.DrawImage(oneTile, targetPos);
+                                    break;
+
+                                case (2):
+                                    e.Graphics.DrawImage(twoTile, targetPos);
+                                    break;
+
+                                case (3):
+                                    e.Graphics.DrawImage(threeTile, targetPos);
+                                    break;
+
+                                case (4):
+                                    e.Graphics.DrawImage(fourTile, targetPos);
+                                    break;
+
+                                case (5):
+                                    e.Graphics.DrawImage(fiveTile, targetPos);
+                                    break;
+
+                                case (6):
+                                    e.Graphics.DrawImage(sixTile, targetPos);
+                                    break;
+
+                                case (7):
+                                    e.Graphics.DrawImage(sevenTile, targetPos);
+                                    break;
+
+                                case (8):
+                                    e.Graphics.DrawImage(eightTile, targetPos);
+                                    break;
+                            }
+                        }
                     }
                 }
             }
