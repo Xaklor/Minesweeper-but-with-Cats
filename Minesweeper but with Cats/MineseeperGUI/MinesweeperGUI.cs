@@ -44,6 +44,11 @@ namespace MinesweeperGUI
 
         private MinesweeperMap gameMap;
         private bool hasMapGenerated;
+        private List<(int, int)> selectedCoords;
+        private int clickSafetyX, clickSafetyY;
+
+        private int gameElapsedSeconds;
+        private bool isGamePlaying;
 
         // tiles
         private bool drawMap;
@@ -63,6 +68,10 @@ namespace MinesweeperGUI
         private Bitmap eightTile;   
 
         private Bitmap mapBackgroundImage;
+
+        // used for updating the timer display from one of the background workers
+        private delegate void updateTimerDelegate(MinesweeperGUI GUI);
+        updateTimerDelegate updateTimer = updateTimerDisplay;
 
         // this thing is called a Pinvoke, I don't understand what that means but what happens here is that
         // the default windows system timer isn't accurate enough to handle animated gifs in the picturebox,
@@ -85,6 +94,12 @@ namespace MinesweeperGUI
 
             animationsOn = false;
             loading = false;
+            selectedCoords = new List<(int, int)>();
+            clickSafetyX = 0;
+            clickSafetyY = 0;
+
+            gameElapsedSeconds = 0;
+            isGamePlaying = false;
 
             drawMap = false;
             tileAnchor  = new Point(278, 112);
@@ -156,6 +171,8 @@ namespace MinesweeperGUI
             gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
             hasMapGenerated = false;
 
+            gameElapsedSeconds = 0;
+
             // this causes the button to pop back up.
             switch (currentTheme)
             {
@@ -215,6 +232,181 @@ namespace MinesweeperGUI
             loading = false;
             drawMap = true;
             Invalidate();
+        }
+
+        /// <summary>
+        /// constantly updates the timer display to show time increasing in real time.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void startGameTimerDisplay(object sender, DoWorkEventArgs e)
+        {
+            while (isGamePlaying)
+            {
+                // forces the updateTimer delegate to run on the main thread so it can change the pictureboxes
+                Invoke(updateTimer, new object[] { this });
+
+                // waits one second, then updates again
+                Thread.Sleep(1000);
+            }
+        }
+
+        private static void updateTimerDisplay(MinesweeperGUI GUI)
+        {
+            // one second should have passed since this was last called, so we can update it here
+            GUI.gameElapsedSeconds++;
+
+            // if we are past 99:59, just stop updating and leave this alone
+            if (GUI.gameElapsedSeconds >= 5999)
+            {
+                GUI.timerDisplay10m.Image = Properties.Resources.display_9;
+                GUI.timerDisplay1m.Image = Properties.Resources.display_9;
+                GUI.timerDisplay10s.Image = Properties.Resources.display_9;
+                GUI.timerDisplay1s.Image = Properties.Resources.display_9;
+                GUI.isGamePlaying = false;
+            }
+            else
+            {
+                // one seconds
+                switch (GUI.gameElapsedSeconds % 10)
+                {
+                    case 0:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_0;
+                        break;
+                    case 1:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_1;
+                        break;
+                    case 2:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_2;
+                        break;
+                    case 3:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_3;
+                        break;
+                    case 4:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_4;
+                        break;
+                    case 5:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_5;
+                        break;
+                    case 6:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_6;
+                        break;
+                    case 7:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_7;
+                        break;
+                    case 8:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_8;
+                        break;
+                    case 9:
+                        GUI.timerDisplay1s.Image = Properties.Resources.display_9;
+                        break;
+                }
+
+                // ten seconds
+                switch (GUI.gameElapsedSeconds % 60 / 10)
+                {
+                    case 0:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_0;
+                        break;
+                    case 1:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_1;
+                        break;
+                    case 2:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_2;
+                        break;
+                    case 3:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_3;
+                        break;
+                    case 4:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_4;
+                        break;
+                    case 5:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_5;
+                        break;
+                    case 6:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_6;
+                        break;
+                    case 7:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_7;
+                        break;
+                    case 8:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_8;
+                        break;
+                    case 9:
+                        GUI.timerDisplay10s.Image = Properties.Resources.display_9;
+                        break;
+                }
+
+                // one minutes
+                switch (GUI.gameElapsedSeconds % 600 / 60)
+                {
+                    case 0:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_0;
+                        break;
+                    case 1:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_1;
+                        break;
+                    case 2:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_2;
+                        break;
+                    case 3:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_3;
+                        break;
+                    case 4:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_4;
+                        break;
+                    case 5:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_5;
+                        break;
+                    case 6:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_6;
+                        break;
+                    case 7:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_7;
+                        break;
+                    case 8:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_8;
+                        break;
+                    case 9:
+                        GUI.timerDisplay1m.Image = Properties.Resources.display_9;
+                        break;
+                }
+
+                // ten minutes
+                switch (GUI.gameElapsedSeconds / 600)
+                {
+                    case 0:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_0;
+                        break;
+                    case 1:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_1;
+                        break;
+                    case 2:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_2;
+                        break;
+                    case 3:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_3;
+                        break;
+                    case 4:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_4;
+                        break;
+                    case 5:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_5;
+                        break;
+                    case 6:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_6;
+                        break;
+                    case 7:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_7;
+                        break;
+                    case 8:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_8;
+                        break;
+                    case 9:
+                        GUI.timerDisplay10m.Image = Properties.Resources.display_9;
+                        break;
+                }
+            }
         }
 
         /// <summary>
@@ -470,7 +662,7 @@ namespace MinesweeperGUI
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
                 // the larger of our starting dimensions and the new dimensions based on the new map.
                 // the +1 and +2 on mapWidth and mapHeight are necessary and I have no idea why.
-                int w = Math.Max(530, loadingImage.Location.X + (mapWidth + 1) * 25);
+                int w = Math.Max(610, loadingImage.Location.X + (mapWidth + 1) * 25);
                 int h = Math.Max(550, loadingImage.Location.Y + (mapHeight + 2) * 25);
                 this.MinimumSize = new Size(w, h);
                 this.Size = MinimumSize;
@@ -727,6 +919,38 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void tilesMouseDown(object sender, MouseEventArgs e)
         {
+            // MousePosition is relative to the screen, to get it relative to the form we convert 
+            Point relativeMousePosition = PointToClient(MousePosition);
+
+            // verify the mouse position is within the board before doing anything
+            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
+            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
+
+            // map coordinates are relative to the tile anchor and scaled based on tile size
+            int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
+            int celly = (relativeMousePosition.Y - tileAnchor.Y) / 25;
+
+            // this is for clickup safety, we don't want the player clicking up on a cell they didn't click down on by accident
+            clickSafetyX = cellx;
+            clickSafetyY = celly;
+
+            if (isValidX && isValidY && drawMap && !loading && e.Button == MouseButtons.Left)
+            {
+                MinesweeperCell target = gameMap.GetCell(cellx, celly);
+
+                // if the target is visible, highlight its neighbors, otherwise highlight itself
+                if (target.isVisible)
+                {
+                    selectedCoords.AddRange(gameMap.GetCellNeighborPositions(cellx, celly));
+                }
+                else
+                {
+                    selectedCoords.Add((cellx, celly));
+                }
+            }
+
+            // repaint the form to see changes
+            Invalidate();
         }
 
         /// <summary>
@@ -749,6 +973,20 @@ namespace MinesweeperGUI
                 int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
                 int celly = (relativeMousePosition.Y - tileAnchor.Y) / 25;
 
+                // if this cell isn't the one that was clicked down on, stop immediately
+                if (cellx != clickSafetyX || celly != clickSafetyY)
+                {
+                    // reset these for safety since 0, 0 will never be on the board
+                    clickSafetyX = 0;
+                    clickSafetyY = 0;
+
+                    // unselect any highlighted tiles, and repaint the form to see changes
+                    selectedCoords.Clear();
+                    Invalidate();
+
+                    return;
+                }
+
                 MinesweeperCell target = gameMap.GetCell(cellx, celly);
 
                 // if this is a right click and the cell is hidden, toggle flagged status
@@ -761,11 +999,14 @@ namespace MinesweeperGUI
                 // if this is a left click and the cell isn't visible or flagged, reveal it
                 else if (e.Button == MouseButtons.Left && !target.isVisible && !target.isFlagged)
                 {
-                    // if the map hasn't been generated (because this is the first click), generate it
+                    // if the map hasn't been generated (because this is the first click), generate it and start the game.
                     if (!hasMapGenerated)
                     {
                         gameMap.GenerateMines(cellx, celly);
                         hasMapGenerated = true;
+
+                        isGamePlaying = true;
+                        timeKeeper.RunWorkerAsync();
                     }
 
                     try
@@ -776,10 +1017,12 @@ namespace MinesweeperGUI
                     {
                         if (exception.Message == "lost")
                         {
+                            isGamePlaying = false;
                             MessageBox.Show("you have lost...");
                         }
                         if (exception.Message == "won")
                         {
+                            isGamePlaying = false;
                             MessageBox.Show("you won!");
                             drawMap = false;
                         }
@@ -807,10 +1050,12 @@ namespace MinesweeperGUI
                         {
                             if (exception.Message == "lost")
                             {
+                                isGamePlaying = false;
                                 MessageBox.Show("you have lost...");
                             }
                             if (exception.Message == "won")
                             {
+                                isGamePlaying = false;
                                 MessageBox.Show("you won!");
                                 drawMap = false;
                             }
@@ -819,59 +1064,14 @@ namespace MinesweeperGUI
                 }
             }
 
-            // repaint the form to see changes
+            // reset these for safety since (0, 0) will never be on the board
+            clickSafetyX = 0;
+            clickSafetyY = 0;
+
+            // unselect any highlighted tiles, and repaint the form to see changes
+            selectedCoords.Clear();
             Invalidate();
 
-        }
-
-        /// <summary>
-        /// click up event handler for the game.
-        /// left clicking a cell reveals it.
-        /// right clicking a cell flags it.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void GUICell_Click(object sender, MouseEventArgs e)
-        {
-            /* this method needs to be deleted, but it has information that will help in making the new event handlers.
-
-            // GUICells are in an array just like MinesweeperCells
-            // index = x + y * rowlength
-            // rowlength is mapWidth
-            // anchor point is the loadingImage's location in case things move
-            // x = mouse.x - anchor_x / 25
-            // y = mouse.y - anchor_y / 25
-            // MousePosition is relative to the screen, to get it relative to the form we convert 
-            Point relativeMousePosition = PointToClient(MousePosition);
-            int cellx = (relativeMousePosition.X - loadingImage.Location.X) / 25;
-            int celly = (relativeMousePosition.Y - loadingImage.Location.Y) / 25;
-            bool isTargetFlagged = GUICells[cellx + (celly * mapWidth)].currentState == state.flagged;
-
-            // left clicking a cell reveals it unless it is flagged.
-            if (e.Button == MouseButtons.Left && !isTargetFlagged)
-            {
-                updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.zero);
-            }
-            // right clicking a cell toggles flagged state.
-            else if (e.Button == MouseButtons.Right)
-            {
-                // if the cell is already flagged, unflag it and increase the counter, 
-                // otherwise flag it and decrease the counter instead.
-                if (isTargetFlagged)
-                {
-                    updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.blank);
-                    numMines++;
-                    setMinesDisplay();
-                }
-                else
-                {
-                    updateGUICellState(GUICells[cellx + (celly * mapWidth)], state.flagged);
-                    numMines--;
-                    setMinesDisplay();
-                }                
-            }
-
-            */
         }
 
         /// <summary>
@@ -974,6 +1174,18 @@ namespace MinesweeperGUI
                                     break;
                             }
                         }
+                    }
+                }
+
+                // if there are any cells highlighted by the user, we need to draw those as well
+                MinesweeperCell selected;
+                foreach ((int x, int y) in selectedCoords)
+                {
+                    selected = gameMap.GetCell(x, y);
+                    // only covered, non-flagged cells can be highlighted.
+                    if (!selected.isVisible && !selected.isFlagged)
+                    {
+                        e.Graphics.DrawImage(selectTile, tileAnchor.X + (x * 25), tileAnchor.Y + (y * 25));
                     }
                 }
             }
