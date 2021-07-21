@@ -118,7 +118,7 @@ namespace MinesweeperGUI
             // 
             this.customMinesBox.Location = new System.Drawing.Point(470, 135);
             this.customMinesBox.Maximum = new decimal(new int[] {
-            1599,
+            899,
             0,
             0,
             0});

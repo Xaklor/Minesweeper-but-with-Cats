@@ -45,10 +45,13 @@ namespace MinesweeperGUI
         private MinesweeperMap gameMap;
         private bool hasMapGenerated;
         private List<(int, int)> selectedCoords;
+        private List<(int, int)> animatedCoords;
         private int clickSafetyX, clickSafetyY;
 
         private int gameElapsedSeconds;
         private bool isGamePlaying;
+        private bool isGameAnimating;
+        private bool isGameLost;
 
         // tiles
         private bool drawMap;
@@ -70,8 +73,12 @@ namespace MinesweeperGUI
         private Bitmap mapBackgroundImage;
 
         // used for updating the timer display from one of the background workers
-        private delegate void updateTimerDelegate(MinesweeperGUI GUI);
+        private delegate void updateTimerDelegate(MinesweeperGUI GUI, bool startup);
         updateTimerDelegate updateTimer = updateTimerDisplay;
+
+        // used for the game win animation
+        private delegate void animationTimerDelegate(MinesweeperGUI GUI, int x, int y);
+        animationTimerDelegate animationTimer = animateWinState;
 
         // this thing is called a Pinvoke, I don't understand what that means but what happens here is that
         // the default windows system timer isn't accurate enough to handle animated gifs in the picturebox,
@@ -95,11 +102,15 @@ namespace MinesweeperGUI
             animationsOn = false;
             loading = false;
             selectedCoords = new List<(int, int)>();
+            animatedCoords = new List<(int, int)>();
             clickSafetyX = 0;
             clickSafetyY = 0;
 
             gameElapsedSeconds = 0;
+            // used for turning off the timekeeper
             isGamePlaying = false;
+            isGameAnimating = false;
+            isGameLost = false;
 
             drawMap = false;
             tileAnchor  = new Point(278, 112);
@@ -171,7 +182,10 @@ namespace MinesweeperGUI
             gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
             hasMapGenerated = false;
 
+            isGameLost = false;
+            isGamePlaying = false;
             gameElapsedSeconds = 0;
+            updateTimer(this, true);
 
             // this causes the button to pop back up.
             switch (currentTheme)
@@ -239,22 +253,32 @@ namespace MinesweeperGUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void startGameTimerDisplay(object sender, DoWorkEventArgs e)
+        private void timeKeeperWork(object sender, DoWorkEventArgs e)
         {
+            isGamePlaying = true;
             while (isGamePlaying)
             {
                 // forces the updateTimer delegate to run on the main thread so it can change the pictureboxes
-                Invoke(updateTimer, new object[] { this });
+                Invoke(updateTimer, new object[] { this, false });
 
                 // waits one second, then updates again
                 Thread.Sleep(1000);
             }
         }
 
-        private static void updateTimerDisplay(MinesweeperGUI GUI)
+        /// <summary>
+        /// updates the game timer pictureboxes to match the current time.
+        /// </summary>
+        /// <param name="GUI"></param>
+        /// <param name="startup"></param>
+        private static void updateTimerDisplay(MinesweeperGUI GUI, bool startup)
         {
             // one second should have passed since this was last called, so we can update it here
-            GUI.gameElapsedSeconds++;
+            // if this is on game startup, don't increment
+            if (!startup)
+            {
+                GUI.gameElapsedSeconds++;
+            }
 
             // if we are past 99:59, just stop updating and leave this alone
             if (GUI.gameElapsedSeconds >= 5999)
@@ -411,7 +435,7 @@ namespace MinesweeperGUI
 
         /// <summary>
         /// sets the mines displays to match the current number of shown mines. if this is called on game startup, 
-        /// then it will also hide the hundreds or thousands place if they are unneeded.
+        /// then it will also hide the hundreds place if it is unneeded.
         /// </summary>
         /// <param name="startup"></param>
         private void setMinesDisplay(bool startup=false)
@@ -422,7 +446,6 @@ namespace MinesweeperGUI
                 this.minesCounter1.Image    = Properties.Resources.display_0;
                 this.minesCounter10.Image   = Properties.Resources.display_0;
                 this.minesCounter100.Image  = Properties.Resources.display_0;
-                this.minesCounter1000.Image = Properties.Resources.display_0;
                 return;
             }
 
@@ -536,47 +559,6 @@ namespace MinesweeperGUI
                     this.minesCounter100.Image = Properties.Resources.display_9;
                     break;
             }
-
-            // thousands
-            if(startup)
-                this.minesCounter1000.Visible = true;
-
-            switch (numMines % 10000 / 1000)
-            {
-                case 0:
-                    this.minesCounter1000.Image = Properties.Resources.display_0;
-                    if(startup)
-                        this.minesCounter1000.Visible = false;
-
-                    break;
-                case 1:
-                    this.minesCounter1000.Image = Properties.Resources.display_1;
-                    break;
-                case 2:
-                    this.minesCounter1000.Image = Properties.Resources.display_2;
-                    break;
-                case 3:
-                    this.minesCounter1000.Image = Properties.Resources.display_3;
-                    break;
-                case 4:
-                    this.minesCounter1000.Image = Properties.Resources.display_4;
-                    break;
-                case 5:
-                    this.minesCounter1000.Image = Properties.Resources.display_5;
-                    break;
-                case 6:
-                    this.minesCounter1000.Image = Properties.Resources.display_6;
-                    break;
-                case 7:
-                    this.minesCounter1000.Image = Properties.Resources.display_7;
-                    break;
-                case 8:
-                    this.minesCounter1000.Image = Properties.Resources.display_8;
-                    break;
-                case 9:
-                    this.minesCounter1000.Image = Properties.Resources.display_9;
-                    break;
-            }
         }
 
         /*
@@ -620,6 +602,15 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void optionsButton_Click(object sender, EventArgs e)
         {
+            bool isGamePaused = false;
+    
+            // pause the timer if it is running
+            if (isGamePlaying)
+            {
+                isGamePlaying = false;
+                isGamePaused = true;
+            }
+
             MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, animationsOn);
             settingsDialog.ShowDialog();
 
@@ -670,6 +661,15 @@ namespace MinesweeperGUI
                 // this starts a new game with the new settings.
                 newgameButton_Click(null, null);
 
+            }
+            // if changes were NOT made and the game was paused by the dialog, resume the timer
+            else if(isGamePaused)
+            {
+                // make sure the timer thread actually had a chance to stop before telling it to run again
+                if (!timeKeeper.IsBusy)
+                {
+                    timeKeeper.RunWorkerAsync();
+                }
             }
         }
 
@@ -811,6 +811,15 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void statsButton_Click(object sender, EventArgs e)
         {
+            bool isGamePaused = false;
+
+            // pause the timer if it is running
+            if (isGamePlaying)
+            {
+                isGamePlaying = false;
+                isGamePaused = true;
+            }
+
             // this causes the button to pop back up.
             switch (currentTheme)
             {
@@ -832,6 +841,16 @@ namespace MinesweeperGUI
             }
 
             MessageBox.Show("I have not added stats yet.", "oops");
+
+            // if the game was paused by this dialog, resume the timer
+            if (isGamePaused)
+            {
+                // make sure the timer thread actually had a chance to stop before telling it to run again
+                if (!timeKeeper.IsBusy)
+                {
+                    timeKeeper.RunWorkerAsync();
+                }
+            }
         }
 
         /*
@@ -847,6 +866,7 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void helpButton_Down(object sender, MouseEventArgs e)
         {
+
             switch (currentTheme)
             {
                 case theme.cats:
@@ -865,6 +885,7 @@ namespace MinesweeperGUI
                     helpButton.Image = Properties.Resources.bubble_help_button_pressed;
                     break;
             }
+            
         }
 
         /// <summary>
@@ -874,6 +895,15 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void helpButton_Click(object sender, EventArgs e)
         {
+            bool isGamePaused = false;
+
+            // pause the timer if it is running
+            if (isGamePlaying)
+            {
+                isGamePlaying = false;
+                isGamePaused = true;
+            }
+
             // this causes the button to pop back up.
             switch (currentTheme)
             {
@@ -904,6 +934,16 @@ namespace MinesweeperGUI
                 "The goal of the game is to uncover every safe cell to reveal the image underneath!";
 
             MessageBox.Show(helpContents, "Help");
+
+            // if the game was paused by this dialog, resume the timer
+            if (isGamePaused)
+            {
+                // make sure the timer thread actually had a chance to stop before telling it to run again
+                if (!timeKeeper.IsBusy)
+                {
+                    timeKeeper.RunWorkerAsync();
+                }
+            }
         }
 
         /*
@@ -934,7 +974,14 @@ namespace MinesweeperGUI
             clickSafetyX = cellx;
             clickSafetyY = celly;
 
-            if (isValidX && isValidY && drawMap && !loading && e.Button == MouseButtons.Left)
+            // to explain the if statement to the reader:
+            // valid X and Y ensure the mouse is inside the map
+            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
+            // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
+            // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
+            // loading is used by the optional loading animations and here it prevents the player from clicking on the loading animation
+            // and finally, we only care about animating mouse down tiles if the left button was clicked, so we ignore the right button
+            if (isValidX && isValidY && !isGameAnimating && drawMap && !isGameLost && !loading && e.Button == MouseButtons.Left)
             {
                 MinesweeperCell target = gameMap.GetCell(cellx, celly);
 
@@ -967,7 +1014,14 @@ namespace MinesweeperGUI
             // verify the mouse position is within the board before doing anything
             bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
             bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
-            if (isValidX && isValidY && drawMap && !loading)
+
+            // to explain the if statement to the reader:
+            // valid X and Y ensure the mouse is inside the map
+            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
+            // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
+            // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
+            // loading is used by the optional loading animations and here it prevents the player from clicking on the loading animation
+            if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap && !loading)
             {
                 // map coordinates are relative to the tile anchor and scaled based on tile size
                 int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
@@ -1005,7 +1059,6 @@ namespace MinesweeperGUI
                         gameMap.GenerateMines(cellx, celly);
                         hasMapGenerated = true;
 
-                        isGamePlaying = true;
                         timeKeeper.RunWorkerAsync();
                     }
 
@@ -1018,13 +1071,12 @@ namespace MinesweeperGUI
                         if (exception.Message == "lost")
                         {
                             isGamePlaying = false;
-                            MessageBox.Show("you have lost...");
+                            isGameLost = true;
                         }
                         if (exception.Message == "won")
                         {
                             isGamePlaying = false;
-                            MessageBox.Show("you won!");
-                            drawMap = false;
+                            winAnimator.RunWorkerAsync();
                         }
                     }
                 }
@@ -1051,13 +1103,12 @@ namespace MinesweeperGUI
                             if (exception.Message == "lost")
                             {
                                 isGamePlaying = false;
-                                MessageBox.Show("you have lost...");
+                                isGameLost = true;
                             }
                             if (exception.Message == "won")
                             {
                                 isGamePlaying = false;
-                                MessageBox.Show("you won!");
-                                drawMap = false;
+                                winAnimator.RunWorkerAsync();
                             }
                         }
                     }
@@ -1072,6 +1123,48 @@ namespace MinesweeperGUI
             selectedCoords.Clear();
             Invalidate();
 
+        }
+
+        /// <summary>
+        /// start point for the game win animation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void winAnimatorWork(object sender, DoWorkEventArgs e)
+        {
+            isGameAnimating = true;
+
+            for (int i = 0; i < mapHeight; i++)
+            {
+                for (int j = 0; j < mapWidth; j++)
+                {
+                    Thread.Sleep(10);
+                    Invoke(animationTimer, new object[] { this, j, i });
+                }
+            }
+        }        
+
+        /// <summary>
+        /// flags the given tile for removal to animate the game being won.
+        /// </summary>
+        /// <param name="GUI"></param>
+        private static void animateWinState(MinesweeperGUI GUI, int x, int y)
+        {
+            GUI.animatedCoords.Add((x, y));
+            GUI.Invalidate();
+        }
+
+        /// <summary>
+        /// end point for the game win animation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void endWinAnimation(object sender, RunWorkerCompletedEventArgs e)
+        {
+            animatedCoords.Clear();
+            isGameAnimating = false;
+            drawMap = false;
+            Invalidate();
         }
 
         /// <summary>
@@ -1113,12 +1206,22 @@ namespace MinesweeperGUI
                         target = gameMap.GetCell(i, j);
                         targetPos = new Point(tileAnchor.X + (i * 25), tileAnchor.Y + (j * 25));
 
-                        // if the target is not visible, then we either draw a blank or flagged tile
-                        if (!target.isVisible)
+                        // if this is part of the game won animation, draw a 0 no matter what
+                        if (animatedCoords.Contains((i, j)))
+                        {
+                            e.Graphics.DrawImage(zeroTile, targetPos);
+                        }
+
+                        // if the target is not visible, then we either draw a blank or flagged tile, or a mine if the game is lost.
+                        else if (!target.isVisible)
                         {
                             if (target.isFlagged)
                             {
                                 e.Graphics.DrawImage(flaggedTile, targetPos);
+                            }
+                            else if (target.hasMine && isGameLost)
+                            {
+                                e.Graphics.DrawImage(mineTile, targetPos);
                             }
                             else
                             {
