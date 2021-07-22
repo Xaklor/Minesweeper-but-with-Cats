@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
+using System.IO;
 using MinesweeperModel;
 
 namespace MinesweeperGUI
@@ -45,7 +46,7 @@ namespace MinesweeperGUI
         private MinesweeperMap gameMap;
         private bool hasMapGenerated;
         private List<(int, int)> selectedCoords;
-        private List<(int, int)> animatedCoords;
+        private HashSet<(int, int)> animatedCoords;
         private int clickSafetyX, clickSafetyY;
 
         private int gameElapsedSeconds;
@@ -102,7 +103,7 @@ namespace MinesweeperGUI
             animationsOn = false;
             loading = false;
             selectedCoords = new List<(int, int)>();
-            animatedCoords = new List<(int, int)>();
+            animatedCoords = new HashSet<(int, int)>();
             clickSafetyX = 0;
             clickSafetyY = 0;
 
@@ -131,8 +132,116 @@ namespace MinesweeperGUI
             mapBackgroundImage = Properties.Resources.blobcathug;
 
             InitializeComponent();
+            readSettings();
+            changeTheme(currentTheme);
+
             // this sets the internal timer to the new speed.
             timeBeginPeriod(timerAccuracy);
+        }
+
+        /// <summary>
+        /// attempts to read the settings file and save its contents. makes no changes if it finds bad data.
+        /// </summary>
+        private void readSettings()
+        {
+            // if a settings file exists, read from it for settings
+            if (File.Exists("settings"))
+            {
+                try
+                {
+                    int settingsWidth = mapWidth;
+                    int settingsHeight = mapHeight;
+                    int settingsMines = numMinesInit;
+                    theme settingsTheme = currentTheme;
+                    bool settingsAnimations = animationsOn;
+
+                    IEnumerable<string> settings = File.ReadAllLines("settings");
+                    IEnumerator<string> settingsReader = settings.GetEnumerator();
+                    settingsReader.MoveNext();
+
+                    // first item should be width, which must be between 5 and 30
+                    settingsWidth = int.Parse(settingsReader.Current);
+                    if (settingsWidth < 5 || settingsWidth > 30)
+                    {
+                        throw new FileFormatException("invalid width found.");
+                    }
+                    settingsReader.MoveNext();
+
+                    // second item should be height, which must be between 5 and 30
+                    settingsHeight = int.Parse(settingsReader.Current);
+                    if (settingsHeight < 5 || settingsHeight > 30)
+                    {
+                        throw new FileFormatException("invalid height found.");
+                    }
+                    settingsReader.MoveNext();
+
+                    // third item should be mines, which must be between 1 and 899
+                    settingsMines = int.Parse(settingsReader.Current);
+                    if (settingsMines < 1 || settingsMines > 899)
+                    {
+                        throw new FileFormatException("invalid mines found.");
+                    }
+                    settingsReader.MoveNext();
+
+                    // fourth item should be theme, which must either be cats, classic, bubble, or dark
+                    switch (settingsReader.Current)
+                    {
+                        case ("cats"):
+                            settingsTheme = theme.cats;
+                            break;
+
+                        case ("classic"):
+                            settingsTheme = theme.classic;
+                            break;
+
+                        case ("bubble"):
+                            settingsTheme = theme.bubble;
+                            break;
+
+                        case ("dark"):
+                            settingsTheme = theme.dark;
+                            break;
+
+                        default:
+                            throw new FileFormatException("invalid theme found.");
+                    }
+                    settingsReader.MoveNext();
+
+                    // fifth item should be loading animations, which must be true or false
+                    switch (settingsReader.Current)
+                    {
+                        case ("True"):
+                            settingsAnimations = true;
+                            break;
+
+                        case ("False"):
+                            settingsAnimations = false;
+                            break;
+
+                        default:
+                            throw new FileFormatException("invalid animations setting found.");
+                    }
+
+                    // if we made it here, we have all the data we need and it's all safe
+                    mapWidth = settingsWidth;
+                    mapHeight = settingsHeight;
+                    numMines = settingsMines;
+                    numMinesInit = settingsMines;
+                    currentTheme = settingsTheme;
+                    animationsOn = settingsAnimations;
+
+                    // based on the map size, we can determine if the main window also needs resizing
+                    int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * 25);
+                    int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * 25);
+                    this.MinimumSize = new Size(w, h);
+                    this.Size = MinimumSize;
+
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show($"something went wrong reading your settings file:\n{e.Message}", "oops");
+                }
+            }
         }
 
         /*
@@ -653,10 +762,19 @@ namespace MinesweeperGUI
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
                 // the larger of our starting dimensions and the new dimensions based on the new map.
                 // the +1 and +2 on mapWidth and mapHeight are necessary and I have no idea why.
-                int w = Math.Max(610, loadingImage.Location.X + (mapWidth + 1) * 25);
-                int h = Math.Max(550, loadingImage.Location.Y + (mapHeight + 2) * 25);
+                int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * 25);
+                int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * 25);
                 this.MinimumSize = new Size(w, h);
                 this.Size = MinimumSize;
+
+                // save these settings in the settings file.
+                List<string> settings = new List<string>();
+                settings.Add($"{mapWidth}");
+                settings.Add($"{mapHeight}");
+                settings.Add($"{numMinesInit}");
+                settings.Add($"{currentTheme}");
+                settings.Add($"{animationsOn}");
+                File.WriteAllLines("settings", settings);
 
                 // this starts a new game with the new settings.
                 newgameButton_Click(null, null);
