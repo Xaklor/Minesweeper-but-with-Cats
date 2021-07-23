@@ -132,7 +132,7 @@ namespace MinesweeperGUI
             mapBackgroundImage = Properties.Resources.blobcathug;
 
             InitializeComponent();
-            readSettings();
+            initializeSaves();
             changeTheme(currentTheme);
 
             // this sets the internal timer to the new speed.
@@ -141,8 +141,9 @@ namespace MinesweeperGUI
 
         /// <summary>
         /// attempts to read the settings file and save its contents. makes no changes if it finds bad data.
+        /// also verifies the stats file exists and creates a fresh one if it's missing.
         /// </summary>
-        private void readSettings()
+        private void initializeSaves()
         {
             // if a settings file exists, read from it for settings
             if (File.Exists("settings"))
@@ -241,6 +242,28 @@ namespace MinesweeperGUI
                 {
                     MessageBox.Show($"something went wrong reading your settings file:\n{e.Message}", "oops");
                 }
+            }
+
+            // if the stats save file doesn't exist, create a fresh one here
+            if (!File.Exists("stats"))
+            {
+                List<string> stats = new List<string>();
+                stats.Add("0");
+                stats.Add("0");
+                stats.Add("5999");
+                stats.Add("5999");
+                stats.Add("5999");
+                stats.Add("0");
+                stats.Add("0");
+                stats.Add("5999");
+                stats.Add("5999");
+                stats.Add("5999");
+                stats.Add("0");
+                stats.Add("0");
+                stats.Add("5999");
+                stats.Add("5999");
+                stats.Add("5999");
+                File.WriteAllLines("stats", stats);
             }
         }
 
@@ -923,7 +946,7 @@ namespace MinesweeperGUI
         }
 
         /// <summary>
-        /// not implemented yet.
+        /// opens up a message box displaying saved stats
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -958,7 +981,63 @@ namespace MinesweeperGUI
                     break;
             }
 
-            MessageBox.Show("I have not added stats yet.", "oops");
+            try
+            {
+                List<string> stats = new List<string>();
+                foreach (string statistic in File.ReadAllLines("stats"))
+                {
+                    stats.Add(statistic);
+                }
+
+                if (stats.Count != 15)
+                {
+                    throw new FileFormatException("invalid stats format found.");
+                }
+
+                string easyNumGames      = stats[0];
+                string easyWonGames      = stats[1];
+                string easyFirstPlace    = convertSecondsToScore(stats[2]);
+                string easySecondPlace   = convertSecondsToScore(stats[3]);
+                string easyThirdPlace    = convertSecondsToScore(stats[4]);
+                string normalNumGames    = stats[5];
+                string normalWonGames    = stats[6];
+                string normalFirstPlace  = convertSecondsToScore(stats[7]);
+                string normalSecondPlace = convertSecondsToScore(stats[8]);
+                string normalThirdPlace  = convertSecondsToScore(stats[9]);
+                string hardNumGames      = stats[10];
+                string hardWonGames      = stats[11];
+                string hardFirstPlace    = convertSecondsToScore(stats[12]);
+                string hardSecondPlace   = convertSecondsToScore(stats[13]);
+                string hardThirdPlace    = convertSecondsToScore(stats[14]);
+
+                string statsContents = $"" +
+                    $"Easy games played: {easyNumGames}\n" +
+                    $"Easy games won: {easyWonGames}\n" +
+                    $"Easy best times:\n" +
+                    $"1st: {easyFirstPlace}\n" +
+                    $"2nd: {easySecondPlace}\n" +
+                    $"3rd: {easyThirdPlace}\n\n" +
+                    $"Normal games played: {normalNumGames}\n" +
+                    $"Normal games won: {normalWonGames}\n" +
+                    $"Normal best times:\n" +
+                    $"1st: {normalFirstPlace}\n" +
+                    $"2nd: {normalSecondPlace}\n" +
+                    $"3rd: {normalThirdPlace}\n\n" +
+                    $"Hard games played: {hardNumGames}\n" +
+                    $"Hard games won: {hardWonGames}\n" +
+                    $"Hard best times:\n" +
+                    $"1st: {hardFirstPlace}\n" +
+                    $"2nd: {hardSecondPlace}\n" +
+                    $"3rd: {hardThirdPlace}\n\n";
+
+                MessageBox.Show(statsContents, "Stats");
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went wrong reading stats:\n{exception.Message}", "oops");
+            }
+
 
             // if the game was paused by this dialog, resume the timer
             if (isGamePaused)
@@ -969,6 +1048,22 @@ namespace MinesweeperGUI
                     timeKeeper.RunWorkerAsync();
                 }
             }
+        }
+
+        /// <summary>
+        /// converts a given amount of seconds into a time score, that is: 86s -> 01:26, 1317s -> 21:57
+        /// </summary>
+        /// <param name="seconds"></param>
+        /// <returns></returns>
+        private string convertSecondsToScore(string seconds)
+        {
+            int numSeconds = int.Parse(seconds);
+            int second1s  = numSeconds % 10;
+            int second10s = numSeconds % 60  / 10;
+            int minute1s  = numSeconds % 600 / 60;
+            int minute10s = numSeconds / 600;
+
+            return $"{minute10s}{minute1s}:{second10s}{second1s}";
         }
 
         /*
@@ -1186,16 +1281,7 @@ namespace MinesweeperGUI
                     }
                     catch(GameOverException exception)
                     {
-                        if (exception.Message == "lost")
-                        {
-                            isGamePlaying = false;
-                            isGameLost = true;
-                        }
-                        if (exception.Message == "won")
-                        {
-                            isGamePlaying = false;
-                            winAnimator.RunWorkerAsync();
-                        }
+                        gameFinished(exception.Message);
                     }
                 }
                 // if this is a left click and the cell IS revealed, reveal its neighbors if it has the right number of flags nearby
@@ -1218,16 +1304,7 @@ namespace MinesweeperGUI
                         }
                         catch (GameOverException exception)
                         {
-                            if (exception.Message == "lost")
-                            {
-                                isGamePlaying = false;
-                                isGameLost = true;
-                            }
-                            if (exception.Message == "won")
-                            {
-                                isGamePlaying = false;
-                                winAnimator.RunWorkerAsync();
-                            }
+                            gameFinished(exception.Message);
                         }
                     }
                 }
@@ -1241,6 +1318,181 @@ namespace MinesweeperGUI
             selectedCoords.Clear();
             Invalidate();
 
+        }
+
+        /// <summary>
+        /// stops the board from being drawn, triggers either win or loss graphics, and saves to the stats file.
+        /// </summary>
+        /// <param name="winState">must be "lost" or "won" depending on which state the game is in.</param>
+        private void gameFinished(string winState)
+        {
+            isGamePlaying = false;
+
+            // if this game was one of the preset difficulties (easy, normal, or hard), update stats
+            // stats data is not tracked for custom boards since they have far too much variety to be meaningful
+            bool isEasy   = mapWidth == 9  && mapHeight == 9  && numMinesInit == 10;
+            bool isNormal = mapWidth == 16 && mapHeight == 16 && numMinesInit == 40;
+            bool isHard   = mapWidth == 30 && mapHeight == 16 && numMinesInit == 99;
+
+            if (isEasy || isNormal || isHard)
+                statsWorker.RunWorkerAsync(argument: winState);
+
+            // reveals all unflagged mines, including the one that was clicked on
+            if (winState == "lost")
+                isGameLost = true;
+
+            // starts the win animation
+            if (winState == "won")
+                winAnimator.RunWorkerAsync();
+
+        }
+
+        /// <summary>
+        /// reads in the stats file and updates it if necessary based on the outcome of this game
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void saveStats(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                List<string> stats = new List<string>();
+                foreach (string statistic in File.ReadAllLines("stats"))
+                {
+                    stats.Add(statistic);
+                }
+
+                if (stats.Count != 15)
+                {
+                    throw new FileFormatException("invalid stats format found.");
+                }
+
+                int easyNumGames      = int.Parse(stats[0]);
+                int easyWonGames      = int.Parse(stats[1]);
+                int easyFirstPlace    = int.Parse(stats[2]);
+                int easySecondPlace   = int.Parse(stats[3]);
+                int easyThirdPlace    = int.Parse(stats[4]);
+                int normalNumGames    = int.Parse(stats[5]);
+                int normalWonGames    = int.Parse(stats[6]);
+                int normalFirstPlace  = int.Parse(stats[7]);
+                int normalSecondPlace = int.Parse(stats[8]);
+                int normalThirdPlace  = int.Parse(stats[9]);
+                int hardNumGames      = int.Parse(stats[10]);
+                int hardWonGames      = int.Parse(stats[11]);
+                int hardFirstPlace    = int.Parse(stats[12]);
+                int hardSecondPlace   = int.Parse(stats[13]);
+                int hardThirdPlace    = int.Parse(stats[14]);
+
+                // determine which difficulty setting the game was on
+                bool isEasy   = mapWidth == 9  && mapHeight == 9  && numMinesInit == 10;
+                bool isNormal = mapWidth == 16 && mapHeight == 16 && numMinesInit == 40;
+                bool isHard   = mapWidth == 30 && mapHeight == 16 && numMinesInit == 99;
+
+                if (isEasy)
+                {
+                    List<string> easyStats = updateStats(easyNumGames, easyWonGames, easyFirstPlace, easySecondPlace, easyThirdPlace, e.Argument as string == "won");
+                    List<string> updatedStats = new List<string>();
+                    updatedStats.AddRange(easyStats);
+                    updatedStats.Add(normalNumGames.ToString());
+                    updatedStats.Add(normalWonGames.ToString());
+                    updatedStats.Add(normalFirstPlace.ToString());
+                    updatedStats.Add(normalSecondPlace.ToString());
+                    updatedStats.Add(normalThirdPlace.ToString());
+                    updatedStats.Add(hardNumGames.ToString());
+                    updatedStats.Add(hardWonGames.ToString());
+                    updatedStats.Add(hardFirstPlace.ToString());
+                    updatedStats.Add(hardSecondPlace.ToString());
+                    updatedStats.Add(hardThirdPlace.ToString());
+
+                    File.WriteAllLines("stats", updatedStats);
+                }
+
+                if (isNormal)
+                {
+                    List<string> normalStats = updateStats(normalNumGames, normalWonGames, normalFirstPlace, normalSecondPlace, normalThirdPlace, e.Argument as string == "won");
+                    List<string> updatedStats = new List<string>();
+                    updatedStats.Add(easyNumGames.ToString());
+                    updatedStats.Add(easyWonGames.ToString());
+                    updatedStats.Add(easyFirstPlace.ToString());
+                    updatedStats.Add(easySecondPlace.ToString());
+                    updatedStats.Add(easyThirdPlace.ToString());
+                    updatedStats.AddRange(normalStats);
+                    updatedStats.Add(hardNumGames.ToString());
+                    updatedStats.Add(hardWonGames.ToString());
+                    updatedStats.Add(hardFirstPlace.ToString());
+                    updatedStats.Add(hardSecondPlace.ToString());
+                    updatedStats.Add(hardThirdPlace.ToString());
+
+                    File.WriteAllLines("stats", updatedStats);
+                }
+
+                if (isHard)
+                {
+                    List<string> hardStats = updateStats(hardNumGames, hardWonGames, hardFirstPlace, hardSecondPlace, hardThirdPlace, e.Argument as string == "won");
+                    List<string> updatedStats = new List<string>();
+                    updatedStats.Add(easyNumGames.ToString());
+                    updatedStats.Add(easyWonGames.ToString());
+                    updatedStats.Add(easyFirstPlace.ToString());
+                    updatedStats.Add(easySecondPlace.ToString());
+                    updatedStats.Add(easyThirdPlace.ToString());
+                    updatedStats.Add(normalNumGames.ToString());
+                    updatedStats.Add(normalWonGames.ToString());
+                    updatedStats.Add(normalFirstPlace.ToString());
+                    updatedStats.Add(normalSecondPlace.ToString());
+                    updatedStats.Add(normalThirdPlace.ToString());
+                    updatedStats.AddRange(hardStats);
+
+                    File.WriteAllLines("stats", updatedStats);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show($"Something went wrong updating stats:\n{exception.Message}", "oops");
+            }
+
+        }
+
+        /// <summary>
+        /// updates a given set of stats based on victory status
+        /// </summary>
+        /// <param name="stats"></param>
+        /// <param name="won"></param>
+        /// <returns></returns>
+        private List<string> updateStats(int numGames, int wonGames, int firstPlace, int secondPlace, int thirdPlace, bool won)
+        {
+            // increment games played regardless of victory
+            numGames++;
+            
+            // if the game was won, increment games won and update best times
+            if (won)
+            {
+                wonGames++;
+
+                if (gameElapsedSeconds < firstPlace)
+                {
+                    thirdPlace = secondPlace;
+                    secondPlace = firstPlace;
+                    firstPlace = gameElapsedSeconds;
+                }
+                else if (gameElapsedSeconds < secondPlace)
+                {
+                    thirdPlace = secondPlace;
+                    secondPlace = gameElapsedSeconds;
+                }
+                else if (gameElapsedSeconds < thirdPlace)
+                {
+                    thirdPlace = gameElapsedSeconds;
+                }
+            }
+
+            List<string> updatedStats = new List<string>();
+            updatedStats.Add(numGames.ToString());
+            updatedStats.Add(wonGames.ToString());
+            updatedStats.Add(firstPlace.ToString());
+            updatedStats.Add(secondPlace.ToString());
+            updatedStats.Add(thirdPlace.ToString());
+            return updatedStats;
         }
 
         /// <summary>

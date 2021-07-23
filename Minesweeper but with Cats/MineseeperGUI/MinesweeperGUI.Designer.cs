@@ -43,6 +43,7 @@ namespace MinesweeperGUI
             this.minesCounter1 = new System.Windows.Forms.PictureBox();
             this.minesCounter10 = new System.Windows.Forms.PictureBox();
             this.minesCounter100 = new System.Windows.Forms.PictureBox();
+            this.statsWorker = new System.ComponentModel.BackgroundWorker();
             this.timeKeeper = new System.ComponentModel.BackgroundWorker();
             this.timerDisplay10m = new System.Windows.Forms.PictureBox();
             this.timerDisplayC = new System.Windows.Forms.PictureBox();
@@ -158,6 +159,10 @@ namespace MinesweeperGUI
             this.minesCounter100.TabIndex = 6;
             this.minesCounter100.TabStop = false;
             this.minesCounter100.Visible = false;
+            //
+            // statsWorker
+            //
+            this.statsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.saveStats);
             // 
             // timeKeeper
             // 
@@ -273,6 +278,7 @@ namespace MinesweeperGUI
         private PictureBox minesCounter1;
         private PictureBox minesCounter10;
         private PictureBox minesCounter100;
+        private BackgroundWorker statsWorker;
         private BackgroundWorker timeKeeper;
         private PictureBox timerDisplay10m;
         private PictureBox timerDisplayC;

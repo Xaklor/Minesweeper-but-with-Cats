@@ -85,7 +85,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_1 {
             get {
-                object obj = ResourceManager.GetObject("bubble 1", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -95,7 +95,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_2 {
             get {
-                object obj = ResourceManager.GetObject("bubble 2", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -105,7 +105,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_3 {
             get {
-                object obj = ResourceManager.GetObject("bubble 3", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -115,7 +115,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_4 {
             get {
-                object obj = ResourceManager.GetObject("bubble 4", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -125,7 +125,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_5 {
             get {
-                object obj = ResourceManager.GetObject("bubble 5", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_5", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -135,7 +135,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_6 {
             get {
-                object obj = ResourceManager.GetObject("bubble 6", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_6", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -145,7 +145,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_7 {
             get {
-                object obj = ResourceManager.GetObject("bubble 7", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_7", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -155,7 +155,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_8 {
             get {
-                object obj = ResourceManager.GetObject("bubble 8", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_8", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -245,7 +245,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap bubble_flagged {
             get {
-                object obj = ResourceManager.GetObject("bubble flagged", resourceCulture);
+                object obj = ResourceManager.GetObject("bubble_flagged", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
