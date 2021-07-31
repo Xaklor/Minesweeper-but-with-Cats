@@ -56,6 +56,7 @@ namespace MinesweeperGUI
 
         // tiles
         private bool drawMap;
+        private int  tileSize;
         private Point  tileAnchor;
         private Bitmap blankTile;
         private Bitmap selectTile;
@@ -113,7 +114,8 @@ namespace MinesweeperGUI
             isGameAnimating = false;
             isGameLost = false;
 
-            drawMap = false;
+            drawMap     = false;
+            tileSize    = 25;
             tileAnchor  = new Point(278, 112);
             blankTile   = Properties.Resources.cat_blank;
             selectTile  = Properties.Resources.cat_selected;
@@ -133,7 +135,6 @@ namespace MinesweeperGUI
 
             InitializeComponent();
             initializeSaves();
-            changeTheme(currentTheme);
 
             // this sets the internal timer to the new speed.
             timeBeginPeriod(timerAccuracy);
@@ -155,6 +156,7 @@ namespace MinesweeperGUI
                     int settingsMines = numMinesInit;
                     theme settingsTheme = currentTheme;
                     bool settingsAnimations = animationsOn;
+                    bool settingsTileSize = tileSize == 50;
 
                     IEnumerable<string> settings = File.ReadAllLines("settings");
                     IEnumerator<string> settingsReader = settings.GetEnumerator();
@@ -222,6 +224,22 @@ namespace MinesweeperGUI
                         default:
                             throw new FileFormatException("invalid animations setting found.");
                     }
+                    settingsReader.MoveNext();
+
+                    // sixth item should be large tiles, which must be true or false
+                    switch (settingsReader.Current)
+                    {
+                        case ("True"):
+                            settingsTileSize = true;
+                            break;
+
+                        case ("False"):
+                            settingsTileSize = false;
+                            break;
+
+                        default:
+                            throw new FileFormatException("invalid tile size found.");
+                    }
 
                     // if we made it here, we have all the data we need and it's all safe
                     mapWidth = settingsWidth;
@@ -231,9 +249,12 @@ namespace MinesweeperGUI
                     currentTheme = settingsTheme;
                     animationsOn = settingsAnimations;
 
+                    changeTheme(currentTheme);
+                    changeTileSize(settingsTileSize);
+
                     // based on the map size, we can determine if the main window also needs resizing
-                    int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * 25);
-                    int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * 25);
+                    int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * tileSize);
+                    int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * tileSize);
                     this.MinimumSize = new Size(w, h);
                     this.Size = MinimumSize;
 
@@ -342,7 +363,7 @@ namespace MinesweeperGUI
             if (animationsOn)
             {
                 // this starts the loading animation playing and adjusts it to match our current map size
-                loadingImage.Size = new Size(mapWidth * 25, mapHeight * 25);
+                loadingImage.Size = new Size(mapWidth * tileSize, mapHeight * tileSize);
                 loadingImage.Visible = true;
                 loading = true;
                 // this starts up a background thread to wait out the loading animation, 
@@ -728,7 +749,6 @@ namespace MinesweeperGUI
 
         /// <summary>
         /// opens the settings dialog and copies the results into the main program.
-        /// currently the settings dialog only sends information for easy, normal, and hard mode maps.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -743,7 +763,7 @@ namespace MinesweeperGUI
                 isGamePaused = true;
             }
 
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, animationsOn);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, animationsOn, tileSize == 50);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -772,6 +792,9 @@ namespace MinesweeperGUI
                 changeTheme(settingsDialog.selectedTheme);
             }
 
+            // this and current theme can be changed without the confirm button being clicked so the player can change size and theme mid-game
+            changeTileSize(settingsDialog.largeTiles);
+
             // only make game changes if the confirm button was clicked in the dialog. 
             if (settingsDialog.confirmed)
             {
@@ -785,8 +808,8 @@ namespace MinesweeperGUI
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
                 // the larger of our starting dimensions and the new dimensions based on the new map.
                 // the +1 and +2 on mapWidth and mapHeight are necessary and I have no idea why.
-                int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * 25);
-                int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * 25);
+                int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * tileSize);
+                int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * tileSize);
                 this.MinimumSize = new Size(w, h);
                 this.Size = MinimumSize;
 
@@ -797,6 +820,7 @@ namespace MinesweeperGUI
                 settings.Add($"{numMinesInit}");
                 settings.Add($"{currentTheme}");
                 settings.Add($"{animationsOn}");
+                settings.Add($"{tileSize == 50}");
                 File.WriteAllLines("settings", settings);
 
                 // this starts a new game with the new settings.
@@ -909,6 +933,156 @@ namespace MinesweeperGUI
                     break;
             }
 
+            // all of the above sets the tile images to their "small" state. if we have large tiles enabled, we need to change them
+            if (tileSize == 50)
+                changeTileSize(true);
+
+        }
+
+        /// <summary>
+        /// changes the game tiles to be large size if true, small size if false.
+        /// </summary>
+        /// <param name="isLarge"></param>
+        private void changeTileSize(bool isLarge)
+        {
+            if (isLarge)
+            {
+                tileSize = 50;
+                switch (currentTheme)
+                {
+                    case theme.cats:
+                        blankTile   = Properties.Resources.cat_blank_big;
+                        selectTile  = Properties.Resources.cat_selected_big;
+                        flaggedTile = Properties.Resources.cat_flagged_big;
+                        mineTile    = Properties.Resources.cat_mine_big;
+                        twoTile     = Properties.Resources.cat_2_big;
+                        oneTile     = Properties.Resources.cat_1_big;
+                        threeTile   = Properties.Resources.cat_3_big;
+                        fourTile    = Properties.Resources.cat_4_big;
+                        fiveTile    = Properties.Resources.cat_5_big;
+                        sixTile     = Properties.Resources.cat_6_big;
+                        sevenTile   = Properties.Resources.cat_7_big;
+                        eightTile   = Properties.Resources.cat_8_big;
+                        break;
+
+                    case theme.classic:
+                        blankTile   = Properties.Resources.classic_blank_big;
+                        selectTile  = Properties.Resources.classic_selected_big;
+                        flaggedTile = Properties.Resources.classic_flagged_big;
+                        mineTile    = Properties.Resources.classic_mine_big;
+                        oneTile     = Properties.Resources.classic_1_big;
+                        twoTile     = Properties.Resources.classic_2_big;
+                        threeTile   = Properties.Resources.classic_3_big;
+                        fourTile    = Properties.Resources.classic_4_big;
+                        fiveTile    = Properties.Resources.classic_5_big;
+                        sixTile     = Properties.Resources.classic_6_big;
+                        sevenTile   = Properties.Resources.classic_7_big;
+                        eightTile   = Properties.Resources.classic_8_big;
+                        break;
+
+                    case theme.bubble:
+                        blankTile   = Properties.Resources.bubble_blank_big;
+                        selectTile  = Properties.Resources.bubble_selected_big;
+                        flaggedTile = Properties.Resources.bubble_flagged_big;
+                        mineTile    = Properties.Resources.bubble_mine_big;
+                        oneTile     = Properties.Resources.bubble_1_big;
+                        twoTile     = Properties.Resources.bubble_2_big;
+                        threeTile   = Properties.Resources.bubble_3_big;
+                        fourTile    = Properties.Resources.bubble_4_big;
+                        fiveTile    = Properties.Resources.bubble_5_big;
+                        sixTile     = Properties.Resources.bubble_6_big;
+                        sevenTile   = Properties.Resources.bubble_7_big;
+                        eightTile   = Properties.Resources.bubble_8_big;
+                        break;
+
+                    case theme.dark:
+                        blankTile   = Properties.Resources.dark_blank_big;
+                        selectTile  = Properties.Resources.dark_selected_big;
+                        flaggedTile = Properties.Resources.dark_flagged_big;
+                        mineTile    = Properties.Resources.dark_mine_big;
+                        oneTile     = Properties.Resources.dark_1_big;
+                        twoTile     = Properties.Resources.dark_2_big;
+                        threeTile   = Properties.Resources.dark_3_big;
+                        fourTile    = Properties.Resources.dark_4_big;
+                        fiveTile    = Properties.Resources.dark_5_big;
+                        sixTile     = Properties.Resources.dark_6_big;
+                        sevenTile   = Properties.Resources.dark_7_big;
+                        eightTile   = Properties.Resources.dark_8_big;
+                        break;
+                }
+            }
+            else
+            {
+                tileSize = 25;
+                switch (currentTheme)
+                {
+                    case theme.cats:
+                        blankTile   = Properties.Resources.cat_blank;
+                        selectTile  = Properties.Resources.cat_selected;
+                        flaggedTile = Properties.Resources.cat_flagged;
+                        mineTile    = Properties.Resources.cat_mine;
+                        twoTile     = Properties.Resources.cat_2;
+                        oneTile     = Properties.Resources.cat_1;
+                        threeTile   = Properties.Resources.cat_3;
+                        fourTile    = Properties.Resources.cat_4;
+                        fiveTile    = Properties.Resources.cat_5;
+                        sixTile     = Properties.Resources.cat_6;
+                        sevenTile   = Properties.Resources.cat_7;
+                        eightTile   = Properties.Resources.cat_8;
+                        break;
+
+                    case theme.classic:
+                        blankTile   = Properties.Resources.classic_blank;
+                        selectTile  = Properties.Resources.classic_selected;
+                        flaggedTile = Properties.Resources.classic_flagged;
+                        mineTile    = Properties.Resources.classic_mine;
+                        oneTile     = Properties.Resources.classic_1;
+                        twoTile     = Properties.Resources.classic_2;
+                        threeTile   = Properties.Resources.classic_3;
+                        fourTile    = Properties.Resources.classic_4;
+                        fiveTile    = Properties.Resources.classic_5;
+                        sixTile     = Properties.Resources.classic_6;
+                        sevenTile   = Properties.Resources.classic_7;
+                        eightTile   = Properties.Resources.classic_8;
+                        break;
+
+                    case theme.bubble:
+                        blankTile   = Properties.Resources.bubble_blank;
+                        selectTile  = Properties.Resources.bubble_selected;
+                        flaggedTile = Properties.Resources.bubble_flagged;
+                        mineTile    = Properties.Resources.bubble_mine;
+                        oneTile     = Properties.Resources.bubble_1;
+                        twoTile     = Properties.Resources.bubble_2;
+                        threeTile   = Properties.Resources.bubble_3;
+                        fourTile    = Properties.Resources.bubble_4;
+                        fiveTile    = Properties.Resources.bubble_5;
+                        sixTile     = Properties.Resources.bubble_6;
+                        sevenTile   = Properties.Resources.bubble_7;
+                        eightTile   = Properties.Resources.bubble_8;
+                        break;
+
+                    case theme.dark:
+                        blankTile   = Properties.Resources.dark_blank;
+                        selectTile  = Properties.Resources.dark_selected;
+                        flaggedTile = Properties.Resources.dark_flagged;
+                        mineTile    = Properties.Resources.dark_mine;
+                        oneTile     = Properties.Resources.dark_1;
+                        twoTile     = Properties.Resources.dark_2;
+                        threeTile   = Properties.Resources.dark_3;
+                        fourTile    = Properties.Resources.dark_4;
+                        fiveTile    = Properties.Resources.dark_5;
+                        sixTile     = Properties.Resources.dark_6;
+                        sevenTile   = Properties.Resources.dark_7;
+                        eightTile   = Properties.Resources.dark_8;
+                        break;
+                }
+            }
+
+            // change our own dimensions to match the new tile size
+            int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * tileSize);
+            int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * tileSize);
+            this.MinimumSize = new Size(w, h);
+            this.Size = MinimumSize;
         }
      
 
@@ -1176,12 +1350,12 @@ namespace MinesweeperGUI
             Point relativeMousePosition = PointToClient(MousePosition);
 
             // verify the mouse position is within the board before doing anything
-            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
-            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
+            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * tileSize);
+            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * tileSize);
 
             // map coordinates are relative to the tile anchor and scaled based on tile size
-            int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
-            int celly = (relativeMousePosition.Y - tileAnchor.Y) / 25;
+            int cellx = (relativeMousePosition.X - tileAnchor.X) / tileSize;
+            int celly = (relativeMousePosition.Y - tileAnchor.Y) / tileSize;
 
             // this is for clickup safety, we don't want the player clicking up on a cell they didn't click down on by accident
             clickSafetyX = cellx;
@@ -1225,8 +1399,8 @@ namespace MinesweeperGUI
             Point relativeMousePosition = PointToClient(MousePosition);
 
             // verify the mouse position is within the board before doing anything
-            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * 25);
-            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * 25);
+            bool isValidX = relativeMousePosition.X > tileAnchor.X && relativeMousePosition.X < tileAnchor.X + (mapWidth * tileSize);
+            bool isValidY = relativeMousePosition.Y > tileAnchor.Y && relativeMousePosition.Y < tileAnchor.Y + (mapHeight * tileSize);
 
             // to explain the if statement to the reader:
             // valid X and Y ensure the mouse is inside the map
@@ -1237,8 +1411,8 @@ namespace MinesweeperGUI
             if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap && !loading)
             {
                 // map coordinates are relative to the tile anchor and scaled based on tile size
-                int cellx = (relativeMousePosition.X - tileAnchor.X) / 25;
-                int celly = (relativeMousePosition.Y - tileAnchor.Y) / 25;
+                int cellx = (relativeMousePosition.X - tileAnchor.X) / tileSize;
+                int celly = (relativeMousePosition.Y - tileAnchor.Y) / tileSize;
 
                 // if this cell isn't the one that was clicked down on, stop immediately
                 if (cellx != clickSafetyX || celly != clickSafetyY)
@@ -1562,7 +1736,7 @@ namespace MinesweeperGUI
         private void drawBoard(object sender, PaintEventArgs e)
         {
             // draws the hidden background image
-            e.Graphics.DrawImage(mapBackgroundImage, tileAnchor.X, tileAnchor.Y, mapWidth * 25, mapHeight * 25);
+            e.Graphics.DrawImage(mapBackgroundImage, tileAnchor.X, tileAnchor.Y, mapWidth * tileSize, mapHeight * tileSize);
 
             // only draw a map if we're ready for one
             if (drawMap)
@@ -1574,7 +1748,7 @@ namespace MinesweeperGUI
                     for (int j = 0; j < mapHeight; j++)
                     {
                         target = gameMap.GetCell(i, j);
-                        targetPos = new Point(tileAnchor.X + (i * 25), tileAnchor.Y + (j * 25));
+                        targetPos = new Point(tileAnchor.X + (i * tileSize), tileAnchor.Y + (j * tileSize));
 
                         // if this is part of the game won animation, draw a 0 no matter what
                         if (animatedCoords.Contains((i, j)))
@@ -1658,7 +1832,7 @@ namespace MinesweeperGUI
                     // only covered, non-flagged cells can be highlighted.
                     if (!selected.isVisible && !selected.isFlagged)
                     {
-                        e.Graphics.DrawImage(selectTile, tileAnchor.X + (x * 25), tileAnchor.Y + (y * 25));
+                        e.Graphics.DrawImage(selectTile, tileAnchor.X + (x * tileSize), tileAnchor.Y + (y * tileSize));
                     }
                 }
             }
