@@ -43,7 +43,14 @@ namespace MinesweeperGUI
             this.minesCounter1 = new System.Windows.Forms.PictureBox();
             this.minesCounter10 = new System.Windows.Forms.PictureBox();
             this.minesCounter100 = new System.Windows.Forms.PictureBox();
-            this.minesCounter1000 = new System.Windows.Forms.PictureBox();
+            this.statsWorker = new System.ComponentModel.BackgroundWorker();
+            this.timeKeeper = new System.ComponentModel.BackgroundWorker();
+            this.timerDisplay10m = new System.Windows.Forms.PictureBox();
+            this.timerDisplayC = new System.Windows.Forms.PictureBox();
+            this.timerDisplay1s = new System.Windows.Forms.PictureBox();
+            this.timerDisplay1m = new System.Windows.Forms.PictureBox();
+            this.timerDisplay10s = new System.Windows.Forms.PictureBox();
+            this.winAnimator = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).BeginInit();
@@ -52,13 +59,17 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter10)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter100)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minesCounter1000)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay10m)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplayC)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay1s)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay1m)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay10s)).BeginInit();
             this.SuspendLayout();
-            //
+            // 
             // loadingStaller
-            //
-            this.loadingStaller.DoWork += new DoWorkEventHandler(this.loadingStall);
-            this.loadingStaller.RunWorkerCompleted += new RunWorkerCompletedEventHandler(this.endStall);
+            // 
+            this.loadingStaller.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loadingStall);
+            this.loadingStaller.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.endStall);
             // 
             // loadingImage
             // 
@@ -121,7 +132,7 @@ namespace MinesweeperGUI
             // minesCounter1
             // 
             this.minesCounter1.Image = ((System.Drawing.Image)(resources.GetObject("minesCounter1.Image")));
-            this.minesCounter1.Location = new System.Drawing.Point(200, 12);
+            this.minesCounter1.Location = new System.Drawing.Point(136, 12);
             this.minesCounter1.Name = "minesCounter1";
             this.minesCounter1.Size = new System.Drawing.Size(62, 86);
             this.minesCounter1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -131,7 +142,7 @@ namespace MinesweeperGUI
             // minesCounter10
             // 
             this.minesCounter10.Image = ((System.Drawing.Image)(resources.GetObject("minesCounter10.Image")));
-            this.minesCounter10.Location = new System.Drawing.Point(138, 12);
+            this.minesCounter10.Location = new System.Drawing.Point(74, 12);
             this.minesCounter10.Name = "minesCounter10";
             this.minesCounter10.Size = new System.Drawing.Size(62, 86);
             this.minesCounter10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -141,32 +152,88 @@ namespace MinesweeperGUI
             // minesCounter100
             // 
             this.minesCounter100.Image = ((System.Drawing.Image)(resources.GetObject("minesCounter100.Image")));
-            this.minesCounter100.Location = new System.Drawing.Point(76, 12);
+            this.minesCounter100.Location = new System.Drawing.Point(12, 12);
             this.minesCounter100.Name = "minesCounter100";
             this.minesCounter100.Size = new System.Drawing.Size(62, 86);
             this.minesCounter100.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.minesCounter100.TabIndex = 6;
             this.minesCounter100.TabStop = false;
             this.minesCounter100.Visible = false;
+            //
+            // statsWorker
+            //
+            this.statsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.saveStats);
             // 
-            // minesCounter1000
+            // timeKeeper
             // 
-            this.minesCounter1000.Image = ((System.Drawing.Image)(resources.GetObject("minesCounter1000.Image")));
-            this.minesCounter1000.Location = new System.Drawing.Point(14, 12);
-            this.minesCounter1000.Name = "minesCounter1000";
-            this.minesCounter1000.Size = new System.Drawing.Size(62, 86);
-            this.minesCounter1000.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.minesCounter1000.TabIndex = 7;
-            this.minesCounter1000.TabStop = false;
-            this.minesCounter1000.Visible = false;
+            this.timeKeeper.DoWork += new System.ComponentModel.DoWorkEventHandler(this.timeKeeperWork);
+            // 
+            // timerDisplay10m
+            // 
+            this.timerDisplay10m.Image = ((System.Drawing.Image)(resources.GetObject("timerDisplay10m.Image")));
+            this.timerDisplay10m.Location = new System.Drawing.Point(278, 12);
+            this.timerDisplay10m.Name = "timerDisplay10m";
+            this.timerDisplay10m.Size = new System.Drawing.Size(62, 86);
+            this.timerDisplay10m.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.timerDisplay10m.TabIndex = 8;
+            this.timerDisplay10m.TabStop = false;
+            // 
+            // timerDisplayC
+            // 
+            this.timerDisplayC.Image = ((System.Drawing.Image)(resources.GetObject("timerDisplayC.Image")));
+            this.timerDisplayC.Location = new System.Drawing.Point(414, 12);
+            this.timerDisplayC.Name = "timerDisplayC";
+            this.timerDisplayC.Size = new System.Drawing.Size(30, 86);
+            this.timerDisplayC.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.timerDisplayC.TabIndex = 9;
+            this.timerDisplayC.TabStop = false;
+            // 
+            // timerDisplay1s
+            // 
+            this.timerDisplay1s.Image = ((System.Drawing.Image)(resources.GetObject("timerDisplay1s.Image")));
+            this.timerDisplay1s.Location = new System.Drawing.Point(518, 12);
+            this.timerDisplay1s.Name = "timerDisplay1s";
+            this.timerDisplay1s.Size = new System.Drawing.Size(62, 86);
+            this.timerDisplay1s.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.timerDisplay1s.TabIndex = 10;
+            this.timerDisplay1s.TabStop = false;
+            // 
+            // timerDisplay1m
+            // 
+            this.timerDisplay1m.Image = ((System.Drawing.Image)(resources.GetObject("timerDisplay1m.Image")));
+            this.timerDisplay1m.Location = new System.Drawing.Point(346, 12);
+            this.timerDisplay1m.Name = "timerDisplay1m";
+            this.timerDisplay1m.Size = new System.Drawing.Size(62, 86);
+            this.timerDisplay1m.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.timerDisplay1m.TabIndex = 11;
+            this.timerDisplay1m.TabStop = false;
+            // 
+            // timerDisplay10s
+            // 
+            this.timerDisplay10s.Image = ((System.Drawing.Image)(resources.GetObject("timerDisplay10s.Image")));
+            this.timerDisplay10s.Location = new System.Drawing.Point(450, 12);
+            this.timerDisplay10s.Name = "timerDisplay10s";
+            this.timerDisplay10s.Size = new System.Drawing.Size(62, 86);
+            this.timerDisplay10s.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.timerDisplay10s.TabIndex = 12;
+            this.timerDisplay10s.TabStop = false;
+            //
+            // winAnimator
+            //
+            this.winAnimator.DoWork += new System.ComponentModel.DoWorkEventHandler(this.winAnimatorWork);
+            this.winAnimator.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.endWinAnimation);
             // 
             // MinesweeperGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
-            this.ClientSize = new System.Drawing.Size(512, 503);
-            this.Controls.Add(this.minesCounter1000);
+            this.ClientSize = new System.Drawing.Size(592, 503);
+            this.Controls.Add(this.timerDisplay10s);
+            this.Controls.Add(this.timerDisplay1m);
+            this.Controls.Add(this.timerDisplay1s);
+            this.Controls.Add(this.timerDisplayC);
+            this.Controls.Add(this.timerDisplay10m);
             this.Controls.Add(this.minesCounter100);
             this.Controls.Add(this.minesCounter10);
             this.Controls.Add(this.minesCounter1);
@@ -176,7 +243,7 @@ namespace MinesweeperGUI
             this.Controls.Add(this.newgameButton);
             this.Controls.Add(this.loadingImage);
             this.DoubleBuffered = true;
-            this.MinimumSize = new System.Drawing.Size(530, 550);
+            this.MinimumSize = new System.Drawing.Size(610, 550);
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onExit);
@@ -191,7 +258,11 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter10)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minesCounter100)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.minesCounter1000)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay10m)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplayC)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay1s)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay1m)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.timerDisplay10s)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -207,7 +278,14 @@ namespace MinesweeperGUI
         private PictureBox minesCounter1;
         private PictureBox minesCounter10;
         private PictureBox minesCounter100;
-        private PictureBox minesCounter1000;
+        private BackgroundWorker statsWorker;
+        private BackgroundWorker timeKeeper;
+        private PictureBox timerDisplay10m;
+        private PictureBox timerDisplayC;
+        private PictureBox timerDisplay1s;
+        private PictureBox timerDisplay1m;
+        private PictureBox timerDisplay10s;
+        private BackgroundWorker winAnimator;
     }
 }
 

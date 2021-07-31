@@ -87,10 +87,12 @@ namespace MinesweeperModel
             if (target.isFlagged)
             {
                 target.isFlagged = false;
+                flaggedCells--;
             }
             else
             {
                 target.isFlagged = true;
+                flaggedCells++;
             }
         }
 

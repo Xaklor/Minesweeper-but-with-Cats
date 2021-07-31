@@ -11,9 +11,10 @@ namespace MinesweeperGUI
         public int numMines = 10;
         public bool confirmed;
         public bool animationsOn;
+        public bool largeTiles;
         public theme selectedTheme;
 
-        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines, bool parentAnimations)
+        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines, bool parentAnimations, bool parentTileSize)
         {
             confirmed = false;
             InitializeComponent();
@@ -24,6 +25,7 @@ namespace MinesweeperGUI
             customMinesBox.Value  = parentMines;
 
             animationsCheckBox.Checked = parentAnimations;
+            largeTilesCheckBox.Checked = parentTileSize;
 
             switch (parentTheme)
             {
@@ -65,6 +67,7 @@ namespace MinesweeperGUI
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
             animationsLabel.Image        = Properties.Resources.cat_animations_label;
+            largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
         }
 
@@ -88,6 +91,7 @@ namespace MinesweeperGUI
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
             animationsLabel.Image        = Properties.Resources.cat_animations_label;
+            largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
         }
 
@@ -110,6 +114,7 @@ namespace MinesweeperGUI
             minesLabel.Image             = Properties.Resources.bubble_mines_label;
             themesLabel.Image            = Properties.Resources.bubble_themes_label;
             animationsLabel.Image        = Properties.Resources.bubble_animations_label;
+            largeTilesLabel.Image        = Properties.Resources.bubble_large_tiles_label;
 
         }
 
@@ -132,6 +137,7 @@ namespace MinesweeperGUI
             minesLabel.Image             = Properties.Resources.dark_mines_label;
             themesLabel.Image            = Properties.Resources.dark_themes_label;
             animationsLabel.Image        = Properties.Resources.dark_animations_label;
+            largeTilesLabel.Image        = Properties.Resources.dark_large_tiles_label;
 
         }
 
@@ -334,6 +340,10 @@ namespace MinesweeperGUI
                     cancelButton.Image = Properties.Resources.bubble_cancel_button_pressed;
                     break;
             }
+        }
+        private void largeTilesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            largeTiles = largeTilesCheckBox.Checked;
         }
 
         /// <summary>

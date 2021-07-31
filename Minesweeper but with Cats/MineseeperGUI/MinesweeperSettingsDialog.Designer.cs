@@ -51,6 +51,8 @@ namespace MinesweeperGUI
             this.themesLabel = new System.Windows.Forms.PictureBox();
             this.animationsLabel = new System.Windows.Forms.PictureBox();
             this.animationsCheckBox = new System.Windows.Forms.CheckBox();
+            this.largeTilesCheckBox = new System.Windows.Forms.CheckBox();
+            this.largeTilesLabel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
@@ -68,6 +70,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).BeginInit();
             this.SuspendLayout();
             // 
             // customWidthBox
@@ -118,7 +121,7 @@ namespace MinesweeperGUI
             // 
             this.customMinesBox.Location = new System.Drawing.Point(470, 135);
             this.customMinesBox.Maximum = new decimal(new int[] {
-            1599,
+            899,
             0,
             0,
             0});
@@ -195,7 +198,7 @@ namespace MinesweeperGUI
             // normalDifficultyButton
             // 
             this.normalDifficultyButton.Image = ((System.Drawing.Image)(resources.GetObject("normalDifficultyButton.Image")));
-            this.normalDifficultyButton.Location = new System.Drawing.Point(13, 113);
+            this.normalDifficultyButton.Location = new System.Drawing.Point(13, 135);
             this.normalDifficultyButton.Name = "normalDifficultyButton";
             this.normalDifficultyButton.Size = new System.Drawing.Size(250, 75);
             this.normalDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -207,7 +210,7 @@ namespace MinesweeperGUI
             // hardDifficultyButton
             // 
             this.hardDifficultyButton.Image = ((System.Drawing.Image)(resources.GetObject("hardDifficultyButton.Image")));
-            this.hardDifficultyButton.Location = new System.Drawing.Point(13, 213);
+            this.hardDifficultyButton.Location = new System.Drawing.Point(12, 253);
             this.hardDifficultyButton.Name = "hardDifficultyButton";
             this.hardDifficultyButton.Size = new System.Drawing.Size(250, 75);
             this.hardDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -219,7 +222,7 @@ namespace MinesweeperGUI
             // confirmButton
             // 
             this.confirmButton.Image = ((System.Drawing.Image)(resources.GetObject("confirmButton.Image")));
-            this.confirmButton.Location = new System.Drawing.Point(65, 307);
+            this.confirmButton.Location = new System.Drawing.Point(65, 366);
             this.confirmButton.Name = "confirmButton";
             this.confirmButton.Size = new System.Drawing.Size(198, 75);
             this.confirmButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -231,7 +234,7 @@ namespace MinesweeperGUI
             // cancelButton
             // 
             this.cancelButton.Image = ((System.Drawing.Image)(resources.GetObject("cancelButton.Image")));
-            this.cancelButton.Location = new System.Drawing.Point(283, 307);
+            this.cancelButton.Location = new System.Drawing.Point(283, 366);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(198, 75);
             this.cancelButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -299,12 +302,34 @@ namespace MinesweeperGUI
             this.animationsCheckBox.TabIndex = 22;
             this.animationsCheckBox.UseVisualStyleBackColor = true;
             // 
+            // largeTilesCheckBox
+            // 
+            this.largeTilesCheckBox.AutoSize = true;
+            this.largeTilesCheckBox.Location = new System.Drawing.Point(470, 319);
+            this.largeTilesCheckBox.Name = "largeTilesCheckBox";
+            this.largeTilesCheckBox.Size = new System.Drawing.Size(18, 17);
+            this.largeTilesCheckBox.TabIndex = 23;
+            this.largeTilesCheckBox.UseVisualStyleBackColor = true;
+            this.largeTilesCheckBox.CheckedChanged += new System.EventHandler(this.largeTilesCheckBox_CheckedChanged);
+            // 
+            // largeTilesLabel
+            // 
+            this.largeTilesLabel.Image = ((System.Drawing.Image)(resources.GetObject("largeTilesLabel.Image")));
+            this.largeTilesLabel.Location = new System.Drawing.Point(304, 301);
+            this.largeTilesLabel.Name = "largeTilesLabel";
+            this.largeTilesLabel.Size = new System.Drawing.Size(133, 59);
+            this.largeTilesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.largeTilesLabel.TabIndex = 24;
+            this.largeTilesLabel.TabStop = false;
+            // 
             // MinesweeperSettingsDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
-            this.ClientSize = new System.Drawing.Size(545, 403);
+            this.ClientSize = new System.Drawing.Size(545, 453);
+            this.Controls.Add(this.largeTilesLabel);
+            this.Controls.Add(this.largeTilesCheckBox);
             this.Controls.Add(this.animationsCheckBox);
             this.Controls.Add(this.animationsLabel);
             this.Controls.Add(this.themesLabel);
@@ -349,6 +374,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -373,6 +399,8 @@ namespace MinesweeperGUI
         private PictureBox themesLabel;
         private PictureBox animationsLabel;
         private CheckBox animationsCheckBox;
+        private CheckBox largeTilesCheckBox;
+        private PictureBox largeTilesLabel;
     }
 }
 
