@@ -40,8 +40,6 @@ namespace MinesweeperGUI
         private int numMines;
         private int numMinesInit;
         private theme currentTheme;
-        private bool animationsOn;
-        private bool loading;
 
         private MinesweeperMap gameMap;
         private bool hasMapGenerated;
@@ -82,17 +80,6 @@ namespace MinesweeperGUI
         private delegate void animationTimerDelegate(MinesweeperGUI GUI, int x, int y);
         animationTimerDelegate animationTimer = animateWinState;
 
-        // this thing is called a Pinvoke, I don't understand what that means but what happens here is that
-        // the default windows system timer isn't accurate enough to handle animated gifs in the picturebox,
-        // so this overrides that and sets the timer to match the frequency of the animated gif loading animation.
-        // the speed of the timer can be adjusted by changing timerAccuracy, but 10ms is enough for my animations.
-        // taken from here: https://stackoverflow.com/questions/25382400/gif-animated-files-in-c-sharp-have-lower-framerates-than-they-should
-        private const int timerAccuracy = 10;
-        [System.Runtime.InteropServices.DllImport("winmm.dll")]
-        private static extern int timeBeginPeriod(int msec);
-        [System.Runtime.InteropServices.DllImport("winmm.dll")]
-        public static extern int timeEndPeriod(int msec);
-
         public MinesweeperGUI()
         {
             mapWidth = 9;
@@ -101,8 +88,6 @@ namespace MinesweeperGUI
             numMinesInit = 10;
             currentTheme = theme.cats;
 
-            animationsOn = false;
-            loading = false;
             selectedCoords = new List<(int, int)>();
             animatedCoords = new HashSet<(int, int)>();
             clickSafetyX = 0;
@@ -135,9 +120,6 @@ namespace MinesweeperGUI
 
             InitializeComponent();
             initializeSaves();
-
-            // this sets the internal timer to the new speed.
-            timeBeginPeriod(timerAccuracy);
         }
 
         /// <summary>
@@ -155,7 +137,6 @@ namespace MinesweeperGUI
                     int settingsHeight = mapHeight;
                     int settingsMines = numMinesInit;
                     theme settingsTheme = currentTheme;
-                    bool settingsAnimations = animationsOn;
                     bool settingsTileSize = tileSize == 50;
 
                     IEnumerable<string> settings = File.ReadAllLines("settings");
@@ -210,23 +191,7 @@ namespace MinesweeperGUI
                     }
                     settingsReader.MoveNext();
 
-                    // fifth item should be loading animations, which must be true or false
-                    switch (settingsReader.Current)
-                    {
-                        case ("True"):
-                            settingsAnimations = true;
-                            break;
-
-                        case ("False"):
-                            settingsAnimations = false;
-                            break;
-
-                        default:
-                            throw new FileFormatException("invalid animations setting found.");
-                    }
-                    settingsReader.MoveNext();
-
-                    // sixth item should be large tiles, which must be true or false
+                    // fifth item should be large tiles, which must be true or false
                     switch (settingsReader.Current)
                     {
                         case ("True"):
@@ -247,7 +212,6 @@ namespace MinesweeperGUI
                     numMines = settingsMines;
                     numMinesInit = settingsMines;
                     currentTheme = settingsTheme;
-                    animationsOn = settingsAnimations;
 
                     changeTheme(currentTheme);
                     changeTileSize(settingsTileSize);
@@ -360,45 +324,9 @@ namespace MinesweeperGUI
                     break;
             }
 
-            if (animationsOn)
-            {
-                // this starts the loading animation playing and adjusts it to match our current map size
-                loadingImage.Size = new Size(mapWidth * tileSize, mapHeight * tileSize);
-                loadingImage.Visible = true;
-                loading = true;
-                // this starts up a background thread to wait out the loading animation, 
-                // since the main thread needs to be idle for the animation to be visible.
-                loadingStaller.RunWorkerAsync();
-            }
-            else
-            {
-                drawMap = true;
-                Invalidate();
-            }
-
-        }
-
-        /// <summary>
-        /// does nothing for 1.8 seconds so the loading animation can play.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void loadingStall(object sender, DoWorkEventArgs e)
-        {
-            Thread.Sleep(1800);
-        }
-
-        /// <summary>
-        /// removes the loading animation and lets the main GUI get back to work.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void endStall(object sender, RunWorkerCompletedEventArgs e)
-        {
-            loadingImage.Visible = false;
-            loading = false;
             drawMap = true;
             Invalidate();
+
         }
 
         /// <summary>
@@ -763,7 +691,7 @@ namespace MinesweeperGUI
                 isGamePaused = true;
             }
 
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, animationsOn, tileSize == 50);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, tileSize == 50);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -802,8 +730,6 @@ namespace MinesweeperGUI
                 mapHeight = settingsDialog.mapHeight;
                 numMinesInit = settingsDialog.numMines;
 
-                animationsOn = settingsDialog.animationsOn;
-
                 // change our own dimensions accordingly
                 // we need to ensure the map has enough space to contain everything, so we pick whichever is 
                 // the larger of our starting dimensions and the new dimensions based on the new map.
@@ -819,7 +745,6 @@ namespace MinesweeperGUI
                 settings.Add($"{mapHeight}");
                 settings.Add($"{numMinesInit}");
                 settings.Add($"{currentTheme}");
-                settings.Add($"{animationsOn}");
                 settings.Add($"{tileSize == 50}");
                 File.WriteAllLines("settings", settings);
 
@@ -854,7 +779,6 @@ namespace MinesweeperGUI
                     optionsButton.Image = Properties.Resources.cat_options_button;
                     statsButton.Image   = Properties.Resources.cat_stats_button;
                     helpButton.Image    = Properties.Resources.cat_help_button;
-                    loadingImage.Image  = Properties.Resources.cat_loading_animation;
                     blankTile   = Properties.Resources.cat_blank;
                     selectTile  = Properties.Resources.cat_selected;
                     flaggedTile = Properties.Resources.cat_flagged;
@@ -875,7 +799,6 @@ namespace MinesweeperGUI
                     optionsButton.Image = Properties.Resources.classic_options_button;
                     statsButton.Image   = Properties.Resources.classic_stats_button;
                     helpButton.Image    = Properties.Resources.classic_help_button;
-                    loadingImage.Image  = Properties.Resources.classic_loading_animation;
                     blankTile   = Properties.Resources.classic_blank;
                     selectTile  = Properties.Resources.classic_selected;
                     flaggedTile = Properties.Resources.classic_flagged;
@@ -896,7 +819,6 @@ namespace MinesweeperGUI
                     optionsButton.Image = Properties.Resources.bubble_options_button;
                     statsButton.Image   = Properties.Resources.bubble_stats_button;
                     helpButton.Image    = Properties.Resources.bubble_help_button;
-                    loadingImage.Image  = Properties.Resources.bubble_loading_animation;
                     blankTile   = Properties.Resources.bubble_blank;
                     selectTile  = Properties.Resources.bubble_selected;
                     flaggedTile = Properties.Resources.bubble_flagged;
@@ -917,7 +839,6 @@ namespace MinesweeperGUI
                     optionsButton.Image = Properties.Resources.dark_options_button;
                     statsButton.Image   = Properties.Resources.dark_stats_button;
                     helpButton.Image    = Properties.Resources.dark_help_button;
-                    loadingImage.Image  = Properties.Resources.dark_loading_animation;
                     blankTile   = Properties.Resources.dark_blank;
                     selectTile  = Properties.Resources.dark_selected;
                     flaggedTile = Properties.Resources.dark_flagged;
@@ -1366,9 +1287,8 @@ namespace MinesweeperGUI
             // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
-            // loading is used by the optional loading animations and here it prevents the player from clicking on the loading animation
             // and finally, we only care about animating mouse down tiles if the left button was clicked, so we ignore the right button
-            if (isValidX && isValidY && !isGameAnimating && drawMap && !isGameLost && !loading && e.Button == MouseButtons.Left)
+            if (isValidX && isValidY && !isGameAnimating && drawMap && !isGameLost && e.Button == MouseButtons.Left)
             {
                 MinesweeperCell target = gameMap.GetCell(cellx, celly);
 
@@ -1407,8 +1327,7 @@ namespace MinesweeperGUI
             // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
-            // loading is used by the optional loading animations and here it prevents the player from clicking on the loading animation
-            if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap && !loading)
+            if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap)
             {
                 // map coordinates are relative to the tile anchor and scaled based on tile size
                 int cellx = (relativeMousePosition.X - tileAnchor.X) / tileSize;
@@ -1709,17 +1628,6 @@ namespace MinesweeperGUI
             isGameAnimating = false;
             drawMap = false;
             Invalidate();
-        }
-
-        /// <summary>
-        /// cleanup for when the form closes.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void onExit(object sender, EventArgs e)
-        {
-            // I'm not sure why this bit is necessary or if I'm even using the right value here but it's what stackoverflow said.
-            timeEndPeriod(timerAccuracy);
         }
 
         /*

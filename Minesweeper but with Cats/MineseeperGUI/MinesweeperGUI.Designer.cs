@@ -34,8 +34,6 @@ namespace MinesweeperGUI
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MinesweeperGUI));
-            this.loadingStaller = new System.ComponentModel.BackgroundWorker();
-            this.loadingImage = new System.Windows.Forms.PictureBox();
             this.helpButton = new System.Windows.Forms.PictureBox();
             this.statsButton = new System.Windows.Forms.PictureBox();
             this.optionsButton = new System.Windows.Forms.PictureBox();
@@ -51,7 +49,6 @@ namespace MinesweeperGUI
             this.timerDisplay1m = new System.Windows.Forms.PictureBox();
             this.timerDisplay10s = new System.Windows.Forms.PictureBox();
             this.winAnimator = new System.ComponentModel.BackgroundWorker();
-            ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.optionsButton)).BeginInit();
@@ -65,21 +62,6 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.timerDisplay1m)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.timerDisplay10s)).BeginInit();
             this.SuspendLayout();
-            // 
-            // loadingStaller
-            // 
-            this.loadingStaller.DoWork += new System.ComponentModel.DoWorkEventHandler(this.loadingStall);
-            this.loadingStaller.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.endStall);
-            // 
-            // loadingImage
-            // 
-            this.loadingImage.Image = ((System.Drawing.Image)(resources.GetObject("loadingImage.Image")));
-            this.loadingImage.Location = new System.Drawing.Point(278, 112);
-            this.loadingImage.Name = "loadingImage";
-            this.loadingImage.Size = new System.Drawing.Size(225, 225);
-            this.loadingImage.TabIndex = 1;
-            this.loadingImage.TabStop = false;
-            this.loadingImage.Visible = false;
             // 
             // helpButton
             // 
@@ -241,16 +223,13 @@ namespace MinesweeperGUI
             this.Controls.Add(this.statsButton);
             this.Controls.Add(this.optionsButton);
             this.Controls.Add(this.newgameButton);
-            this.Controls.Add(this.loadingImage);
             this.DoubleBuffered = true;
             this.MinimumSize = new System.Drawing.Size(610, 550);
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.onExit);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.drawBoard);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tilesMouseDown);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.tilesMouseUp);
-            ((System.ComponentModel.ISupportInitialize)(this.loadingImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.statsButton)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.optionsButton)).EndInit();
@@ -269,8 +248,6 @@ namespace MinesweeperGUI
         }
 
         #endregion
-        private System.ComponentModel.BackgroundWorker loadingStaller;
-        private System.Windows.Forms.PictureBox loadingImage;
         private System.Windows.Forms.PictureBox helpButton;
         private System.Windows.Forms.PictureBox statsButton;
         private System.Windows.Forms.PictureBox optionsButton;
