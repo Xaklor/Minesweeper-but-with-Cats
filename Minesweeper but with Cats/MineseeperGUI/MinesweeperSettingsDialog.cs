@@ -67,6 +67,11 @@ namespace MinesweeperGUI
             themesLabel.Image            = Properties.Resources.cat_themes_label;
             largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_flagged;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
             setDifficultyButtonsPressed();
         }
 
@@ -91,6 +96,11 @@ namespace MinesweeperGUI
             themesLabel.Image            = Properties.Resources.cat_themes_label;
             largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_flagged;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
             setDifficultyButtonsPressed();
         }
 
@@ -114,6 +124,11 @@ namespace MinesweeperGUI
             themesLabel.Image            = Properties.Resources.bubble_themes_label;
             largeTilesLabel.Image        = Properties.Resources.bubble_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_flagged;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
             setDifficultyButtonsPressed();
         }
 
@@ -136,6 +151,11 @@ namespace MinesweeperGUI
             minesLabel.Image             = Properties.Resources.dark_mines_label;
             themesLabel.Image            = Properties.Resources.dark_themes_label;
             largeTilesLabel.Image        = Properties.Resources.dark_large_tiles_label;
+
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_flagged;
 
             setDifficultyButtonsPressed();
         }

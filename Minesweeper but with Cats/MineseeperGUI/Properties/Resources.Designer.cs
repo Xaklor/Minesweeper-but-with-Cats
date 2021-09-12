@@ -243,16 +243,6 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap bubble_animations_label {
-            get {
-                object obj = ResourceManager.GetObject("bubble_animations_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap bubble_blank {
             get {
                 object obj = ResourceManager.GetObject("bubble blank", resourceCulture);
@@ -406,16 +396,6 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap bubble_large_tiles_label {
             get {
                 object obj = ResourceManager.GetObject("bubble_large_tiles_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap bubble_loading_animation {
-            get {
-                object obj = ResourceManager.GetObject("bubble_loading_animation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -733,16 +713,6 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap cat_animations_label {
-            get {
-                object obj = ResourceManager.GetObject("cat_animations_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap cat_blank {
             get {
                 object obj = ResourceManager.GetObject("cat blank", resourceCulture);
@@ -896,16 +866,6 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap cat_large_tiles_label {
             get {
                 object obj = ResourceManager.GetObject("cat_large_tiles_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap cat_loading_animation {
-            get {
-                object obj = ResourceManager.GetObject("cat_loading_animation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1363,16 +1323,6 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap classic_loading_animation {
-            get {
-                object obj = ResourceManager.GetObject("classic_loading_animation", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap classic_mine {
             get {
                 object obj = ResourceManager.GetObject("classic mine", resourceCulture);
@@ -1653,16 +1603,6 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap dark_animations_label {
-            get {
-                object obj = ResourceManager.GetObject("dark_animations_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap dark_blank {
             get {
                 object obj = ResourceManager.GetObject("dark blank", resourceCulture);
@@ -1816,16 +1756,6 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap dark_large_tiles_label {
             get {
                 object obj = ResourceManager.GetObject("dark_large_tiles_label", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap dark_loading_animation {
-            get {
-                object obj = ResourceManager.GetObject("dark_loading_animation", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

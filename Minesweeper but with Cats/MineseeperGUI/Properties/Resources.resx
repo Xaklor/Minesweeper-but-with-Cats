@@ -256,9 +256,6 @@
   <data name="bubble_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="bubble_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="bubble_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\bubble newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -312,9 +309,6 @@
   </data>
   <data name="cat_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cat help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="cat_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\cat newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -370,9 +364,6 @@
   <data name="classic_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\classic help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="classic_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\classic loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="classic_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\classic newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -426,9 +417,6 @@
   </data>
   <data name="dark_help_button_pressed" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark help button pressed.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark_loading_animation" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark loading animation.gif;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dark_newgame_button" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\dark newgame button.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -534,15 +522,6 @@
   </data>
   <data name="blobcathug" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\blobcathug.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="bubble_animations_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\bubble animations label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="cat_animations_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\cat animations label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="dark_animations_label" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\dark animations label.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="display_colon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\display colon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
