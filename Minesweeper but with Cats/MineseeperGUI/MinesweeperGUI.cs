@@ -774,7 +774,7 @@ namespace MinesweeperGUI
             switch (newTheme)
             {
                 case theme.cats:
-                    this.BackColor = Color.FromArgb(34, 128, 58);
+                    this.BackColor = Color.FromArgb(14, 108, 38);
                     newgameButton.Image = Properties.Resources.cat_newgame_button;
                     optionsButton.Image = Properties.Resources.cat_options_button;
                     statsButton.Image   = Properties.Resources.cat_stats_button;

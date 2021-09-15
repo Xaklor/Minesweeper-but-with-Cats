@@ -55,7 +55,8 @@ namespace MinesweeperGUI
         private void setCatTheme(object sender, EventArgs e)
         {
             selectedTheme = theme.cats;
-            this.BackColor = Color.FromArgb(34, 128, 58);
+            this.BackColor = Color.FromArgb(14, 108, 38);
+
             easyDifficultyButton.Image   = Properties.Resources.cat_easy_button;
             normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
             hardDifficultyButton.Image   = Properties.Resources.cat_hard_button;

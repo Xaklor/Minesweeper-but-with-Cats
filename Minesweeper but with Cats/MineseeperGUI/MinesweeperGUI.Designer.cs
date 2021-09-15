@@ -208,7 +208,7 @@ namespace MinesweeperGUI
             // MinesweeperGUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(108)))), ((int)(((byte)(38)))));
             this.ClientSize = new System.Drawing.Size(592, 503);
             this.Controls.Add(this.timerDisplay10s);
             this.Controls.Add(this.timerDisplay1m);
