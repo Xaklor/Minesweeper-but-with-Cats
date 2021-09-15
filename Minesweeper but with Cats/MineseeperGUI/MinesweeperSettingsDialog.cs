@@ -14,7 +14,7 @@ namespace MinesweeperGUI
         public bool largeTiles;
         public theme selectedTheme;
 
-        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines, bool parentAnimations, bool parentTileSize)
+        public MinesweeperSettingsDialog(theme parentTheme, int parentWidth, int parentHeight, int parentMines, bool parentTileSize)
         {
             confirmed = false;
             InitializeComponent();
@@ -24,7 +24,6 @@ namespace MinesweeperGUI
             customHeightBox.Value = parentHeight;
             customMinesBox.Value  = parentMines;
 
-            animationsCheckBox.Checked = parentAnimations;
             largeTilesCheckBox.Checked = parentTileSize;
 
             switch (parentTheme)
@@ -56,7 +55,8 @@ namespace MinesweeperGUI
         private void setCatTheme(object sender, EventArgs e)
         {
             selectedTheme = theme.cats;
-            this.BackColor = Color.FromArgb(34, 128, 58);
+            this.BackColor = Color.FromArgb(14, 108, 38);
+
             easyDifficultyButton.Image   = Properties.Resources.cat_easy_button;
             normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
             hardDifficultyButton.Image   = Properties.Resources.cat_hard_button;
@@ -66,9 +66,14 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.cat_height_label;
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
-            animationsLabel.Image        = Properties.Resources.cat_animations_label;
             largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_flagged;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
+            setDifficultyButtonsPressed();
         }
 
         /// <summary>
@@ -90,9 +95,14 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.cat_height_label;
             minesLabel.Image             = Properties.Resources.cat_mines_label;
             themesLabel.Image            = Properties.Resources.cat_themes_label;
-            animationsLabel.Image        = Properties.Resources.cat_animations_label;
             largeTilesLabel.Image        = Properties.Resources.cat_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_flagged;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
+            setDifficultyButtonsPressed();
         }
 
         /// <summary>
@@ -113,9 +123,14 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.bubble_height_label;
             minesLabel.Image             = Properties.Resources.bubble_mines_label;
             themesLabel.Image            = Properties.Resources.bubble_themes_label;
-            animationsLabel.Image        = Properties.Resources.bubble_animations_label;
             largeTilesLabel.Image        = Properties.Resources.bubble_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_flagged;
+            darkThemeButton.Image        = Properties.Resources.dark_blank;
+
+            setDifficultyButtonsPressed();
         }
 
         /// <summary>
@@ -136,9 +151,14 @@ namespace MinesweeperGUI
             heightLabel.Image            = Properties.Resources.dark_height_label;
             minesLabel.Image             = Properties.Resources.dark_mines_label;
             themesLabel.Image            = Properties.Resources.dark_themes_label;
-            animationsLabel.Image        = Properties.Resources.dark_animations_label;
             largeTilesLabel.Image        = Properties.Resources.dark_large_tiles_label;
 
+            catsThemeButton.Image        = Properties.Resources.cat_blank;
+            classicThemeButton.Image     = Properties.Resources.classic_blank;
+            bubbleThemeButton.Image      = Properties.Resources.bubble_blank;
+            darkThemeButton.Image        = Properties.Resources.dark_flagged;
+
+            setDifficultyButtonsPressed();
         }
 
         /// <summary>
@@ -178,25 +198,6 @@ namespace MinesweeperGUI
             customWidthBox.Value = 16;
             customHeightBox.Value = 16;
             customMinesBox.Value = 40;
-
-            switch (selectedTheme)
-            {
-                case theme.cats:
-                    normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
-                    break;
-
-                case theme.classic:
-                    normalDifficultyButton.Image = Properties.Resources.classic_normal_button;
-                    break;
-
-                case theme.dark:
-                    normalDifficultyButton.Image = Properties.Resources.dark_normal_button;
-                    break;
-
-                case theme.bubble:
-                    normalDifficultyButton.Image = Properties.Resources.bubble_normal_button;
-                    break;
-            }
         }
 
         /// <summary>
@@ -236,25 +237,6 @@ namespace MinesweeperGUI
             customWidthBox.Value = 9;
             customHeightBox.Value = 9;
             customMinesBox.Value = 10;
-
-            switch (selectedTheme)
-            {
-                case theme.cats:
-                    easyDifficultyButton.Image = Properties.Resources.cat_easy_button;
-                    break;
-
-                case theme.classic:
-                    easyDifficultyButton.Image = Properties.Resources.classic_easy_button;
-                    break;
-
-                case theme.dark:
-                    easyDifficultyButton.Image = Properties.Resources.dark_easy_button;
-                    break;
-
-                case theme.bubble:
-                    easyDifficultyButton.Image = Properties.Resources.bubble_easy_button;
-                    break;
-            }
         }
 
         /// <summary>
@@ -293,26 +275,289 @@ namespace MinesweeperGUI
         {
             customWidthBox.Value = 30;
             customHeightBox.Value = 16;
-            customMinesBox.Value = 99;
+            customMinesBox.Value = 99;            
+        }
 
-            switch (selectedTheme)
+        private void customHeightBox_ValueChanged(object sender, EventArgs e)
+        {
+            setDifficultyButtonsPressed();
+        }
+
+        private void customWidthBox_ValueChanged(object sender, EventArgs e)
+        {
+            setDifficultyButtonsPressed();
+        }
+
+        private void customMinesBox_ValueChanged(object sender, EventArgs e)
+        {
+            setDifficultyButtonsPressed();
+        }
+
+        /// <summary>
+        /// makes whichever of the 3 difficulty buttons is selected look pressed down, if applicable
+        /// </summary>
+        private void setDifficultyButtonsPressed()
+        {
+            // if easy mode settings
+            if (customWidthBox.Value == 9 && customHeightBox.Value == 9 && customMinesBox.Value == 10)
             {
-                case theme.cats:
-                    hardDifficultyButton.Image = Properties.Resources.cat_hard_button;
-                    break;
+                // easy button down
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        easyDifficultyButton.Image = Properties.Resources.cat_easy_button_pressed;
+                        break;
 
-                case theme.classic:
-                    hardDifficultyButton.Image = Properties.Resources.classic_hard_button;
-                    break;
+                    case theme.classic:
+                        easyDifficultyButton.Image = Properties.Resources.classic_easy_button_pressed;
+                        break;
 
-                case theme.dark:
-                    hardDifficultyButton.Image = Properties.Resources.dark_hard_button;
-                    break;
+                    case theme.dark:
+                        easyDifficultyButton.Image = Properties.Resources.dark_easy_button_pressed;
+                        break;
 
-                case theme.bubble:
-                    hardDifficultyButton.Image = Properties.Resources.bubble_hard_button;
-                    break;
+                    case theme.bubble:
+                        easyDifficultyButton.Image = Properties.Resources.bubble_easy_button_pressed;
+                        break;
+                }
+
+                // normal button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
+                        break;
+
+                    case theme.classic:
+                        normalDifficultyButton.Image = Properties.Resources.classic_normal_button;
+                        break;
+
+                    case theme.dark:
+                        normalDifficultyButton.Image = Properties.Resources.dark_normal_button;
+                        break;
+
+                    case theme.bubble:
+                        normalDifficultyButton.Image = Properties.Resources.bubble_normal_button;
+                        break;
+                }
+
+                // hard button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        hardDifficultyButton.Image = Properties.Resources.cat_hard_button;
+                        break;
+
+                    case theme.classic:
+                        hardDifficultyButton.Image = Properties.Resources.classic_hard_button;
+                        break;
+
+                    case theme.dark:
+                        hardDifficultyButton.Image = Properties.Resources.dark_hard_button;
+                        break;
+
+                    case theme.bubble:
+                        hardDifficultyButton.Image = Properties.Resources.bubble_hard_button;
+                        break;
+                }
             }
+
+            // if normal mode settings
+            else if (customWidthBox.Value == 16 && customHeightBox.Value == 16 && customMinesBox.Value == 40)
+            {
+                // easy button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        easyDifficultyButton.Image = Properties.Resources.cat_easy_button;
+                        break;
+
+                    case theme.classic:
+                        easyDifficultyButton.Image = Properties.Resources.classic_easy_button;
+                        break;
+
+                    case theme.dark:
+                        easyDifficultyButton.Image = Properties.Resources.dark_easy_button;
+                        break;
+
+                    case theme.bubble:
+                        easyDifficultyButton.Image = Properties.Resources.bubble_easy_button;
+                        break;
+                }
+
+                // normal button down
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        normalDifficultyButton.Image = Properties.Resources.cat_normal_button_pressed;
+                        break;
+
+                    case theme.classic:
+                        normalDifficultyButton.Image = Properties.Resources.classic_normal_button_pressed;
+                        break;
+
+                    case theme.dark:
+                        normalDifficultyButton.Image = Properties.Resources.dark_normal_button_pressed;
+                        break;
+
+                    case theme.bubble:
+                        normalDifficultyButton.Image = Properties.Resources.bubble_normal_button_pressed;
+                        break;
+                }
+
+                // hard button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        hardDifficultyButton.Image = Properties.Resources.cat_hard_button;
+                        break;
+
+                    case theme.classic:
+                        hardDifficultyButton.Image = Properties.Resources.classic_hard_button;
+                        break;
+
+                    case theme.dark:
+                        hardDifficultyButton.Image = Properties.Resources.dark_hard_button;
+                        break;
+
+                    case theme.bubble:
+                        hardDifficultyButton.Image = Properties.Resources.bubble_hard_button;
+                        break;
+                }
+            }
+
+            // if hard mode settings
+            else if (customWidthBox.Value == 30 && customHeightBox.Value == 16 && customMinesBox.Value == 99)
+            {
+                // easy button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        easyDifficultyButton.Image = Properties.Resources.cat_easy_button;
+                        break;
+
+                    case theme.classic:
+                        easyDifficultyButton.Image = Properties.Resources.classic_easy_button;
+                        break;
+
+                    case theme.dark:
+                        easyDifficultyButton.Image = Properties.Resources.dark_easy_button;
+                        break;
+
+                    case theme.bubble:
+                        easyDifficultyButton.Image = Properties.Resources.bubble_easy_button;
+                        break;
+                }
+
+                // normal button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
+                        break;
+
+                    case theme.classic:
+                        normalDifficultyButton.Image = Properties.Resources.classic_normal_button;
+                        break;
+
+                    case theme.dark:
+                        normalDifficultyButton.Image = Properties.Resources.dark_normal_button;
+                        break;
+
+                    case theme.bubble:
+                        normalDifficultyButton.Image = Properties.Resources.bubble_normal_button;
+                        break;
+                }
+
+                // hard button down
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        hardDifficultyButton.Image = Properties.Resources.cat_hard_button_pressed;
+                        break;
+
+                    case theme.classic:
+                        hardDifficultyButton.Image = Properties.Resources.classic_hard_button_pressed;
+                        break;
+
+                    case theme.dark:
+                        hardDifficultyButton.Image = Properties.Resources.dark_hard_button_pressed;
+                        break;
+
+                    case theme.bubble:
+                        hardDifficultyButton.Image = Properties.Resources.bubble_hard_button_pressed;
+                        break;
+                }
+            }
+
+            // if something custom
+            else
+            {
+                // easy button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        easyDifficultyButton.Image = Properties.Resources.cat_easy_button;
+                        break;
+
+                    case theme.classic:
+                        easyDifficultyButton.Image = Properties.Resources.classic_easy_button;
+                        break;
+
+                    case theme.dark:
+                        easyDifficultyButton.Image = Properties.Resources.dark_easy_button;
+                        break;
+
+                    case theme.bubble:
+                        easyDifficultyButton.Image = Properties.Resources.bubble_easy_button;
+                        break;
+                }
+
+                // normal button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        normalDifficultyButton.Image = Properties.Resources.cat_normal_button;
+                        break;
+
+                    case theme.classic:
+                        normalDifficultyButton.Image = Properties.Resources.classic_normal_button;
+                        break;
+
+                    case theme.dark:
+                        normalDifficultyButton.Image = Properties.Resources.dark_normal_button;
+                        break;
+
+                    case theme.bubble:
+                        normalDifficultyButton.Image = Properties.Resources.bubble_normal_button;
+                        break;
+                }
+
+                // hard button up
+                switch (selectedTheme)
+                {
+                    case theme.cats:
+                        hardDifficultyButton.Image = Properties.Resources.cat_hard_button;
+                        break;
+
+                    case theme.classic:
+                        hardDifficultyButton.Image = Properties.Resources.classic_hard_button;
+                        break;
+
+                    case theme.dark:
+                        hardDifficultyButton.Image = Properties.Resources.dark_hard_button;
+                        break;
+
+                    case theme.bubble:
+                        hardDifficultyButton.Image = Properties.Resources.bubble_hard_button;
+                        break;
+                }
+            }
+        }
+
+        private void largeTilesCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            largeTiles = largeTilesCheckBox.Checked;
         }
 
         /// <summary>
@@ -341,11 +586,7 @@ namespace MinesweeperGUI
                     break;
             }
         }
-        private void largeTilesCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            largeTiles = largeTilesCheckBox.Checked;
-        }
-
+        
         /// <summary>
         /// closes the dialog without saving.
         /// </summary>
@@ -395,9 +636,9 @@ namespace MinesweeperGUI
             mapWidth = (int)customWidthBox.Value;
             mapHeight = (int)customHeightBox.Value;
             numMines = (int)customMinesBox.Value;
-            animationsOn = animationsCheckBox.Checked;
             this.Close();
         }
 
+        
     }
 }

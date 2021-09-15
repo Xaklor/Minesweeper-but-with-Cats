@@ -49,8 +49,6 @@ namespace MinesweeperGUI
             this.minesLabel = new System.Windows.Forms.PictureBox();
             this.heightLabel = new System.Windows.Forms.PictureBox();
             this.themesLabel = new System.Windows.Forms.PictureBox();
-            this.animationsLabel = new System.Windows.Forms.PictureBox();
-            this.animationsCheckBox = new System.Windows.Forms.CheckBox();
             this.largeTilesCheckBox = new System.Windows.Forms.CheckBox();
             this.largeTilesLabel = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
@@ -69,7 +67,6 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,6 +91,7 @@ namespace MinesweeperGUI
             0,
             0,
             0});
+            this.customWidthBox.ValueChanged += new System.EventHandler(this.customWidthBox_ValueChanged);
             // 
             // customHeightBox
             // 
@@ -116,6 +114,7 @@ namespace MinesweeperGUI
             0,
             0,
             0});
+            this.customHeightBox.ValueChanged += new System.EventHandler(this.customHeightBox_ValueChanged);
             // 
             // customMinesBox
             // 
@@ -138,6 +137,7 @@ namespace MinesweeperGUI
             0,
             0,
             0});
+            this.customMinesBox.ValueChanged += new System.EventHandler(this.customMinesBox_ValueChanged);
             // 
             // catsThemeButton
             // 
@@ -283,29 +283,10 @@ namespace MinesweeperGUI
             this.themesLabel.TabIndex = 20;
             this.themesLabel.TabStop = false;
             // 
-            // animationsLabel
-            // 
-            this.animationsLabel.Image = ((System.Drawing.Image)(resources.GetObject("animationsLabel.Image")));
-            this.animationsLabel.Location = new System.Drawing.Point(304, 229);
-            this.animationsLabel.Name = "animationsLabel";
-            this.animationsLabel.Size = new System.Drawing.Size(117, 59);
-            this.animationsLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.animationsLabel.TabIndex = 21;
-            this.animationsLabel.TabStop = false;
-            // 
-            // animationsCheckBox
-            // 
-            this.animationsCheckBox.AutoSize = true;
-            this.animationsCheckBox.Location = new System.Drawing.Point(470, 253);
-            this.animationsCheckBox.Name = "animationsCheckBox";
-            this.animationsCheckBox.Size = new System.Drawing.Size(18, 17);
-            this.animationsCheckBox.TabIndex = 22;
-            this.animationsCheckBox.UseVisualStyleBackColor = true;
-            // 
             // largeTilesCheckBox
             // 
             this.largeTilesCheckBox.AutoSize = true;
-            this.largeTilesCheckBox.Location = new System.Drawing.Point(470, 319);
+            this.largeTilesCheckBox.Location = new System.Drawing.Point(470, 274);
             this.largeTilesCheckBox.Name = "largeTilesCheckBox";
             this.largeTilesCheckBox.Size = new System.Drawing.Size(18, 17);
             this.largeTilesCheckBox.TabIndex = 23;
@@ -315,7 +296,7 @@ namespace MinesweeperGUI
             // largeTilesLabel
             // 
             this.largeTilesLabel.Image = ((System.Drawing.Image)(resources.GetObject("largeTilesLabel.Image")));
-            this.largeTilesLabel.Location = new System.Drawing.Point(304, 301);
+            this.largeTilesLabel.Location = new System.Drawing.Point(304, 253);
             this.largeTilesLabel.Name = "largeTilesLabel";
             this.largeTilesLabel.Size = new System.Drawing.Size(133, 59);
             this.largeTilesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
@@ -324,14 +305,11 @@ namespace MinesweeperGUI
             // 
             // MinesweeperSettingsDialog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(34)))), ((int)(((byte)(128)))), ((int)(((byte)(58)))));
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(108)))), ((int)(((byte)(38)))));
             this.ClientSize = new System.Drawing.Size(545, 453);
             this.Controls.Add(this.largeTilesLabel);
             this.Controls.Add(this.largeTilesCheckBox);
-            this.Controls.Add(this.animationsCheckBox);
-            this.Controls.Add(this.animationsLabel);
             this.Controls.Add(this.themesLabel);
             this.Controls.Add(this.heightLabel);
             this.Controls.Add(this.minesLabel);
@@ -373,7 +351,6 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.minesLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.animationsLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -397,8 +374,6 @@ namespace MinesweeperGUI
         private PictureBox minesLabel;
         private PictureBox heightLabel;
         private PictureBox themesLabel;
-        private PictureBox animationsLabel;
-        private CheckBox animationsCheckBox;
         private CheckBox largeTilesCheckBox;
         private PictureBox largeTilesLabel;
     }
