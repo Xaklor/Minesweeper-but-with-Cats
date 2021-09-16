@@ -52,6 +52,8 @@ namespace MinesweeperGUI
         private bool isGameAnimating;
         private bool isGameLost;
 
+        private Random rand;
+
         // tiles
         private bool drawMap;
         private int  tileSize;
@@ -99,6 +101,8 @@ namespace MinesweeperGUI
             isGameAnimating = false;
             isGameLost = false;
 
+            rand = new Random();
+
             drawMap     = false;
             tileSize    = 25;
             tileAnchor  = new Point(278, 112);
@@ -120,6 +124,7 @@ namespace MinesweeperGUI
 
             InitializeComponent();
             initializeSaves();
+            initializeCats();
         }
 
         /// <summary>
@@ -252,6 +257,22 @@ namespace MinesweeperGUI
             }
         }
 
+        /// <summary>
+        /// verifies the existence of the cats and completed folders, generating new folders and images if necessary
+        /// </summary>
+        private void initializeCats()
+        {
+            if (!Directory.Exists("cats"))
+            {
+                Directory.CreateDirectory("cats");
+            }
+
+            if (!Directory.Exists("completed"))
+            {
+                Directory.CreateDirectory("completed");
+            }
+        }
+
         /*
          * ----------------
          * NEW GAME METHODS
@@ -291,10 +312,11 @@ namespace MinesweeperGUI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void newgameButton_Click(object sender, EventArgs e)
-        {
-            
+        {            
             numMines = numMinesInit;
             setMinesDisplay(true);
+
+            mapBackgroundImage = selectNewBackgroundImage();
 
             gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
             hasMapGenerated = false;
@@ -327,6 +349,24 @@ namespace MinesweeperGUI
             drawMap = true;
             Invalidate();
 
+        }
+
+        /// <summary>
+        /// random a random image from cats/ if there are any images, otherwise defaults to the blobcat.
+        /// </summary>
+        /// <returns></returns>
+        private Bitmap selectNewBackgroundImage()
+        {
+            string[] catpics = Directory.GetFiles("cats");
+            if (catpics.Length == 0)
+            {
+                return Properties.Resources.blobcathug;
+            }
+            else
+            {
+                int temp = rand.Next(0, catpics.Length);
+                return new Bitmap(catpics[temp]);
+            }
         }
 
         /// <summary>
@@ -1362,6 +1402,15 @@ namespace MinesweeperGUI
                     // if the map hasn't been generated (because this is the first click), generate it and start the game.
                     if (!hasMapGenerated)
                     {
+                        // if the timekeeper thread is still busy (because you clicked "new game" and hadn't noticed yet)
+                        // immediately stop doing everything and unselect anything that may have been selected
+                        if (timeKeeper.IsBusy)
+                        {
+                            selectedCoords.Clear();
+                            Invalidate();
+                            return;
+                        }
+
                         gameMap.GenerateMines(cellx, celly);
                         hasMapGenerated = true;
 
