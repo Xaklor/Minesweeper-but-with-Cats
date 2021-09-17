@@ -51,6 +51,8 @@ namespace MinesweeperGUI
             this.themesLabel = new System.Windows.Forms.PictureBox();
             this.largeTilesCheckBox = new System.Windows.Forms.CheckBox();
             this.largeTilesLabel = new System.Windows.Forms.PictureBox();
+            this.offlineModeLabel = new System.Windows.Forms.PictureBox();
+            this.offlineModeCheckBox = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.customWidthBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customHeightBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.customMinesBox)).BeginInit();
@@ -68,6 +70,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.offlineModeLabel)).BeginInit();
             this.SuspendLayout();
             // 
             // customWidthBox
@@ -192,8 +195,7 @@ namespace MinesweeperGUI
             this.easyDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.easyDifficultyButton.TabIndex = 12;
             this.easyDifficultyButton.TabStop = false;
-            this.easyDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.easyButton_Down);
-            this.easyDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.easyButton_Up);
+            this.easyDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.easyButtonClicked);
             // 
             // normalDifficultyButton
             // 
@@ -204,8 +206,7 @@ namespace MinesweeperGUI
             this.normalDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.normalDifficultyButton.TabIndex = 13;
             this.normalDifficultyButton.TabStop = false;
-            this.normalDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.normalButton_Down);
-            this.normalDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.normalButton_Up);
+            this.normalDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.normalButtonClicked);
             // 
             // hardDifficultyButton
             // 
@@ -216,8 +217,7 @@ namespace MinesweeperGUI
             this.hardDifficultyButton.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.hardDifficultyButton.TabIndex = 14;
             this.hardDifficultyButton.TabStop = false;
-            this.hardDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.hardButton_Down);
-            this.hardDifficultyButton.MouseUp += new System.Windows.Forms.MouseEventHandler(this.hardButton_Up);
+            this.hardDifficultyButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.hardButtonClicked);
             // 
             // confirmButton
             // 
@@ -286,7 +286,7 @@ namespace MinesweeperGUI
             // largeTilesCheckBox
             // 
             this.largeTilesCheckBox.AutoSize = true;
-            this.largeTilesCheckBox.Location = new System.Drawing.Point(470, 274);
+            this.largeTilesCheckBox.Location = new System.Drawing.Point(488, 253);
             this.largeTilesCheckBox.Name = "largeTilesCheckBox";
             this.largeTilesCheckBox.Size = new System.Drawing.Size(18, 17);
             this.largeTilesCheckBox.TabIndex = 23;
@@ -296,18 +296,40 @@ namespace MinesweeperGUI
             // largeTilesLabel
             // 
             this.largeTilesLabel.Image = ((System.Drawing.Image)(resources.GetObject("largeTilesLabel.Image")));
-            this.largeTilesLabel.Location = new System.Drawing.Point(304, 253);
+            this.largeTilesLabel.Location = new System.Drawing.Point(304, 232);
             this.largeTilesLabel.Name = "largeTilesLabel";
             this.largeTilesLabel.Size = new System.Drawing.Size(133, 59);
             this.largeTilesLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.largeTilesLabel.TabIndex = 24;
             this.largeTilesLabel.TabStop = false;
             // 
+            // offlineModeLabel
+            // 
+            this.offlineModeLabel.Image = ((System.Drawing.Image)(resources.GetObject("offlineModeLabel.Image")));
+            this.offlineModeLabel.Location = new System.Drawing.Point(304, 297);
+            this.offlineModeLabel.Name = "offlineModeLabel";
+            this.offlineModeLabel.Size = new System.Drawing.Size(171, 59);
+            this.offlineModeLabel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.offlineModeLabel.TabIndex = 25;
+            this.offlineModeLabel.TabStop = false;
+            // 
+            // offlineModeCheckBox
+            // 
+            this.offlineModeCheckBox.AutoSize = true;
+            this.offlineModeCheckBox.Location = new System.Drawing.Point(488, 311);
+            this.offlineModeCheckBox.Name = "offlineModeCheckBox";
+            this.offlineModeCheckBox.Size = new System.Drawing.Size(18, 17);
+            this.offlineModeCheckBox.TabIndex = 26;
+            this.offlineModeCheckBox.UseVisualStyleBackColor = true;
+            this.offlineModeCheckBox.CheckedChanged += new System.EventHandler(this.offlineModeCheckBox_CheckedChanged);
+            // 
             // MinesweeperSettingsDialog
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(108)))), ((int)(((byte)(38)))));
             this.ClientSize = new System.Drawing.Size(545, 453);
+            this.Controls.Add(this.offlineModeCheckBox);
+            this.Controls.Add(this.offlineModeLabel);
             this.Controls.Add(this.largeTilesLabel);
             this.Controls.Add(this.largeTilesCheckBox);
             this.Controls.Add(this.themesLabel);
@@ -352,6 +374,7 @@ namespace MinesweeperGUI
             ((System.ComponentModel.ISupportInitialize)(this.heightLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.themesLabel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.largeTilesLabel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.offlineModeLabel)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -376,6 +399,8 @@ namespace MinesweeperGUI
         private PictureBox themesLabel;
         private CheckBox largeTilesCheckBox;
         private PictureBox largeTilesLabel;
+        private PictureBox offlineModeLabel;
+        private CheckBox offlineModeCheckBox;
     }
 }
 

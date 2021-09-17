@@ -473,6 +473,16 @@ namespace MinesweeperGUI.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap bubble_offline_label {
+            get {
+                object obj = ResourceManager.GetObject("bubble_offline_label", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap bubble_options_button {
             get {
                 object obj = ResourceManager.GetObject("bubble_options_button", resourceCulture);
@@ -936,6 +946,16 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap cat_normal_button_pressed {
             get {
                 object obj = ResourceManager.GetObject("cat_normal_button_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cat_offline_label {
+            get {
+                object obj = ResourceManager.GetObject("cat_offline_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1826,6 +1846,16 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap dark_normal_button_pressed {
             get {
                 object obj = ResourceManager.GetObject("dark_normal_button_pressed", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dark_offlinie_label {
+            get {
+                object obj = ResourceManager.GetObject("dark_offlinie_label", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

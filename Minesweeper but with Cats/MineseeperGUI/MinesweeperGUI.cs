@@ -49,10 +49,11 @@ namespace MinesweeperGUI
 
         private int gameElapsedSeconds;
         private bool isGamePlaying;
-        private bool isGameAnimating;
         private bool isGameLost;
 
         private Random rand;
+        private string backgroundSource;
+        private bool offline;
 
         // tiles
         private bool drawMap;
@@ -98,10 +99,11 @@ namespace MinesweeperGUI
             gameElapsedSeconds = 0;
             // used for turning off the timekeeper
             isGamePlaying = false;
-            isGameAnimating = false;
             isGameLost = false;
 
             rand = new Random();
+            backgroundSource = "";
+            offline = false;
 
             drawMap     = false;
             tileSize    = 25;
@@ -143,6 +145,7 @@ namespace MinesweeperGUI
                     int settingsMines = numMinesInit;
                     theme settingsTheme = currentTheme;
                     bool settingsTileSize = tileSize == 50;
+                    bool settingsOffline = offline;
 
                     IEnumerable<string> settings = File.ReadAllLines("settings");
                     IEnumerator<string> settingsReader = settings.GetEnumerator();
@@ -210,6 +213,22 @@ namespace MinesweeperGUI
                         default:
                             throw new FileFormatException("invalid tile size found.");
                     }
+                    settingsReader.MoveNext();
+
+                    // sixth item should be offline mode, which must be true or false
+                    switch (settingsReader.Current)
+                    {
+                        case ("True"):
+                            settingsOffline = true;
+                            break;
+
+                        case ("False"):
+                            settingsOffline = false;
+                            break;
+
+                        default:
+                            throw new FileFormatException("invalid offline mode found.");
+                    }
 
                     // if we made it here, we have all the data we need and it's all safe
                     mapWidth = settingsWidth;
@@ -217,6 +236,7 @@ namespace MinesweeperGUI
                     numMines = settingsMines;
                     numMinesInit = settingsMines;
                     currentTheme = settingsTheme;
+                    offline = settingsOffline;
 
                     changeTheme(currentTheme);
                     changeTileSize(settingsTileSize);
@@ -312,10 +332,12 @@ namespace MinesweeperGUI
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void newgameButton_Click(object sender, EventArgs e)
-        {            
+        {
             numMines = numMinesInit;
             setMinesDisplay(true);
 
+            // release whatever image we had before so we're not tying up resources before grabbing the new one
+            mapBackgroundImage.Dispose();
             mapBackgroundImage = selectNewBackgroundImage();
 
             gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
@@ -360,12 +382,13 @@ namespace MinesweeperGUI
             string[] catpics = Directory.GetFiles("cats");
             if (catpics.Length == 0)
             {
+                backgroundSource = "";
                 return Properties.Resources.blobcathug;
             }
             else
             {
-                int temp = rand.Next(0, catpics.Length);
-                return new Bitmap(catpics[temp]);
+                backgroundSource = catpics[rand.Next(0, catpics.Length)];
+                return new Bitmap(backgroundSource);
             }
         }
 
@@ -731,7 +754,7 @@ namespace MinesweeperGUI
                 isGamePaused = true;
             }
 
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, tileSize == 50);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, tileSize == 50, offline);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -760,8 +783,11 @@ namespace MinesweeperGUI
                 changeTheme(settingsDialog.selectedTheme);
             }
 
-            // this and current theme can be changed without the confirm button being clicked so the player can change size and theme mid-game
+            offline = settingsDialog.offline;
+
+            // this, offline mode, and current theme can be changed without the confirm button being clicked so the player can change visuals mid-game
             changeTileSize(settingsDialog.largeTiles);
+
 
             // only make game changes if the confirm button was clicked in the dialog. 
             if (settingsDialog.confirmed)
@@ -786,6 +812,7 @@ namespace MinesweeperGUI
                 settings.Add($"{numMinesInit}");
                 settings.Add($"{currentTheme}");
                 settings.Add($"{tileSize == 50}");
+                settings.Add($"{offline}");
                 File.WriteAllLines("settings", settings);
 
                 // this starts a new game with the new settings.
@@ -1324,11 +1351,10 @@ namespace MinesweeperGUI
 
             // to explain the if statement to the reader:
             // valid X and Y ensure the mouse is inside the map
-            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
             // and finally, we only care about animating mouse down tiles if the left button was clicked, so we ignore the right button
-            if (isValidX && isValidY && !isGameAnimating && drawMap && !isGameLost && e.Button == MouseButtons.Left)
+            if (isValidX && isValidY && drawMap && !isGameLost && e.Button == MouseButtons.Left)
             {
                 MinesweeperCell target = gameMap.GetCell(cellx, celly);
 
@@ -1364,10 +1390,9 @@ namespace MinesweeperGUI
 
             // to explain the if statement to the reader:
             // valid X and Y ensure the mouse is inside the map
-            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
-            if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap)
+            if (isValidX && isValidY && !isGameLost && drawMap)
             {
                 // map coordinates are relative to the tile anchor and scaled based on tile size
                 int cellx = (relativeMousePosition.X - tileAnchor.X) / tileSize;
@@ -1402,7 +1427,7 @@ namespace MinesweeperGUI
                     // if the map hasn't been generated (because this is the first click), generate it and start the game.
                     if (!hasMapGenerated)
                     {
-                        // if the timekeeper thread is still busy (because you clicked "new game" and hadn't noticed yet)
+                        // if the timekeeper thread is still busy (because you clicked "new game" and it hadn't noticed yet)
                         // immediately stop doing everything and unselect anything that may have been selected
                         if (timeKeeper.IsBusy)
                         {
@@ -1483,9 +1508,28 @@ namespace MinesweeperGUI
             if (winState == "lost")
                 isGameLost = true;
 
-            // starts the win animation
+            // starts the win animation and moves the cat picture into the completed folder
             if (winState == "won")
+            {
+                // this disables the form while the animation is playing
+                this.Enabled = false;
                 winAnimator.RunWorkerAsync();
+
+                // check if we have a cat picture in the first place before trying to move one
+                // offline mode also disables image removal
+                if (!offline && backgroundSource != "")
+                {
+                    // release the image so it can be moved
+                    mapBackgroundImage.Dispose();
+
+                    // this replaces the "cats" folder with "completed" in the filepath string
+                    string backgroundDestination = "completed" + backgroundSource.Substring(4);
+                    File.Move(backgroundSource, backgroundDestination, false);
+
+                    // pick up the image again so we can keep drawing it
+                    mapBackgroundImage = new Bitmap(backgroundDestination);
+                }
+            }
 
         }
 
@@ -1644,8 +1688,8 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void winAnimatorWork(object sender, DoWorkEventArgs e)
         {
-            isGameAnimating = true;
-
+            isGamePlaying = false;
+            
             for (int i = 0; i < mapHeight; i++)
             {
                 for (int j = 0; j < mapWidth; j++)
@@ -1673,8 +1717,8 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void endWinAnimation(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.Enabled = true;
             animatedCoords.Clear();
-            isGameAnimating = false;
             drawMap = false;
             Invalidate();
         }
