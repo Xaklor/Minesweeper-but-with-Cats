@@ -7,6 +7,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using MinesweeperModel;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace MinesweeperGUI
 {
@@ -54,6 +56,7 @@ namespace MinesweeperGUI
         private Random rand;
         private string backgroundSource;
         private bool offline;
+        private HttpClient redditClient;
 
         // tiles
         private bool drawMap;
@@ -104,6 +107,7 @@ namespace MinesweeperGUI
             rand = new Random();
             backgroundSource = "";
             offline = false;
+            redditClient = new HttpClient();
 
             drawMap     = false;
             tileSize    = 25;
@@ -282,14 +286,94 @@ namespace MinesweeperGUI
         /// </summary>
         private void initializeCats()
         {
-            if (!Directory.Exists("cats"))
-            {
-                Directory.CreateDirectory("cats");
-            }
-
             if (!Directory.Exists("completed"))
             {
                 Directory.CreateDirectory("completed");
+            }
+
+            if (!Directory.Exists("cats"))
+            {
+                Directory.CreateDirectory("cats");
+                pullCatsFromReddit(true);
+            }
+        }
+
+        /// <summary>
+        /// downloads all cat pictures from the 50 most recent posts in r/cats to the cats folder.
+        /// </summary>
+        private async void pullCatsFromReddit(bool onStartup=false)
+        {
+            HttpResponseMessage response = await redditClient.GetAsync("https://www.reddit.com/r/cats/new.json?limit=50");
+            if (response.IsSuccessStatusCode)
+            {
+                string message = await response.Content.ReadAsStringAsync();
+
+                using (JsonDocument document = JsonDocument.Parse(message))
+                {
+                    // this gets out the array of posts from the reddit json
+                    JsonElement posts = document.RootElement.GetProperty("data").GetProperty("children");
+
+                    foreach (JsonElement post in posts.EnumerateArray())
+                    {
+                        JsonElement postData = post.GetProperty("data");
+
+                        // gallery posts on reddit are a bit weird. the url isn't an image, and all the image links in media_metadata
+                        // give 403: forbidden when accessed. in order to get a link we can actually use, we need to change
+                        // all the preview.redd.it links inside media_metadata into i.redd.it links instead. we also need to 
+                        // remove all the queries after the ? in the link since they contain unwanted resize operations.
+
+                        // because not all posts contain an is_gallery property, we have to use TryGetProperty to verify it exists.
+                        JsonElement isGallery;
+                        if (postData.TryGetProperty("is_gallery", out isGallery))
+                        {
+                            // if the is_gallery field in the json is true
+                            if (isGallery.ValueKind == JsonValueKind.True)
+                            {
+                                JsonElement galleryMedia = postData.GetProperty("media_metadata");
+                                foreach (JsonProperty galleryProperty in galleryMedia.EnumerateObject())
+                                {
+                                    // first we need to verify the image was loaded properly into the json, which apparently isn't guaranteed
+                                    if (galleryMedia.GetProperty(galleryProperty.Name).GetProperty("status").GetString() == "valid")
+                                    {
+                                        // this is where the preview.redd.it link is stored in the json
+                                        string galleryUrl = galleryMedia.GetProperty(galleryProperty.Name).GetProperty("s").GetProperty("u").GetString();
+                                        galleryUrl = galleryUrl.Substring(0, galleryUrl.IndexOf('?'));
+                                        galleryUrl = "https://i" + galleryUrl.Substring(15);
+
+                                        await DownloadImageAsync(galleryUrl);
+                                    }                                    
+                                }
+                            }
+                        }
+
+                        // the selftext property contains the text in a reddit text post, is_video determines if it's a video post.
+                        // if it's neither of these (and also not a gallery), it's an image post. they're much simpler to download.
+                        else if (postData.GetProperty("selftext").GetString() == "" && postData.GetProperty("is_video").ValueKind == JsonValueKind.False)
+                        {
+                            await DownloadImageAsync(postData.GetProperty("url").GetString());
+                        }
+                    }
+                }
+            }
+
+            if (onStartup)
+                MessageBox.Show("cats have finished downloading, thanks for waiting!");
+        }
+
+        private async System.Threading.Tasks.Task DownloadImageAsync(string url)
+        {
+            // reddit video posts are caught by is_video, but some imgur links have the .gifv extension which won't work.
+            // we need to verify this is an image we're downloading before downloading it.
+            string extension = Path.GetExtension(url);
+            if (extension == ".png" || extension == ".jpg")
+            {
+                // slices off https://
+                string fileName = url.Substring(8);
+                // slices off domain name
+                fileName = fileName.Substring(fileName.IndexOf('/') + 1);
+
+                byte[] imageBytes = await redditClient.GetByteArrayAsync(url);
+                await File.WriteAllBytesAsync("cats/" + fileName, imageBytes);
             }
         }
 
@@ -1524,10 +1608,20 @@ namespace MinesweeperGUI
 
                     // this replaces the "cats" folder with "completed" in the filepath string
                     string backgroundDestination = "completed" + backgroundSource.Substring(4);
-                    File.Move(backgroundSource, backgroundDestination, false);
+                    try
+                    {
+                        File.Move(backgroundSource, backgroundDestination, false);
 
-                    // pick up the image again so we can keep drawing it
-                    mapBackgroundImage = new Bitmap(backgroundDestination);
+                        // pick up the image again so we can keep drawing it
+                        mapBackgroundImage = new Bitmap(backgroundDestination);
+                    }
+                    // if this happens, then there is already an image with this name in the completed folder.
+                    // to preserve cat pics, this is intentional and we just pick up the background image again where we left it.
+                    catch(IOException)
+                    {
+                        mapBackgroundImage = new Bitmap(backgroundSource);
+                    }
+
                 }
             }
 
