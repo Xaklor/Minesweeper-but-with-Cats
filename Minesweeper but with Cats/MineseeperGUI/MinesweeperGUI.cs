@@ -57,6 +57,7 @@ namespace MinesweeperGUI
         private string backgroundSource;
         private bool offline;
         private HttpClient redditClient;
+        private bool downloading;
 
         // tiles
         private bool drawMap;
@@ -108,6 +109,7 @@ namespace MinesweeperGUI
             backgroundSource = "";
             offline = false;
             redditClient = new HttpClient();
+            downloading = false;
 
             drawMap     = false;
             tileSize    = 25;
@@ -294,7 +296,9 @@ namespace MinesweeperGUI
             if (!Directory.Exists("cats"))
             {
                 Directory.CreateDirectory("cats");
-                pullCatsFromReddit(true);
+
+                if (!offline)
+                    pullCatsFromReddit(true);
             }
         }
 
@@ -303,63 +307,95 @@ namespace MinesweeperGUI
         /// </summary>
         private async void pullCatsFromReddit(bool onStartup=false)
         {
-            HttpResponseMessage response = await redditClient.GetAsync("https://www.reddit.com/r/cats/new.json?limit=50");
-            if (response.IsSuccessStatusCode)
+            // if an instance of this is running already we don't want to start it up again.
+            if (downloading)
+                return;
+
+            downloading = true;
+            string jsonString = "";
+
+            try
             {
-                string message = await response.Content.ReadAsStringAsync();
-
-                using (JsonDocument document = JsonDocument.Parse(message))
+                HttpResponseMessage response = await redditClient.GetAsync("https://www.reddit.com/r/cats/new.json?limit=50");
+                if (response.IsSuccessStatusCode)
                 {
-                    // this gets out the array of posts from the reddit json
-                    JsonElement posts = document.RootElement.GetProperty("data").GetProperty("children");
+                    jsonString = await response.Content.ReadAsStringAsync();
 
-                    foreach (JsonElement post in posts.EnumerateArray())
+                    using (JsonDocument document = JsonDocument.Parse(jsonString))
                     {
-                        JsonElement postData = post.GetProperty("data");
+                        // this gets out the array of posts from the reddit json
+                        JsonElement posts = document.RootElement.GetProperty("data").GetProperty("children");
 
-                        // gallery posts on reddit are a bit weird. the url isn't an image, and all the image links in media_metadata
-                        // give 403: forbidden when accessed. in order to get a link we can actually use, we need to change
-                        // all the preview.redd.it links inside media_metadata into i.redd.it links instead. we also need to 
-                        // remove all the queries after the ? in the link since they contain unwanted resize operations.
-
-                        // because not all posts contain an is_gallery property, we have to use TryGetProperty to verify it exists.
-                        JsonElement isGallery;
-                        if (postData.TryGetProperty("is_gallery", out isGallery))
+                        foreach (JsonElement post in posts.EnumerateArray())
                         {
-                            // if the is_gallery field in the json is true
-                            if (isGallery.ValueKind == JsonValueKind.True)
-                            {
-                                JsonElement galleryMedia = postData.GetProperty("media_metadata");
-                                foreach (JsonProperty galleryProperty in galleryMedia.EnumerateObject())
-                                {
-                                    // first we need to verify the image was loaded properly into the json, which apparently isn't guaranteed
-                                    if (galleryMedia.GetProperty(galleryProperty.Name).GetProperty("status").GetString() == "valid")
-                                    {
-                                        // this is where the preview.redd.it link is stored in the json
-                                        string galleryUrl = galleryMedia.GetProperty(galleryProperty.Name).GetProperty("s").GetProperty("u").GetString();
-                                        galleryUrl = galleryUrl.Substring(0, galleryUrl.IndexOf('?'));
-                                        galleryUrl = "https://i" + galleryUrl.Substring(15);
+                            JsonElement postData = post.GetProperty("data");
 
-                                        await DownloadImageAsync(galleryUrl);
-                                    }                                    
+                            // gallery posts on reddit are a bit weird. the url isn't an image, and all the image links in media_metadata
+                            // give 403: forbidden when accessed. in order to get a link we can actually use, we need to change
+                            // all the preview.redd.it links inside media_metadata into i.redd.it links instead. we also need to 
+                            // remove all the queries after the ? in the link since they contain unwanted resize operations.
+
+                            // because not all posts contain an is_gallery property, we have to use TryGetProperty to verify it exists.
+                            JsonElement isGallery;
+                            if (postData.TryGetProperty("is_gallery", out isGallery))
+                            {
+                                // if the is_gallery field in the json is true
+                                if (isGallery.ValueKind == JsonValueKind.True)
+                                {
+                                    JsonElement galleryMedia = postData.GetProperty("media_metadata");
+                                    foreach (JsonProperty galleryProperty in galleryMedia.EnumerateObject())
+                                    {
+                                        // first we need to verify the image was loaded properly into the json, which apparently isn't guaranteed
+                                        if (galleryMedia.GetProperty(galleryProperty.Name).GetProperty("status").GetString() == "valid")
+                                        {
+                                            // this is where the preview.redd.it link is stored in the json
+                                            string galleryUrl = galleryMedia.GetProperty(galleryProperty.Name).GetProperty("s").GetProperty("u").GetString();
+                                            galleryUrl = galleryUrl.Substring(0, galleryUrl.IndexOf('?'));
+                                            galleryUrl = "https://i" + galleryUrl.Substring(15);
+
+                                            await DownloadImageAsync(galleryUrl);
+                                        }
+                                    }
                                 }
                             }
-                        }
 
-                        // the selftext property contains the text in a reddit text post, is_video determines if it's a video post.
-                        // if it's neither of these (and also not a gallery), it's an image post. they're much simpler to download.
-                        else if (postData.GetProperty("selftext").GetString() == "" && postData.GetProperty("is_video").ValueKind == JsonValueKind.False)
-                        {
-                            await DownloadImageAsync(postData.GetProperty("url").GetString());
+                            // the selftext property contains the text in a reddit text post, is_video determines if it's a video post.
+                            // if it's neither of these (and also not a gallery), it's an image post. they're much simpler to download.
+                            else if (postData.GetProperty("selftext").GetString() == "" && postData.GetProperty("is_video").ValueKind == JsonValueKind.False)
+                            {
+                                await DownloadImageAsync(postData.GetProperty("url").GetString());
+                            }
                         }
                     }
                 }
+
+                if (onStartup)
+                    MessageBox.Show("cats have finished downloading, thanks for waiting!");
+            }
+            catch (HttpRequestException)
+            {
+                offline = true;
+                MessageBox.Show("Something went wrong when connecting to Reddit.\n\n" +
+                    "Offline Mode has been enabled, please check your internet connection before turning it off.", "oops");
+            }
+            catch (Exception e)
+            {
+                List<string> log = new List<string>();
+                log.Add(e.Message);
+                log.Add(jsonString);
+                File.WriteAllLines("log.txt", log);
+                MessageBox.Show("Something completely unforeseen has gone wrong, please send log.txt to xaklor.", "mega oops");
             }
 
-            if (onStartup)
-                MessageBox.Show("cats have finished downloading, thanks for waiting!");
+            // at the very end set this back to false so we know we're done.
+            downloading = false;
         }
 
+        /// <summary>
+        /// asynchronously downloads the image from the url to the cats folder, assuming it ends in .png or .jpg
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         private async System.Threading.Tasks.Task DownloadImageAsync(string url)
         {
             // reddit video posts are caught by is_video, but some imgur links have the .gifv extension which won't work.
@@ -458,12 +494,17 @@ namespace MinesweeperGUI
         }
 
         /// <summary>
-        /// random a random image from cats/ if there are any images, otherwise defaults to the blobcat.
+        /// chooses a random image from cats/ if there are any images, otherwise defaults to the blobcat.
+        /// if the amount of images is low and offline mode is disabled, it will also asyncronously download more from r/cats.
         /// </summary>
         /// <returns></returns>
         private Bitmap selectNewBackgroundImage()
         {
             string[] catpics = Directory.GetFiles("cats");
+            
+            if (catpics.Length <= 10)
+                pullCatsFromReddit();
+
             if (catpics.Length == 0)
             {
                 backgroundSource = "";
@@ -1283,7 +1324,6 @@ namespace MinesweeperGUI
             {
                 MessageBox.Show($"Something went wrong reading stats:\n{exception.Message}", "oops");
             }
-
 
             // if the game was paused by this dialog, resume the timer
             if (isGamePaused)
