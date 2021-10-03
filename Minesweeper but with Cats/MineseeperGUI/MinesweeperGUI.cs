@@ -7,6 +7,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.IO;
 using MinesweeperModel;
+using System.Net.Http;
+using System.Text.Json;
 
 namespace MinesweeperGUI
 {
@@ -49,8 +51,13 @@ namespace MinesweeperGUI
 
         private int gameElapsedSeconds;
         private bool isGamePlaying;
-        private bool isGameAnimating;
         private bool isGameLost;
+
+        private Random rand;
+        private string backgroundSource;
+        private bool offline;
+        private HttpClient redditClient;
+        private bool downloading;
 
         // tiles
         private bool drawMap;
@@ -96,8 +103,13 @@ namespace MinesweeperGUI
             gameElapsedSeconds = 0;
             // used for turning off the timekeeper
             isGamePlaying = false;
-            isGameAnimating = false;
             isGameLost = false;
+
+            rand = new Random();
+            backgroundSource = "";
+            offline = false;
+            redditClient = new HttpClient();
+            downloading = false;
 
             drawMap     = false;
             tileSize    = 25;
@@ -120,6 +132,7 @@ namespace MinesweeperGUI
 
             InitializeComponent();
             initializeSaves();
+            initializeCats();
         }
 
         /// <summary>
@@ -138,6 +151,7 @@ namespace MinesweeperGUI
                     int settingsMines = numMinesInit;
                     theme settingsTheme = currentTheme;
                     bool settingsTileSize = tileSize == 50;
+                    bool settingsOffline = offline;
 
                     IEnumerable<string> settings = File.ReadAllLines("settings");
                     IEnumerator<string> settingsReader = settings.GetEnumerator();
@@ -205,6 +219,22 @@ namespace MinesweeperGUI
                         default:
                             throw new FileFormatException("invalid tile size found.");
                     }
+                    settingsReader.MoveNext();
+
+                    // sixth item should be offline mode, which must be true or false
+                    switch (settingsReader.Current)
+                    {
+                        case ("True"):
+                            settingsOffline = true;
+                            break;
+
+                        case ("False"):
+                            settingsOffline = false;
+                            break;
+
+                        default:
+                            throw new FileFormatException("invalid offline mode found.");
+                    }
 
                     // if we made it here, we have all the data we need and it's all safe
                     mapWidth = settingsWidth;
@@ -212,6 +242,7 @@ namespace MinesweeperGUI
                     numMines = settingsMines;
                     numMinesInit = settingsMines;
                     currentTheme = settingsTheme;
+                    offline = settingsOffline;
 
                     changeTheme(currentTheme);
                     changeTileSize(settingsTileSize);
@@ -249,6 +280,136 @@ namespace MinesweeperGUI
                 stats.Add("5999");
                 stats.Add("5999");
                 File.WriteAllLines("stats", stats);
+            }
+        }
+
+        /// <summary>
+        /// verifies the existence of the cats and completed folders, generating new folders and images if necessary
+        /// </summary>
+        private void initializeCats()
+        {
+            if (!Directory.Exists("completed"))
+            {
+                Directory.CreateDirectory("completed");
+            }
+
+            if (!Directory.Exists("cats"))
+            {
+                Directory.CreateDirectory("cats");
+
+                if (!offline)
+                    pullCatsFromReddit(true);
+            }
+        }
+
+        /// <summary>
+        /// downloads all cat pictures from the 50 most recent posts in r/cats to the cats folder.
+        /// </summary>
+        private async void pullCatsFromReddit(bool onStartup=false)
+        {
+            // if an instance of this is running already we don't want to start it up again.
+            if (downloading)
+                return;
+
+            downloading = true;
+            string jsonString = "";
+
+            try
+            {
+                HttpResponseMessage response = await redditClient.GetAsync("https://www.reddit.com/r/cats/new.json?limit=50");
+                if (response.IsSuccessStatusCode)
+                {
+                    jsonString = await response.Content.ReadAsStringAsync();
+
+                    using (JsonDocument document = JsonDocument.Parse(jsonString))
+                    {
+                        // this gets out the array of posts from the reddit json
+                        JsonElement posts = document.RootElement.GetProperty("data").GetProperty("children");
+
+                        foreach (JsonElement post in posts.EnumerateArray())
+                        {
+                            JsonElement postData = post.GetProperty("data");
+
+                            // gallery posts on reddit are a bit weird. the url isn't an image, and all the image links in media_metadata
+                            // give 403: forbidden when accessed. in order to get a link we can actually use, we need to change
+                            // all the preview.redd.it links inside media_metadata into i.redd.it links instead. we also need to 
+                            // remove all the queries after the ? in the link since they contain unwanted resize operations.
+
+                            // because not all posts contain an is_gallery property, we have to use TryGetProperty to verify it exists.
+                            JsonElement isGallery;
+                            if (postData.TryGetProperty("is_gallery", out isGallery))
+                            {
+                                // if the is_gallery field in the json is true
+                                if (isGallery.ValueKind == JsonValueKind.True)
+                                {
+                                    JsonElement galleryMedia = postData.GetProperty("media_metadata");
+                                    foreach (JsonProperty galleryProperty in galleryMedia.EnumerateObject())
+                                    {
+                                        // first we need to verify the image was loaded properly into the json, which apparently isn't guaranteed
+                                        if (galleryMedia.GetProperty(galleryProperty.Name).GetProperty("status").GetString() == "valid")
+                                        {
+                                            // this is where the preview.redd.it link is stored in the json
+                                            string galleryUrl = galleryMedia.GetProperty(galleryProperty.Name).GetProperty("s").GetProperty("u").GetString();
+                                            galleryUrl = galleryUrl.Substring(0, galleryUrl.IndexOf('?'));
+                                            galleryUrl = "https://i" + galleryUrl.Substring(15);
+
+                                            await DownloadImageAsync(galleryUrl);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // the selftext property contains the text in a reddit text post, is_video determines if it's a video post.
+                            // if it's neither of these (and also not a gallery), it's an image post. they're much simpler to download.
+                            else if (postData.GetProperty("selftext").GetString() == "" && postData.GetProperty("is_video").ValueKind == JsonValueKind.False)
+                            {
+                                await DownloadImageAsync(postData.GetProperty("url").GetString());
+                            }
+                        }
+                    }
+                }
+
+                if (onStartup)
+                    MessageBox.Show("cats have finished downloading, thanks for waiting!");
+            }
+            catch (HttpRequestException)
+            {
+                offline = true;
+                MessageBox.Show("Something went wrong when connecting to Reddit.\n\n" +
+                    "Offline Mode has been enabled, please check your internet connection before turning it off.", "oops");
+            }
+            catch (Exception e)
+            {
+                List<string> log = new List<string>();
+                log.Add(e.Message);
+                log.Add(jsonString);
+                File.WriteAllLines("log.txt", log);
+                MessageBox.Show("Something completely unforeseen has gone wrong, please send log.txt to xaklor.", "mega oops");
+            }
+
+            // at the very end set this back to false so we know we're done.
+            downloading = false;
+        }
+
+        /// <summary>
+        /// asynchronously downloads the image from the url to the cats folder, assuming it ends in .png or .jpg
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        private async System.Threading.Tasks.Task DownloadImageAsync(string url)
+        {
+            // reddit video posts are caught by is_video, but some imgur links have the .gifv extension which won't work.
+            // we need to verify this is an image we're downloading before downloading it.
+            string extension = Path.GetExtension(url);
+            if (extension == ".png" || extension == ".jpg")
+            {
+                // slices off https://
+                string fileName = url.Substring(8);
+                // slices off domain name
+                fileName = fileName.Substring(fileName.IndexOf('/') + 1);
+
+                byte[] imageBytes = await redditClient.GetByteArrayAsync(url);
+                await File.WriteAllBytesAsync("cats/" + fileName, imageBytes);
             }
         }
 
@@ -292,9 +453,12 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void newgameButton_Click(object sender, EventArgs e)
         {
-            
             numMines = numMinesInit;
             setMinesDisplay(true);
+
+            // release whatever image we had before so we're not tying up resources before grabbing the new one
+            mapBackgroundImage.Dispose();
+            mapBackgroundImage = selectNewBackgroundImage();
 
             gameMap = new MinesweeperMap(mapWidth, mapHeight, numMines);
             hasMapGenerated = false;
@@ -327,6 +491,30 @@ namespace MinesweeperGUI
             drawMap = true;
             Invalidate();
 
+        }
+
+        /// <summary>
+        /// chooses a random image from cats/ if there are any images, otherwise defaults to the blobcat.
+        /// if the amount of images is low and offline mode is disabled, it will also asyncronously download more from r/cats.
+        /// </summary>
+        /// <returns></returns>
+        private Bitmap selectNewBackgroundImage()
+        {
+            string[] catpics = Directory.GetFiles("cats");
+            
+            if (catpics.Length <= 10)
+                pullCatsFromReddit();
+
+            if (catpics.Length == 0)
+            {
+                backgroundSource = "";
+                return Properties.Resources.blobcathug;
+            }
+            else
+            {
+                backgroundSource = catpics[rand.Next(0, catpics.Length)];
+                return new Bitmap(backgroundSource);
+            }
         }
 
         /// <summary>
@@ -691,7 +879,7 @@ namespace MinesweeperGUI
                 isGamePaused = true;
             }
 
-            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, tileSize == 50);
+            MinesweeperSettingsDialog settingsDialog = new MinesweeperSettingsDialog(this.currentTheme, mapWidth, mapHeight, numMinesInit, tileSize == 50, offline);
             settingsDialog.ShowDialog();
 
             // this causes the button to pop back up.
@@ -720,8 +908,11 @@ namespace MinesweeperGUI
                 changeTheme(settingsDialog.selectedTheme);
             }
 
-            // this and current theme can be changed without the confirm button being clicked so the player can change size and theme mid-game
+            offline = settingsDialog.offline;
+
+            // this, offline mode, and current theme can be changed without the confirm button being clicked so the player can change visuals mid-game
             changeTileSize(settingsDialog.largeTiles);
+
 
             // only make game changes if the confirm button was clicked in the dialog. 
             if (settingsDialog.confirmed)
@@ -746,6 +937,7 @@ namespace MinesweeperGUI
                 settings.Add($"{numMinesInit}");
                 settings.Add($"{currentTheme}");
                 settings.Add($"{tileSize == 50}");
+                settings.Add($"{offline}");
                 File.WriteAllLines("settings", settings);
 
                 // this starts a new game with the new settings.
@@ -1133,7 +1325,6 @@ namespace MinesweeperGUI
                 MessageBox.Show($"Something went wrong reading stats:\n{exception.Message}", "oops");
             }
 
-
             // if the game was paused by this dialog, resume the timer
             if (isGamePaused)
             {
@@ -1284,11 +1475,10 @@ namespace MinesweeperGUI
 
             // to explain the if statement to the reader:
             // valid X and Y ensure the mouse is inside the map
-            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
             // and finally, we only care about animating mouse down tiles if the left button was clicked, so we ignore the right button
-            if (isValidX && isValidY && !isGameAnimating && drawMap && !isGameLost && e.Button == MouseButtons.Left)
+            if (isValidX && isValidY && drawMap && !isGameLost && e.Button == MouseButtons.Left)
             {
                 MinesweeperCell target = gameMap.GetCell(cellx, celly);
 
@@ -1324,10 +1514,9 @@ namespace MinesweeperGUI
 
             // to explain the if statement to the reader:
             // valid X and Y ensure the mouse is inside the map
-            // isGameAnimating is used by the game won animation and stops the player from clicking on things while it's playing
             // drawMap is used by the new game process to start drawing a map, here it stops the player from clicking on a board before drawing
             // isGameLost is used by the game loss state and prevents the player from continuing to click on things after losing
-            if (isValidX && isValidY && !isGameAnimating && !isGameLost && drawMap)
+            if (isValidX && isValidY && !isGameLost && drawMap)
             {
                 // map coordinates are relative to the tile anchor and scaled based on tile size
                 int cellx = (relativeMousePosition.X - tileAnchor.X) / tileSize;
@@ -1362,6 +1551,15 @@ namespace MinesweeperGUI
                     // if the map hasn't been generated (because this is the first click), generate it and start the game.
                     if (!hasMapGenerated)
                     {
+                        // if the timekeeper thread is still busy (because you clicked "new game" and it hadn't noticed yet)
+                        // immediately stop doing everything and unselect anything that may have been selected
+                        if (timeKeeper.IsBusy)
+                        {
+                            selectedCoords.Clear();
+                            Invalidate();
+                            return;
+                        }
+
                         gameMap.GenerateMines(cellx, celly);
                         hasMapGenerated = true;
 
@@ -1434,9 +1632,38 @@ namespace MinesweeperGUI
             if (winState == "lost")
                 isGameLost = true;
 
-            // starts the win animation
+            // starts the win animation and moves the cat picture into the completed folder
             if (winState == "won")
+            {
+                // this disables the form while the animation is playing
+                this.Enabled = false;
                 winAnimator.RunWorkerAsync();
+
+                // check if we have a cat picture in the first place before trying to move one
+                // offline mode also disables image removal
+                if (!offline && backgroundSource != "")
+                {
+                    // release the image so it can be moved
+                    mapBackgroundImage.Dispose();
+
+                    // this replaces the "cats" folder with "completed" in the filepath string
+                    string backgroundDestination = "completed" + backgroundSource.Substring(4);
+                    try
+                    {
+                        File.Move(backgroundSource, backgroundDestination, false);
+
+                        // pick up the image again so we can keep drawing it
+                        mapBackgroundImage = new Bitmap(backgroundDestination);
+                    }
+                    // if this happens, then there is already an image with this name in the completed folder.
+                    // to preserve cat pics, this is intentional and we just pick up the background image again where we left it.
+                    catch(IOException)
+                    {
+                        mapBackgroundImage = new Bitmap(backgroundSource);
+                    }
+
+                }
+            }
 
         }
 
@@ -1595,8 +1822,8 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void winAnimatorWork(object sender, DoWorkEventArgs e)
         {
-            isGameAnimating = true;
-
+            isGamePlaying = false;
+            
             for (int i = 0; i < mapHeight; i++)
             {
                 for (int j = 0; j < mapWidth; j++)
@@ -1624,8 +1851,8 @@ namespace MinesweeperGUI
         /// <param name="e"></param>
         private void endWinAnimation(object sender, RunWorkerCompletedEventArgs e)
         {
+            this.Enabled = true;
             animatedCoords.Clear();
-            isGameAnimating = false;
             drawMap = false;
             Invalidate();
         }
