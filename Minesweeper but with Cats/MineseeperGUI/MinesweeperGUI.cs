@@ -372,11 +372,12 @@ namespace MinesweeperGUI
                 if (onStartup)
                     MessageBox.Show("cats have finished downloading, thanks for waiting!");
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
                 offline = true;
                 MessageBox.Show("Something went wrong when connecting to Reddit.\n\n" +
-                    "Offline Mode has been enabled, please check your internet connection before turning it off.", "oops");
+                    "Offline Mode has been enabled, please check your internet connection before turning it off.\n\n" +
+                    $"Error Message: {e.Message}", "oops");
             }
             catch (Exception e)
             {
@@ -500,19 +501,25 @@ namespace MinesweeperGUI
         /// <returns></returns>
         private Bitmap selectNewBackgroundImage()
         {
-            string[] catpics = Directory.GetFiles("cats");
+            // only pull out pngs and jpgs in case the user puts something unexpected in the folder.
+            string[] catpngs = Directory.GetFiles("cats", "*.png");
+            string[] catjpgs = Directory.GetFiles("cats", "*.jpg");
+
+            List<string> catpics = new List<string>();
+            catpics.AddRange(catpngs);
+            catpics.AddRange(catjpgs);
             
-            if (catpics.Length <= 10)
+            if (catpics.Count <= 10 && !offline)
                 pullCatsFromReddit();
 
-            if (catpics.Length == 0)
+            if (catpics.Count == 0)
             {
                 backgroundSource = "";
                 return Properties.Resources.blobcathug;
             }
             else
             {
-                backgroundSource = catpics[rand.Next(0, catpics.Length)];
+                backgroundSource = catpics[rand.Next(0, catpics.Count)];
                 return new Bitmap(backgroundSource);
             }
         }
@@ -1191,11 +1198,13 @@ namespace MinesweeperGUI
                 }
             }
 
-            // change our own dimensions to match the new tile size
+            // change our own dimensions to match the new tile size,  then redraw the map
             int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * tileSize);
             int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * tileSize);
             this.MinimumSize = new Size(w, h);
             this.Size = MinimumSize;
+
+            Invalidate();
         }
      
 
@@ -1388,7 +1397,7 @@ namespace MinesweeperGUI
         }
 
         /// <summary>
-        /// not implemented yet.
+        /// pops up a dialog explaining how to play the game to the user
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1429,7 +1438,13 @@ namespace MinesweeperGUI
                 "A revealed cell might have a number on it equal to the number of mines around it." +
                 "Flag cells you know are mines, and reveal cells you know to be safe." +
                 "Clicking and holding a revealed cell highlights every hidden cell around it." +
-                "If all mines surrounding it have been flagged already, left-clicking reveals the others.\n\n" +
+                "If there are flags equal to the number surrounding the cell, left-clicking reveals its neighbors for you.\n\n" +
+                "For example, consider the following arrangement:\n" +
+                "0 1 ?\n" +
+                "0 1 1\n" +
+                "0 0 0\n" +
+                "The 1 in the center says there is one mine next to it. There is only one hidden cell next to the 1, " +
+                "and the rest have been revealed already. This means that cell must be a mine, so we flag it.\n\n" +
                 "The goal of the game is to uncover every safe cell to reveal the image underneath!";
 
             MessageBox.Show(helpContents, "Help");
