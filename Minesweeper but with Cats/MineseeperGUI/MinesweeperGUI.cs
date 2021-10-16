@@ -84,8 +84,8 @@ namespace MinesweeperGUI
         updateTimerDelegate updateTimer = updateTimerDisplay;
 
         // used for the game win animation
-        private delegate void animationTimerDelegate(MinesweeperGUI GUI, int x, int y);
-        animationTimerDelegate animationTimer = animateWinState;
+        private delegate void AnimateWinDelegate(MinesweeperGUI GUI, int corner);
+        AnimateWinDelegate animateWin = clearRect;
 
         public MinesweeperGUI()
         {
@@ -1661,6 +1661,13 @@ namespace MinesweeperGUI
                     // release the image so it can be moved
                     mapBackgroundImage.Dispose();
 
+                    // copy to the recent location for ease of finding by the user
+                    // delete the old one first since it might have a different file extension
+                    File.Delete("recent.jpg");
+                    File.Delete("recent.png");
+                    string recentDestination = "recent" + Path.GetExtension(backgroundSource);
+                    File.Copy(backgroundSource, recentDestination, true);
+
                     // this replaces the "cats" folder with "completed" in the filepath string
                     string backgroundDestination = "completed" + backgroundSource.Substring(4);
                     try
@@ -1839,23 +1846,36 @@ namespace MinesweeperGUI
         {
             isGamePlaying = false;
             
-            for (int i = 0; i < mapHeight; i++)
+            int rectCornerIdx = 0;
+            while (rectCornerIdx <= mapWidth - 1 - rectCornerIdx && rectCornerIdx <= mapHeight - 1 - rectCornerIdx)
             {
-                for (int j = 0; j < mapWidth; j++)
-                {
-                    Thread.Sleep(10);
-                    Invoke(animationTimer, new object[] { this, j, i });
-                }
+                Invoke(animateWin, new object[] { this, rectCornerIdx });
+                rectCornerIdx++;
+
+                Thread.Sleep(100);
             }
         }        
 
         /// <summary>
-        /// flags the given tile for removal to animate the game being won.
+        /// flags the tiles in the rectangle defined by the given corner for removal to animate the game being won.
         /// </summary>
         /// <param name="GUI"></param>
-        private static void animateWinState(MinesweeperGUI GUI, int x, int y)
+        private static void clearRect(MinesweeperGUI GUI, int corner)
         {
-            GUI.animatedCoords.Add((x, y));
+            // clears top and bottom rows of the rectangle
+            for (int offsetx = corner; offsetx <= GUI.mapWidth - 1 - corner; offsetx++)
+            {
+                GUI.animatedCoords.Add((offsetx, corner));
+                GUI.animatedCoords.Add((offsetx, GUI.mapHeight - 1 - corner));
+            }
+
+            // clears the left and right columns of the rectangle
+            for (int offsety = corner; offsety <= GUI.mapHeight - 1 - corner; offsety++)
+            {
+                GUI.animatedCoords.Add((corner, offsety));
+                GUI.animatedCoords.Add((GUI.mapWidth - 1 - corner, offsety));
+            }
+
             GUI.Invalidate();
         }
 
