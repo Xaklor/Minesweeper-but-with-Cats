@@ -223,6 +223,7 @@ namespace MinesweeperGUI
             this.Controls.Add(this.optionsButton);
             this.Controls.Add(this.newgameButton);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(610, 550);
             this.Name = "MinesweeperGUI";
             this.Text = "Minesweeper but with Cats";
