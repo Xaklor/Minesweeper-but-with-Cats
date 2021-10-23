@@ -9,6 +9,7 @@ using System.IO;
 using MinesweeperModel;
 using System.Net.Http;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace MinesweeperGUI
 {
@@ -67,6 +68,7 @@ namespace MinesweeperGUI
         private Bitmap selectTile;
         private Bitmap flaggedTile;
         private Bitmap mineTile;
+        private Bitmap errorTile;
         private Bitmap zeroTile;
         private Bitmap oneTile;
         private Bitmap twoTile;
@@ -84,8 +86,8 @@ namespace MinesweeperGUI
         updateTimerDelegate updateTimer = updateTimerDisplay;
 
         // used for the game win animation
-        private delegate void animationTimerDelegate(MinesweeperGUI GUI, int x, int y);
-        animationTimerDelegate animationTimer = animateWinState;
+        private delegate void AnimateWinDelegate(MinesweeperGUI GUI, int corner);
+        AnimateWinDelegate animateWin = clearRect;
 
         public MinesweeperGUI()
         {
@@ -118,6 +120,7 @@ namespace MinesweeperGUI
             selectTile  = Properties.Resources.cat_selected;
             flaggedTile = Properties.Resources.cat_flagged;
             mineTile    = Properties.Resources.cat_mine;
+            errorTile   = Properties.Resources.error;
             zeroTile    = Properties.Resources._0;
             oneTile     = Properties.Resources.cat_1;
             twoTile     = Properties.Resources.cat_2;
@@ -372,19 +375,32 @@ namespace MinesweeperGUI
                 if (onStartup)
                     MessageBox.Show("cats have finished downloading, thanks for waiting!");
             }
-            catch (HttpRequestException)
+            catch (HttpRequestException e)
             {
                 offline = true;
                 MessageBox.Show("Something went wrong when connecting to Reddit.\n\n" +
-                    "Offline Mode has been enabled, please check your internet connection before turning it off.", "oops");
+                    "Offline Mode has been enabled, please check your internet connection before turning it off.\n\n" +
+                    $"Error Message: {e.Message}", "oops");
             }
             catch (Exception e)
             {
-                List<string> log = new List<string>();
-                log.Add(e.Message);
-                log.Add(jsonString);
-                File.WriteAllLines("log.txt", log);
-                MessageBox.Show("Something completely unforeseen has gone wrong, please send log.txt to xaklor.", "mega oops");
+                // if the exception message contains the phrase "There is not enough space on the disk.", then actually we do
+                // know how to handle that: stop downloading, enable offline mode, and alert the user. 
+                // this doesn't go in an IOException catch though because we'd want to use the rest of this catch for any other 
+                // possible IOException since I don't know what'd cause it or how to deal with it.
+                if (Regex.IsMatch(e.Message, "There is not enough space on the disk"))
+                {
+                    offline = true;
+                    MessageBox.Show(e.Message + "\nOffline Mode has been enabled, please make space on the disk before turning it off.", "oops");
+                }
+                else
+                {
+                    List<string> log = new List<string>();
+                    log.Add(e.Message);
+                    log.Add(jsonString);
+                    File.WriteAllLines("log.txt", log);
+                    MessageBox.Show("Something completely unforeseen has gone wrong, please send log.txt to xaklor at:\nhttps://github.com/Xaklor/Minesweeper-but-with-Cats", "mega oops");
+                }
             }
 
             // at the very end set this back to false so we know we're done.
@@ -500,19 +516,25 @@ namespace MinesweeperGUI
         /// <returns></returns>
         private Bitmap selectNewBackgroundImage()
         {
-            string[] catpics = Directory.GetFiles("cats");
+            // only pull out pngs and jpgs in case the user puts something unexpected in the folder.
+            string[] catpngs = Directory.GetFiles("cats", "*.png");
+            string[] catjpgs = Directory.GetFiles("cats", "*.jpg");
+
+            List<string> catpics = new List<string>();
+            catpics.AddRange(catpngs);
+            catpics.AddRange(catjpgs);
             
-            if (catpics.Length <= 10)
+            if (catpics.Count <= 10 && !offline)
                 pullCatsFromReddit();
 
-            if (catpics.Length == 0)
+            if (catpics.Count == 0)
             {
                 backgroundSource = "";
                 return Properties.Resources.blobcathug;
             }
             else
             {
-                backgroundSource = catpics[rand.Next(0, catpics.Length)];
+                backgroundSource = catpics[rand.Next(0, catpics.Count)];
                 return new Bitmap(backgroundSource);
             }
         }
@@ -1068,8 +1090,9 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.cat_selected_big;
                         flaggedTile = Properties.Resources.cat_flagged_big;
                         mineTile    = Properties.Resources.cat_mine_big;
-                        twoTile     = Properties.Resources.cat_2_big;
+                        errorTile   = Properties.Resources.error_big;
                         oneTile     = Properties.Resources.cat_1_big;
+                        twoTile     = Properties.Resources.cat_2_big;
                         threeTile   = Properties.Resources.cat_3_big;
                         fourTile    = Properties.Resources.cat_4_big;
                         fiveTile    = Properties.Resources.cat_5_big;
@@ -1083,6 +1106,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.classic_selected_big;
                         flaggedTile = Properties.Resources.classic_flagged_big;
                         mineTile    = Properties.Resources.classic_mine_big;
+                        errorTile   = Properties.Resources.error_big;
                         oneTile     = Properties.Resources.classic_1_big;
                         twoTile     = Properties.Resources.classic_2_big;
                         threeTile   = Properties.Resources.classic_3_big;
@@ -1098,6 +1122,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.bubble_selected_big;
                         flaggedTile = Properties.Resources.bubble_flagged_big;
                         mineTile    = Properties.Resources.bubble_mine_big;
+                        errorTile   = Properties.Resources.error_big;
                         oneTile     = Properties.Resources.bubble_1_big;
                         twoTile     = Properties.Resources.bubble_2_big;
                         threeTile   = Properties.Resources.bubble_3_big;
@@ -1113,6 +1138,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.dark_selected_big;
                         flaggedTile = Properties.Resources.dark_flagged_big;
                         mineTile    = Properties.Resources.dark_mine_big;
+                        errorTile   = Properties.Resources.error_big;
                         oneTile     = Properties.Resources.dark_1_big;
                         twoTile     = Properties.Resources.dark_2_big;
                         threeTile   = Properties.Resources.dark_3_big;
@@ -1134,6 +1160,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.cat_selected;
                         flaggedTile = Properties.Resources.cat_flagged;
                         mineTile    = Properties.Resources.cat_mine;
+                        errorTile   = Properties.Resources.error;
                         twoTile     = Properties.Resources.cat_2;
                         oneTile     = Properties.Resources.cat_1;
                         threeTile   = Properties.Resources.cat_3;
@@ -1149,6 +1176,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.classic_selected;
                         flaggedTile = Properties.Resources.classic_flagged;
                         mineTile    = Properties.Resources.classic_mine;
+                        errorTile   = Properties.Resources.error;
                         oneTile     = Properties.Resources.classic_1;
                         twoTile     = Properties.Resources.classic_2;
                         threeTile   = Properties.Resources.classic_3;
@@ -1164,6 +1192,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.bubble_selected;
                         flaggedTile = Properties.Resources.bubble_flagged;
                         mineTile    = Properties.Resources.bubble_mine;
+                        errorTile   = Properties.Resources.error;
                         oneTile     = Properties.Resources.bubble_1;
                         twoTile     = Properties.Resources.bubble_2;
                         threeTile   = Properties.Resources.bubble_3;
@@ -1179,6 +1208,7 @@ namespace MinesweeperGUI
                         selectTile  = Properties.Resources.dark_selected;
                         flaggedTile = Properties.Resources.dark_flagged;
                         mineTile    = Properties.Resources.dark_mine;
+                        errorTile   = Properties.Resources.error;
                         oneTile     = Properties.Resources.dark_1;
                         twoTile     = Properties.Resources.dark_2;
                         threeTile   = Properties.Resources.dark_3;
@@ -1191,11 +1221,13 @@ namespace MinesweeperGUI
                 }
             }
 
-            // change our own dimensions to match the new tile size
+            // change our own dimensions to match the new tile size,  then redraw the map
             int w = Math.Max(610, tileAnchor.X + (mapWidth + 1) * tileSize);
             int h = Math.Max(550, tileAnchor.Y + (mapHeight + 2) * tileSize);
             this.MinimumSize = new Size(w, h);
             this.Size = MinimumSize;
+
+            Invalidate();
         }
      
 
@@ -1388,7 +1420,7 @@ namespace MinesweeperGUI
         }
 
         /// <summary>
-        /// not implemented yet.
+        /// pops up a dialog explaining how to play the game to the user
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1429,7 +1461,13 @@ namespace MinesweeperGUI
                 "A revealed cell might have a number on it equal to the number of mines around it." +
                 "Flag cells you know are mines, and reveal cells you know to be safe." +
                 "Clicking and holding a revealed cell highlights every hidden cell around it." +
-                "If all mines surrounding it have been flagged already, left-clicking reveals the others.\n\n" +
+                "If there are flags equal to the number surrounding the cell, left-clicking reveals its neighbors for you.\n\n" +
+                "For example, consider the following arrangement:\n" +
+                "0 1 ?\n" +
+                "0 1 1\n" +
+                "0 0 0\n" +
+                "The 1 in the center says there is one mine next to it. There is only one hidden cell next to the 1, " +
+                "and the rest have been revealed already. This means that cell must be a mine, so we flag it.\n\n" +
                 "The goal of the game is to uncover every safe cell to reveal the image underneath!";
 
             MessageBox.Show(helpContents, "Help");
@@ -1646,6 +1684,13 @@ namespace MinesweeperGUI
                     // release the image so it can be moved
                     mapBackgroundImage.Dispose();
 
+                    // copy to the recent location for ease of finding by the user
+                    // delete the old one first since it might have a different file extension
+                    File.Delete("recent.jpg");
+                    File.Delete("recent.png");
+                    string recentDestination = "recent" + Path.GetExtension(backgroundSource);
+                    File.Copy(backgroundSource, recentDestination, true);
+
                     // this replaces the "cats" folder with "completed" in the filepath string
                     string backgroundDestination = "completed" + backgroundSource.Substring(4);
                     try
@@ -1824,23 +1869,36 @@ namespace MinesweeperGUI
         {
             isGamePlaying = false;
             
-            for (int i = 0; i < mapHeight; i++)
+            int rectCornerIdx = 0;
+            while (rectCornerIdx <= mapWidth - 1 - rectCornerIdx && rectCornerIdx <= mapHeight - 1 - rectCornerIdx)
             {
-                for (int j = 0; j < mapWidth; j++)
-                {
-                    Thread.Sleep(10);
-                    Invoke(animationTimer, new object[] { this, j, i });
-                }
+                Invoke(animateWin, new object[] { this, rectCornerIdx });
+                rectCornerIdx++;
+
+                Thread.Sleep(100);
             }
         }        
 
         /// <summary>
-        /// flags the given tile for removal to animate the game being won.
+        /// flags the tiles in the rectangle defined by the given corner for removal to animate the game being won.
         /// </summary>
         /// <param name="GUI"></param>
-        private static void animateWinState(MinesweeperGUI GUI, int x, int y)
+        private static void clearRect(MinesweeperGUI GUI, int corner)
         {
-            GUI.animatedCoords.Add((x, y));
+            // clears top and bottom rows of the rectangle
+            for (int offsetx = corner; offsetx <= GUI.mapWidth - 1 - corner; offsetx++)
+            {
+                GUI.animatedCoords.Add((offsetx, corner));
+                GUI.animatedCoords.Add((offsetx, GUI.mapHeight - 1 - corner));
+            }
+
+            // clears the left and right columns of the rectangle
+            for (int offsety = corner; offsety <= GUI.mapHeight - 1 - corner; offsety++)
+            {
+                GUI.animatedCoords.Add((corner, offsety));
+                GUI.animatedCoords.Add((GUI.mapWidth - 1 - corner, offsety));
+            }
+
             GUI.Invalidate();
         }
 
@@ -1892,11 +1950,14 @@ namespace MinesweeperGUI
                         }
 
                         // if the target is not visible, then we either draw a blank or flagged tile, or a mine if the game is lost.
+                        // if the flagged tile isn't covering a mine and the game has been lost, additionally draw the error tile.
                         else if (!target.isVisible)
                         {
                             if (target.isFlagged)
                             {
                                 e.Graphics.DrawImage(flaggedTile, targetPos);
+                                if (isGameLost && !target.hasMine)
+                                    e.Graphics.DrawImage(errorTile, targetPos);
                             }
                             else if (target.hasMine && isGameLost)
                             {

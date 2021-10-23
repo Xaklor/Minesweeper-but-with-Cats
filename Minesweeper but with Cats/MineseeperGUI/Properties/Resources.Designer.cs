@@ -1105,7 +1105,7 @@ namespace MinesweeperGUI.Properties {
         /// </summary>
         internal static System.Drawing.Bitmap classic_4 {
             get {
-                object obj = ResourceManager.GetObject("classic 4", resourceCulture);
+                object obj = ResourceManager.GetObject("classic_4", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2046,6 +2046,26 @@ namespace MinesweeperGUI.Properties {
         internal static System.Drawing.Bitmap display_colon {
             get {
                 object obj = ResourceManager.GetObject("display_colon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap error {
+            get {
+                object obj = ResourceManager.GetObject("error", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap error_big {
+            get {
+                object obj = ResourceManager.GetObject("error_big", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
