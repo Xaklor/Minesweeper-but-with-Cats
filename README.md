@@ -41,3 +41,7 @@ The game keeps track of your top 3 times for beating easy, normal, and hard mode
 * When starting up for the first time the application needs to get images from r/cats before you can play with them, so if you want cat pictures please wait until a popup appears letting you know the pictures are ready. You can start before then and the game will run normally, you just might not have any pictures. You shouldn't need to wait for this ever again after the initial pull.
 * This probably only runs on Windows machines, but I don't have a Mac to try it on and see what happens. You're welcome to try if you're a Mac user but I'm pretty sure you need Windows for this.
 * You may get some warning on your computer saying this thing hasn't been frequently downloaded and you might not want to trust it. There isn't really anything I can do about this since I'm some nobody on the internet making a fun little minesweeper game in their free time, but if you're concerned about it the source code is all in this repo and here's a [VirusTotal](https://www.virustotal.com/gui/file/1c9835f501373ab3ee8cfb8d212606d9f222cdc770d54a3e10a562b2b98ed4f6/detection) link for the application.
+
+# Dowload!
+
+The latest release is [here](https://github.com/Xaklor/Minesweeper-but-with-Cats/releases/tag/v1.0).
